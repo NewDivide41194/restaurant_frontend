@@ -471,7 +471,7 @@ export default function EnhancedTable(props) {
                                         className="img-fluid"
                                         src={
                                           row.employeeImage
-                                            ? `http://localhost:3001/uploads/${row.employeeImage}`
+                                            ? `http://192.168.100.52:3001/uploads/${row.employeeImage}`
                                             : DefaultProfile
                                         }
                                         id={row.id}

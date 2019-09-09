@@ -68,7 +68,7 @@ const NavBar = props => {
             </li>
             <li className="pl-3" style={{ marginTop: "-8px" }}>
               <img
-                src={`http://192.168.100.43:3001/uploads/${v.employeeImage}`}
+                src={`http://192.168.100.52:3001/uploads/${v.employeeImage}`}
                 className="rounded-circle"
                 style={{ width: 50, height: 50, border:"2px solid gray" }}
                 alt="userprofile"

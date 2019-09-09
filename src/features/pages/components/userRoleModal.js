@@ -17,10 +17,12 @@ const UserRoleModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
-  const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ '"r]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
-
+  useEffect(() => {
+    RoleName.replace("'", "\'");
+  });
   const _handleAdd = e => {
     e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);

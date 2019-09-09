@@ -61,7 +61,7 @@
   border-bottom: none;
 }
 table tr:nth-of-type(n) th {
-  border-right: 1px solid black;
+  border-right: 1px solid gray;
   text-align: center;
   font-weight: bold;
   height: 50px;

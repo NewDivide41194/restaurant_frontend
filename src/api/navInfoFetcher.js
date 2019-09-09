@@ -4,7 +4,7 @@ export const NavInfoFetcher = callback => {
       method: "GET",
       headers: {
         "Content-Type": "application/json",
-        Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTc3NTA4OTQ4LCJleHAiOjE1Nzc1OTUzNDh9.UyLaGqc0BMjPLtACPD5jmE1AFLQETSt5Fsdwb7IUaFg"
+        Authorization:"Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJuYW1lIjoiYWRtaW4iLCJwYXNzd29yZCI6ImFkbWluIiwiaWF0IjoxNTc3NjgyODU4LCJleHAiOjE1Nzc3NjkyNTh9.i5KLXp-Vi5IAfe-EHagr5vN49KuuCs56BKcAEZpccdk"
       },
       cache: "no-cache"
     })
