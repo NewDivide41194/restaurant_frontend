@@ -1,0 +1,33 @@
+.App {
+  text-align: center;
+}
+
+.App-logo {
+  height: 40vmin;
+}
+
+.App-header {
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
+}
+
+.App-link {
+  color: #09d3ac;
+}
+
+.styles_modalCenter__L9F2w{
+  width:350px;
+}
+
+@media only screen and (max-width:550px){
+  .styles_modalCenter__L9F2w {
+    width: 300px;
+    margin-left:70px;
+  }
+}
