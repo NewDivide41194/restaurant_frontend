@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { Dropdown } from "react-bootstrap";
 import { fsc } from "../../helper/fontControlHelper";
 import withMedia from "react-media-query-hoc/dist/with-media";
-import { NavInfoFetcher } from "../../api/apiFetcher";
+import { NavInfoFetcher } from "../../api/navInfoFetcher";
 import { useCookies } from "react-cookie";
 import MyButton from "../../tools/myButton.js";
 

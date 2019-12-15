@@ -3,10 +3,8 @@ import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
 import moment from "moment";
-import {
-  InsertDesignationFetcher,
-  UpdateDesignationFetcher
-} from "../../../api/apiFetcher";
+import {InsertDesignationFetcher} from "../../../api/insertDesignationFetcher";
+import {UpdateDesignationFetcher} from "../../../api/updateDesignationFetcher"
 
 const DesignationModal = props => {
   const {

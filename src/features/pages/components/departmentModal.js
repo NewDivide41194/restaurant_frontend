@@ -2,10 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
-import {
-  InsertDepartmentFetcher,
-  UpdateDepartmentFetcher
-} from "../../../api/apiFetcher";
+import {InsertDepartmentFetcher} from "../../../api/insertDepartmentFetcher";
+import {UpdateDepartmentFetcher} from "../../../api/updateDepartmentFetcher"
 import moment from "moment";
 
 const DepartmentModal = props => {

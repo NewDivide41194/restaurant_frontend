@@ -2,7 +2,8 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
-import { InsertRoleFetcher, UpdateRoleFetcher } from "../../../api/apiFetcher";
+import {InsertRoleFetcher} from "../../../api/insertRoleFetcher";
+import {UpdateRoleFetcher} from "../../../api/updateRoleFetcher"
 import moment from "moment";
 
 const UserRoleModal = props => {

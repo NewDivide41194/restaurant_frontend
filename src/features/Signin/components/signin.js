@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { withRouter } from "react-router-dom";
 import { useCookies } from "react-cookie";
 
@@ -7,7 +7,7 @@ import MyButton from "../../../tools/myButton.js";
 import MyLabel from "../../../tools/myLabel.js";
 import background from "../../../assets/images/background2.jpg";
 import * as RoutePath from "../../../config/routeConfig.js";
-import { LoginFetcher } from "../../../api/apiFetcher.js";
+import { LoginFetcher } from "../../../api/loginFetcher";
 
 const Signin = props => {
   const [userName, setUserName] = useState("");
@@ -49,6 +49,7 @@ const Signin = props => {
   const _handleUser = e => {
     setUserName(e.target.value);
   };
+  useEffect(()=>document.getElementById("name").focus(),[])
   const bgstyle = {
     // paddingTop: media.mobile ? '5rem' : media.tablet ? '6rem' : '8rem',
     // paddingBottom: media.mobile ? "3rem" : media.tablet ? "7rem" : "7rem",
