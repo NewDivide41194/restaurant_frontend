@@ -21,3 +21,6 @@ export const DesignationFetcher = Base_URL + "/api/user/designation";
 export const InsertDesignation =  Base_URL + "/api/user/designation/addDesignation";
 
 export const UpdateDesignation =  Base_URL + "/api/user/designation/updateDesignation";
+
+export const EmployeeFetcher =  Base_URL + "/api/user/employee";
+

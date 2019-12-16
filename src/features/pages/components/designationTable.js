@@ -81,6 +81,7 @@ export default function DesignationTable() {
           <img
             src={Spinner}
             style={{ marginTop: "25%", width: 50, height: 50 }}
+            alt="Loading"
           />
           <br />
           Loading . . .
