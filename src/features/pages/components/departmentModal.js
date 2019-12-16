@@ -22,7 +22,7 @@ const DepartmentModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
-  const regex = /^(?=.{1,20}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/ 
+  const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
 
@@ -30,10 +30,11 @@ const DepartmentModal = props => {
     e.preventDefault();    
     const isValid = regex.test(document.getElementById("department").value);
     
-    if (Department === "") {
-      alert("Please Fill Role Name");
+    if (Department.trim() === "") {
+      alert("Please Fill Department Name");
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      alert("Department Name Contains Special Characters!");
+      return
   }else {
       console.log("DATA IS ==>", Department, Remark, Active, CreatedDate);
       InsertDepartmentFetcher(
@@ -58,7 +59,8 @@ const DepartmentModal = props => {
     if (Department === "") {
       alert("Please Fill Role Name");      
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      alert("Department Name Contains Special Characters!");
+      return
   }else {
     UpdateDepartmentFetcher(
       { DepartmentId, Department, Remark, Active },
@@ -118,6 +120,7 @@ const DepartmentModal = props => {
         </div>
         <div className="pb-3">
           <MyInput
+          id={"remark"}
             className="w-100"
             type="text"
             value={Remark}

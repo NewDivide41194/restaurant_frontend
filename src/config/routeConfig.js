@@ -18,4 +18,5 @@ export const Department = 'departmentContainer'
 
 export const Designation = 'designationContainer'
 
+export const Employee = 'employeeContainer'
 

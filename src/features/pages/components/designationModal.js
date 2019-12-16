@@ -22,17 +22,18 @@ const DesignationModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DesignationId, setDesignationId] = useState(designationId);
-  const regex = /^(?=.{1,20}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/ 
+  const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
   const _handleAdd = (e) => {
     e.preventDefault()
     const isValid = regex.test(document.getElementById("designation").value);
 
-    if (Designation === "") {
+    if (Designation.trim() === "") {
       alert("Please Fill Role Name");      
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      alert("Designation Name Contains Special Characters!");
+      return
   }else {
     InsertDesignationFetcher(
       { DesignationId, Designation, Remark, Active, CreatedDate },
@@ -54,7 +55,8 @@ const DesignationModal = props => {
     if (Designation === "") {
       alert("Please Fill Role Name");      
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      alert("Designation Name Contains Special Characters!");
+      return
   }else {
     UpdateDesignationFetcher(
       { DesignationId, Designation, Remark, Active },
@@ -107,6 +109,7 @@ const DesignationModal = props => {
         </div>
         <div className="pb-3">
           <MyInput
+            id={"remark"}
             className="w-100"
             type={"text"}
             value={Remark}

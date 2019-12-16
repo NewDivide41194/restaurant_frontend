@@ -17,6 +17,7 @@ import UserRole from "./features/pages/container/userRoleContainer";
 import SignIn from "./features/Signin/container/signinContainer";
 import Department from "./features/pages/container/departmentContainer";
 import Designation from "./features/pages/container/designationContainer";
+import EmployeeContainer from "./features/pages/container/employeeContainer.js";
 
 const AppRoute = () => {
   return (
@@ -41,6 +42,7 @@ const AppRoute = () => {
             <Route path={`/${RoutePath.UserRole}`} component={UserRole} />
             <Route path={`/${RoutePath.Department}`} component={Department} />
             <Route path={`/${RoutePath.Designation}`} component={Designation} />
+            <Route path={`/${RoutePath.Employee}`} component={EmployeeContainer} />
 
             <Redirect to={`/`} />
           </Switch>
