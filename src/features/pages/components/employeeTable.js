@@ -1,19 +1,25 @@
-import React from 'react'
-import Sidebar from '../../app/sidebar.js'
+import React, {useState} from 'react'
+import EmployeeModal from './employeeModal.js'
 
-const EmployeeTable =()=>{
-    return(
-        
-    <div className='text-center'>
-        <div>
-                <Sidebar />
-            </div>
-        <div>
-            Hello
+import MyButton from '../../../tools/myButton.js'
+
+const EmployeeTable = props =>{
+    const { onOpenModal , onCloseModal } = props;
+    const [ open, setOpen ] = useState(false);
+
+    return(   
+        <div className='container'>
+            {open ? (
+            <EmployeeModal
+                open={open}
+                onCloseModal={onCloseModal}
+             />) : null}
+
+            <MyButton
+                text={"+ Add New Employee"}
+                onClick={onOpenModal}
+            />
         </div>
-  
-        </div>
-   
     )
 }
 export default EmployeeTable
