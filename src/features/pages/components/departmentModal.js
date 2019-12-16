@@ -4,6 +4,8 @@ import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
 import {InsertDepartmentFetcher} from "../../../api/insertDepartmentFetcher";
 import {UpdateDepartmentFetcher} from "../../../api/updateDepartmentFetcher"
+import Spinner from "../../../assets/icon/spinner.gif";
+
 import moment from "moment";
 
 const DepartmentModal = props => {
@@ -20,7 +22,9 @@ const DepartmentModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
-  const regex = /^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/ 
+  const regex = /^(?=.{1,20}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/ 
+  const [Loading, setLoading] = useState(false);
+
 
   const _handleAdd = e => {
     e.preventDefault();    
@@ -38,6 +42,8 @@ const DepartmentModal = props => {
           if (data.payload === null) {
             alert("Department Name Already Exist!");
           } else{
+            setLoading(true);
+
             window.location.reload();
           }
         }
@@ -62,6 +68,7 @@ const DepartmentModal = props => {
         if (data.payload === null) {
           alert("Department Name Already Exist!");
         } else {
+          setLoading(true)
           window.location.reload();
         }
       }
@@ -71,6 +78,16 @@ const DepartmentModal = props => {
 
   return (
     <Modal open={open} onClose={onCloseModal} center>
+        {Loading && (
+          <div className="mx-auto text-white position-absolute">
+            <img
+              src={Spinner}
+              style={{ marginTop: "25%", width: 50, height: 50 }}
+              alt="spinner"
+            />
+            <br />
+            Loading . . .
+        </div>)}
       <div
         style={{
           color: "black"

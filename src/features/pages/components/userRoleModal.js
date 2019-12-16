@@ -2,8 +2,10 @@ import React, { useState, useEffect } from "react";
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
-import {InsertRoleFetcher} from "../../../api/insertRoleFetcher";
-import {UpdateRoleFetcher} from "../../../api/updateRoleFetcher"
+import { InsertRoleFetcher } from "../../../api/insertRoleFetcher";
+import { UpdateRoleFetcher } from "../../../api/updateRoleFetcher";
+import Spinner from "../../../assets/icon/spinner.gif";
+
 import moment from "moment";
 
 const UserRoleModal = props => {
@@ -13,18 +15,20 @@ const UserRoleModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
-  const regex = /^(?=.{1,20}$)(?![_.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/ 
+  const regex = /^(?=.{1,20}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const [Loading, setLoading] = useState(false);
 
-  const _handleAdd = (e) => {
+  const _handleAdd = e => {
     console.log("DATA IS ==>", RoleName, Remark, Active, CreatedDate);
-    e.preventDefault()
+    e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);
 
     if (RoleName === "") {
-      alert("Please Fill Role Name");      
-    }else if (!isValid) {
+      alert("Please Fill Role Name");
+      return;
+    } else if (!isValid) {
       alert("Contains Special Characters!");
-  } else {
+    } else {
       InsertRoleFetcher(
         { RoleId, RoleName, Remark, Active, CreatedDate },
         (err, data) => {
@@ -33,6 +37,7 @@ const UserRoleModal = props => {
           if (data.payload === null) {
             alert("Role Name Already Exist!");
           } else {
+            setLoading(true);
             window.location.reload();
           }
         }
@@ -40,16 +45,16 @@ const UserRoleModal = props => {
     }
   };
 
-  const _handleUpdate = (e) => {
+  const _handleUpdate = e => {
     // console.log("DATA IS ==>",RoleName,Remark,Active,CreatedDate)
-    e.preventDefault()
+    e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);
 
     if (RoleName === "") {
       alert("Please Fill Role Name");
-    }else if (!isValid) {
+    } else if (!isValid) {
       alert("Contains Special Characters!");
-  } else {
+    } else {
       UpdateRoleFetcher({ RoleId, RoleName, Remark, Active }, (err, data) => {
         console.log(data);
 
@@ -65,6 +70,17 @@ const UserRoleModal = props => {
 
   return (
     <Modal open={open} onClose={onCloseModal} center>
+        {Loading && (
+          <div className="mx-auto text-white position-absolute">
+            <img
+              src={Spinner}
+              style={{ marginTop: "25%", width: 50, height: 50 }}
+              alt="spinner"
+            />
+            <br />
+            Loading . . .
+          </div>
+        )}
       <div
         style={{
           color: "black"
@@ -100,7 +116,7 @@ const UserRoleModal = props => {
             value={Remark}
             style={{ border: "1px solid gray" }}
             onChange={e => setRemark(e.target.value)}
-            maxLength={200}            
+            maxLength={200}
           />
         </div>
         <div className="pb-3">
