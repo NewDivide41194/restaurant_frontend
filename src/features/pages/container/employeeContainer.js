@@ -1,4 +1,4 @@
-import React from 'react'
+import React, {useState} from 'react'
 import Sidebar from '../../app/sidebar.js'
 import EmployeeTable from '../components/employeeTable.js'
 import Navbar from '../../app/navbar'
