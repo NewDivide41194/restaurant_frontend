@@ -10,7 +10,6 @@ const MyInput = props => {
     value,
     type,
     id,
-    height,
     width,
     pattern,
     onChange,
@@ -19,9 +18,7 @@ const MyInput = props => {
   } = props;
   const defaultStyle = {
     width: width === undefined ? "100%" : width,
-    padding: 20,
-    fontSize: 15,
-    height: `${height}`,
+    paddingLeft: 20,
     backgroundColor: "rgba(252, 252, 252, 0.4)",
     border: "none",
     color: "black"

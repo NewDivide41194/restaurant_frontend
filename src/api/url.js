@@ -1,4 +1,4 @@
-export const Base_URL = "http://192.168.100.105:3001";
+export const Base_URL = "http://192.168.100.20:3001";
 
 export const LOGIN = Base_URL + "/api/user/login";
 
@@ -24,3 +24,6 @@ export const UpdateDesignation =  Base_URL + "/api/user/designation/updateDesign
 
 export const EmployeeFetcher =  Base_URL + "/api/user/employee";
 
+export const UpdateEmployeeFetcher =  Base_URL + "/api/user/employee/updateEmployee";
+
+export const InsertEmployeeFetcher =  Base_URL + "/api/user/employee/addEmployee";

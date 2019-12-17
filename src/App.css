@@ -31,3 +31,19 @@
     margin-left:70px;
   }
 }
+
+#in-btn{
+  position: absolute;
+  opacity: 0;
+  cursor: pointer;
+  z-index: 100;
+}
+
+.new{
+  position: relative;
+  background: #0D47A1;
+  padding: 5px 30px;
+  color: #fff;
+  font-size: 14px;
+  cursor: pointer;
+}
