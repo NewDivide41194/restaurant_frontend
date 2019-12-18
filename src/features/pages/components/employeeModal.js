@@ -1,10 +1,13 @@
-import React, {useState} from 'react'
+import React, {useState, useEffect} from 'react'
 import Modal from 'react-responsive-modal'
 import moment from 'moment'
 import MyInput from '../../../tools/myInput'
 import MyButton from '../../../tools/myButton'
 import DatePicker from 'react-datepicker';
 import "react-datepicker/dist/react-datepicker.css";
+
+import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
+import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
 
 const EmployeeModal = props =>{
     const { open, onCloseModal,
@@ -17,16 +20,16 @@ const EmployeeModal = props =>{
         joinDate,
         departmentId,
         designationId,
-    education,
-    gender,
-    maritalStatus,
-    address,
-    createdBy,
-    createdDate,employeeImage} = props;
+        education,
+        gender,
+        maritalStatus,
+        address,
+        createdBy,
+        createdDate,employeeImage} = props;
 
     const [EmployeeName, setEmployeeName] = useState(employeeName);
     const [FatherName, setFatherName] = useState(fatherName);
-    const [Image, setImage] = useState(employeeImage);
+    const [EmployeeImage, setEmployeeImage] = useState(employeeImage);
     const [DateOfBirth, setDateOfBirth] = useState(dateOfBirth);
     const [NrcNo, setNrcNo] = useState(nrcNo);
     const [JoinDate, setJoinDate] = useState(joinDate);
@@ -36,18 +39,62 @@ const EmployeeModal = props =>{
     const [Address, setAddress] = useState(address);
     const [EmployeeId, setEmployeeId] = useState(employeeId);
     const [CreatedDate, setCreatedDate] = useState(createdDate);
-    const [Active, setActive] = useState(active);
+    const [CreatedBy, setCreatedBy] = useState(createdBy);
+    const [Active, setActive] = useState(active === 1 ? true : false);
+    const [DesignationId,setDesignation]=useState(designationId)
+    const [DepartmentId,setDepartment]=useState(departmentId)
 
     const [file, setFile] = useState('');
     const [imagePreview, setImagePreview] = useState('');
+    const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
 
     const _handleAdd = e => {
+        e.preventDefault()
+    const isValid = regex.test(document.getElementById("employeeName").value);
 
-    }
-    const _handleUpdate = e => {
+    if (EmployeeName.trim() === "") {
+      alert("Please Fill Employee Name");      
+    } else if (!isValid) {
+      alert("Employee Name Contains Special Characters!");
+      return
+  }else {
+    InsertEmployeeFetcher(
+      { EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active },
+      (err, data) => {
+        if (data.payload === null) {
+          alert("Designation Name Already Exist!");
+        } else {
+          window.location.reload();
+        }
+      }
+    );
+  };}
 
-    }
+
+    const _handleUpdate = (e) => {
+        e.preventDefault()
+        const isValid = regex.test(document.getElementById("employeeName").value);
     
+        if (EmployeeName === "") {
+          alert("Please Fill Employee Name");      
+        } else if (!isValid) {
+          alert("Employee Name Contains Special Characters!");
+          return
+      }else {
+        UpdateEmployeeFetcher(
+          {EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active},
+          (err, data) => {
+            console.log(data);
+    
+            if (data.payload === null) {
+              alert("Employee Name Already Exist!");
+            } else {
+              window.location.reload();
+            }
+          }
+        );
+      };}
+  
 
     const hangleImageChange = e => {
         e.preventDefault();
@@ -62,12 +109,11 @@ const EmployeeModal = props =>{
     
     let $imagePreview = null;
     if(imagePreview){
-        $imagePreview = (<img src={imagePreview} className="img-fluid" style={{width:"100px", height:"100px"}}/>);
+        $imagePreview = (<img src={Image} className="img-fluid" style={{width:"100px", height:"100px"}}/>);
     }
-
     
 
-    console.log(file);
+    console.log(employeeId);
 
     return(
         <Modal open={open} onClose={onCloseModal} center >
@@ -77,19 +123,18 @@ const EmployeeModal = props =>{
                 <div className="pb-3">
                     {/* <input
                      type="file"
-                     value={Image} 
-                     id="in-btn" 
+                     value={Image}
+                     id="in-btn"
                      onChange={hangleImageChange}/>
                     <span className="new">Upload Image</span> */}
                 </div>
                 <div className="pb-2">
                     {$imagePreview}
                 </div>
-                <div>
                     <label>Employee Name</label>
-                </div>
                 <div className="pb-2">
                     <MyInput
+                        id={"employeeName"}
                         className="w-100"
                         type="text"
                         value={EmployeeName}
@@ -98,9 +143,7 @@ const EmployeeModal = props =>{
                         onChange={(e)=>setEmployeeName(e.target.value)}
                     />
                 </div>
-                <div>
                     <label>Father Name</label>
-                </div>
                 <div className="pb-3">
                     <MyInput
                         className="w-100"
@@ -116,14 +159,11 @@ const EmployeeModal = props =>{
                     <label>Date Of Birth</label>
                     <DatePicker
                         selected={DateOfBirth}
-                        onChange={(e)=>setDateOfBirth(moment(e.target.value).format("MM/DD/YYYY"))}
-                        value={moment(DateOfBirth).format("MM/DD/YYYY")}
+                        value={DateOfBirth}
 
                      />
                 </div>
-                <div>
                     <label>NRC No.</label>
-                </div>
                 <div className="pb-3">
                     <MyInput
                         className="w-100"
@@ -139,7 +179,7 @@ const EmployeeModal = props =>{
                     <label>Join Date</label>
                     <DatePicker
                         selected={JoinDate}
-                        value={moment(JoinDate).format("MM/DD/YYYY")}
+                        value={''}
                         onChange={(e)=>setJoinDate(e.target.value)}
 
                      />
@@ -149,8 +189,8 @@ const EmployeeModal = props =>{
                     <div className="col-md-6 col-lg-6 col-sm-6"> <label>Department</label></div>
                     <div className="col-md-6 col-lg-6 col-sm-6">
                         <select>
-                            <option>Department 1</option>
-                            <option>Department 2</option>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
                         </select>
                     </div>
                 </div>
@@ -158,16 +198,14 @@ const EmployeeModal = props =>{
                 <div className="row pb-3">
                     <div className="col-md-6 col-lg-6 col-sm-6"> <label>Designation</label></div>
                     <div className="col-md-6 col-lg-6 col-sm-6">
-                        <select>
-                            <option>Designation 1</option>
-                            <option>Designation 2</option>
+                        <select onChange={(e)=>setDesignation(e.target.value)}>
+                            <option value={1}>1</option>
+                            <option value={2}>2</option>
                         </select>
                     </div>
                 </div>
                
-                <div>
                     <label>Education</label>
-                </div>
                 <div className="pb-3">
                     <MyInput
                         className="w-100"
@@ -180,9 +218,11 @@ const EmployeeModal = props =>{
                     />
                 </div>
                 <div className="row pb-2">
-                    <div className="col-md-6 col-lg-6"> <label>Gender</label></div>
+                    <div className="col-md-6 col-lg-6"> 
+                    <label>Gender</label>
+                    </div>
                     <div className="col-md-6 col-lg-6">
-                        <select>
+                        <select onChange={(e)=>setGender(e.target.value)}>
                             <option>Male</option>
                             <option>Female</option>
                         </select>
@@ -193,7 +233,7 @@ const EmployeeModal = props =>{
                     <label>Marital Status</label>
                 </div>
                 <div className="pb-2">
-                    <MyInput
+                    <MyInput                        
                         className="w-100"
                         type="text"
                         value={MaritalStatus}
@@ -203,9 +243,7 @@ const EmployeeModal = props =>{
  
                     />
                 </div>
-                <div>
                     <label>Address</label>
-                </div>
                 <div className="pb-4">
                     <MyInput
                         className="w-100"
@@ -218,6 +256,27 @@ const EmployeeModal = props =>{
                        
                     />
                 </div>
+                <div className="pb-3">
+          <input
+            type="checkbox"
+            id="activecheck"
+            value={Active}
+            checked={Active === true ? true : false}
+            onChange={e => setActive(!Active)}
+          />
+          <label>Active</label>
+          <label>Created By</label>
+                <div className="pb-4">
+                    <MyInput
+                        className="w-100"
+                        type="text"
+                        value={createdBy}
+                        style={{ border: "1px solid gray" }}
+                        maxLength={200}
+                                               
+                    />
+                </div>
+          </div>
                 <div className="pb-1">
                     <MyButton
                         style={{
@@ -226,9 +285,9 @@ const EmployeeModal = props =>{
                         color: "white"
                         }}
                         className="w-100"
-                        text={"ADD"}
+                        text={EmployeeId?"UPDATE":"ADD"}
                         type={"submit"}
-                        onClick={_handleAdd}
+                        onClick={EmployeeId?_handleUpdate:_handleAdd}
                     />
                 </div>
             </form>

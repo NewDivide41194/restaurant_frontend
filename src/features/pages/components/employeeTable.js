@@ -34,10 +34,7 @@ const EmployeeTable =props=>{
     if(index===undefined){
       setOpen(true);
     }else{
-      console.log(index);
-      
-      const employee_Data=employeeData[index];
-      console.log(employeeData);
+     const employee_Data=employeeData[index];
       setEmployeeName(employee_Data.employeeName);
       setEmployeeImage(employee_Data.employeeImage);
       setActive(employee_Data.active);
@@ -53,7 +50,9 @@ const EmployeeTable =props=>{
       setAddress(employee_Data.address);
       setCreatedBy(employee_Data.createdBy);
       setCreatedDate(employee_Data.createdDate);
+      setEmployeeId(employee_Data.employeeId)
       setOpen(true);
+      //16 Columns
     }
   };
   const onCloseModal =()=>{
@@ -88,13 +87,14 @@ const EmployeeTable =props=>{
     setCreatedBy("");
     setCreatedDate("");
   };
-  console.log();
+  console.log(employeeId);
     return(
 <div>
     <Sidebar />
     <div className='py-5' style={{paddingLeft:100,paddingRight:20}}>
       {open?(
-        <EmployeeModal open={open} 
+        <EmployeeModal
+        open={open} 
         onCloseModal={onCloseModal}
         employeeName={employeeName}
         active={active}

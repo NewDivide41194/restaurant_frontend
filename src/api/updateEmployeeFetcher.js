@@ -1,14 +1,14 @@
 import * as API from "./url";
 
-export const UpdateEmployeeFetcher = ({ EmployeeId,ImgUrl, EmployeeName, Active, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MartialStatus, Address, CreatedBy, CreatedDate }, callback) => {
-    console.log(EmployeeId,ImgUrl, EmployeeName, Active, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MartialStatus, Address, CreatedBy, CreatedDate );
+export const UpdateEmployeeFetcher = ({ EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active}, callback) => {
+    console.log(EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active);
     
-    fetch(API.UpdateEmployee, {
+    fetch(API.UpdateEmployeeFetcher, {
       method: "PUT",
       headers: {
         "Content-Type": "application/json"
       },
-      body: JSON.stringify({ employeeId:EmployeeId,ImgUrl:ImgUrl, employeeName:EmployeeName, active:Active, fathername:FatherName, dateOfBirth:DateOfBirth, nrcNo:NrcNo, joinDate:JoinDate, departmentId:DepartmentId, designationID:DesignationId, education:Education, gender:Gender, martialStatus:MartialStatus, address:Address, createdBy:CreatedBy, createdDate:CreatedDate }),
+      body: JSON.stringify({ employeeId:EmployeeId,employeeImage:EmployeeImage, employeeName:EmployeeName, fatherName:FatherName, dateOfBirth:DateOfBirth, nrcNo:NrcNo, joinDate:JoinDate, departmentId:DepartmentId, designationId:DesignationId, education:Education, gender:Gender, maritalStatus:MaritalStatus, address:Address, createdBy:CreatedBy, createdDate:CreatedDate, active:Active }),
       cache: "no-cache"
     })
       .then(response => {
