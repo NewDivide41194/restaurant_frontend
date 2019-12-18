@@ -27,6 +27,7 @@ const EmployeeModal = props =>{
         maritalStatus,
         address,
         createdBy,
+        userId,
         employeeImage} = props;
 
     const [EmployeeName, setEmployeeName] = useState(employeeName);
@@ -41,10 +42,11 @@ const EmployeeModal = props =>{
     const [Address, setAddress] = useState(address);
     const [EmployeeId, setEmployeeId] = useState(employeeId);
     const CreatedDate=moment().format("YYYY-MM-DD HH:mm")
-    const [CreatedBy, setCreatedBy] = useState(1);
+    const [CreatedBy, setCreatedBy] = useState(createdBy);
+    const [UserId,setUserId]=useState(userId)
     const [Active, setActive] = useState(active === 1 ? true : false);
-    const [DesignationId,setDesignation]=useState(1)
-    const [DepartmentId,setDepartment]=useState(1)
+    const [DesignationId,setDesignation]=useState(designationId)
+    const [DepartmentId,setDepartment]=useState(departmentId)
 
     const [file, setFile] = useState('');
     const [imagePreview, setImagePreview] = useState('');
@@ -61,10 +63,10 @@ const EmployeeModal = props =>{
       return
   }else {
     InsertEmployeeFetcher(
-      { EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active },
+      { EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active },
       (err, data) => {
         if (data.payload === null) {
-          alert("Designation Name Already Exist!");
+          alert("Employee Name Already Exist!");
         } else {
           window.location.reload();
         }
@@ -72,6 +74,7 @@ const EmployeeModal = props =>{
     );
   };}
 
+console.log("Designation is"+designationId);
 
     const _handleUpdate = (e) => {
         e.preventDefault()
@@ -220,8 +223,8 @@ const EmployeeModal = props =>{
                 <div className="col-md-6 col-lg-6 col-sm-6"> <label>Department</label></div>
                 <div className="col-md-6 col-lg-6 col-sm-6">
                     <select>
-                        <option>Department 1</option>
-                        <option>Department 2</option>
+                        <option value={1}>Department 1</option>
+                        <option value={2}>Department 2</option>
                     </select>
                 </div>
             </div>
@@ -230,8 +233,8 @@ const EmployeeModal = props =>{
                 <div className="col-md-6 col-lg-6 col-sm-6"> <label>Designation</label></div>
                 <div className="col-md-6 col-lg-6 col-sm-6">
                     <select>
-                        <option>Designation 1</option>
-                        <option>Designation 2</option>
+                        <option value={1}>Designation 1</option>
+                        <option value={2}>Designation 2</option>
                     </select>
                 </div>
             </div>
@@ -247,7 +250,6 @@ const EmployeeModal = props =>{
                         style={{ border: "1px solid gray" }}
                         maxLength={200}
                         onChange={(e)=>setEducation(e.target.value)}
-
                     />
                 </div>
             </div>
@@ -295,6 +297,16 @@ const EmployeeModal = props =>{
                     />
                 </div>
             </div>
+            <div className="pb-3">
+          <input
+            type="checkbox"
+            id="activecheck"
+            value={Active}
+            checked={Active === true ? true : false}
+            onChange={e => setActive(!Active)}
+          />
+          <label>Active</label>
+        </div>
             
             <div className="pb-1">
             <MyButton

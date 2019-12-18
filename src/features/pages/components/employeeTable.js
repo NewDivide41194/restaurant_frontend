@@ -51,6 +51,7 @@ const EmployeeTable =props=>{
       setCreatedBy(employee_Data.createdBy);
       setCreatedDate(employee_Data.createdDate);
       setEmployeeId(employee_Data.employeeId)
+      setUserId(employee_Data.userId)
       setOpen(true);
       //16 Columns
     }
@@ -111,6 +112,7 @@ const EmployeeTable =props=>{
         createdBy={createdBy}
         createdDate={createdDate}
         employeeImage={employeeImage}
+        userId={userId}
         />
       ):null}
         <MyButton
