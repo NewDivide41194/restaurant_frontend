@@ -59,8 +59,7 @@ const EmployeeTable =props=>{
     setOpen(false);
   };  
   const EmployeeFetch=()=>{
-    
-    EmployeeFetcher((err,data)=>{
+      EmployeeFetcher((err,data)=>{
       setEmployeeData(data.payload);
       setLoading(false);
       console.log(data.payload);
