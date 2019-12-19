@@ -9,6 +9,7 @@ import Spinner from '../../../assets/icon/spinner.gif'
 
 const EmployeeTable =props=>{
   const [employeeData, setEmployeeData]= useState([]);
+  const [departmentData,setDepartmentData]=useState([])
   const [ImgUrl, setImgUrl]= useState("");
   const [employeeId,setEmployeeId]=useState("")
   const [employeeName, setEmployeeName]= useState("");
@@ -26,7 +27,7 @@ const EmployeeTable =props=>{
   const [address, setAddress]= useState("");
   const [createdBy, setCreatedBy]= useState("");
   const [createdDate, setCreatedDate]= useState("");
-  const [userId, setUserId]= useState("");
+  const [userId, setUserId]= useState(null);
   const [open, setOpen]=useState(false);
   const [Loading, setLoading]= useState(true);
 
@@ -53,7 +54,9 @@ const EmployeeTable =props=>{
       setEmployeeId(employee_Data.employeeId)
       setUserId(employee_Data.userId)
       setOpen(true);
+
       //16 Columns
+
     }
   };
   const onCloseModal =()=>{
@@ -61,33 +64,41 @@ const EmployeeTable =props=>{
   };  
   const EmployeeFetch=()=>{
       EmployeeFetcher((err,data)=>{
-      setEmployeeData(data.payload);
+      setEmployeeData(data.payload[0]);
       setLoading(false);
-      console.log(data.payload);
     });
   };
   useEffect(()=>{
     EmployeeFetch()
+
+    
   },[]);
+  const Data=employeeData
+
   const _handleAddNew=()=>{
     setOpen(true);
     setEmployeeName("");
+    setEmployeeImage("")
     setActive(1);
     setEmployeeId("");
     setFatherName("");
     setDateOfBirth("");
     setNrcNo("");
     setJoinDate("");
-    setDepartmentId("");
-    setDesignationId("");
+    setDepartmentId(employeeData[0].departmentId);
+    setDesignationId(employeeData[0].designationId);
     setEducation("");
     setGender("");
     setMaritalStatus("");
     setAddress("");
     setCreatedBy("");
     setCreatedDate("");
+    setUserId(employeeData[0].userId)
+
   };
-  console.log(employeeId);
+ console.log(employeeData[0]);
+ 
+  
     return(
 <div>
     <Sidebar />

@@ -8,6 +8,7 @@ import 'date-fns';
 import Grid from '@material-ui/core/Grid'
 import DateFnsUtils from '@date-io/date-fns'
 import { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers'
+import { EmployeeFetcher } from '../../../api/employeeFetcher';
 import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
 import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
 
@@ -22,6 +23,8 @@ const EmployeeModal = props =>{
         joinDate,
         departmentId,
         designationId,
+        department,
+        designation,
         education,
         gender,
         maritalStatus,
@@ -32,7 +35,7 @@ const EmployeeModal = props =>{
 
     const [EmployeeName, setEmployeeName] = useState(employeeName);
     const [FatherName, setFatherName] = useState(fatherName);
-    const [EmployeeImage, setEmployeeImage] = useState(employeeImage);
+    const [EmployeeImage, setEmployeeImage] = useState(null);
     const [DateOfBirth, setDateOfBirth] = useState(dateOfBirth);
     const [NrcNo, setNrcNo] = useState(nrcNo);
     const [JoinDate, setJoinDate] = useState(joinDate);
@@ -45,12 +48,34 @@ const EmployeeModal = props =>{
     const [CreatedBy, setCreatedBy] = useState(createdBy);
     const [UserId,setUserId]=useState(userId)
     const [Active, setActive] = useState(active === 1 ? true : false);
-    const [DesignationId,setDesignation]=useState(designationId)
-    const [DepartmentId,setDepartment]=useState(departmentId)
+    const [DesignationId,setDesignationId]=useState(designationId)
+    const [DepartmentId,setDepartmentId]=useState(departmentId);
+    
+    const [DesignationData, setDesignationData]= useState([]);
+    const [DepartmentData, setDepartmentData]= useState([]);
 
     const [file, setFile] = useState('');
-    const [imagePreview, setImagePreview] = useState('');
+    const [image, setImage] = useState([]);
     const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+
+    const _handleDepartment = (event) => {
+        setDepartmentId(event.target.value);
+    }
+    const _handleDesignation = (event) => {
+        setDesignationId(event.target.value);
+    }
+    const _handleGender = (event) => {
+        setGender(event.target.value);
+    }
+    const EmployeeFetch = () => {
+        EmployeeFetcher((err,data)=>{
+            setDepartmentData(data.payload[1]);
+            setDesignationData(data.payload[2]);
+        });
+    }
+    useEffect(()=>{
+        EmployeeFetch()
+            },[]);
 
     const _handleAdd = e => {
         e.preventDefault()
@@ -62,6 +87,9 @@ const EmployeeModal = props =>{
       alert("Employee Name Contains Special Characters!");
       return
   }else {
+
+    //setEmployeeImage(process.env.PUBLIC_URL + employeeImage);
+
     InsertEmployeeFetcher(
       { EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active },
       (err, data) => {
@@ -74,10 +102,11 @@ const EmployeeModal = props =>{
     );
   };}
 
-console.log("Designation is"+designationId);
 
     const _handleUpdate = (e) => {
         e.preventDefault()
+        setDateOfBirth(dateOfBirth);
+        setJoinDate(joinDate);
         const isValid = regex.test(document.getElementById("employeeName").value);
     
         if (EmployeeName === "") {
@@ -85,47 +114,54 @@ console.log("Designation is"+designationId);
         } else if (!isValid) {
           alert("Employee Name Contains Special Characters!");
           return
-      }else {
-        UpdateEmployeeFetcher(
-          {EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active},
-          (err, data) => {
-            console.log(data);
-    
-            if (data.payload === null) {
-              alert("Employee Name Already Exist!");
-            } else {
-              window.location.reload();
-            }
+        }else 
+        {
+            setEmployeeImage(process.env.PUBLIC_URL + employeeImage);
+            UpdateEmployeeFetcher(
+            {EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active},
+            (err, data) => {
+                console.log(data);
+        
+                if (data.payload === null) {
+                alert("Employee Name Already Exist!");
+                } else {
+                window.location.reload();
+                }
           }
         );
       };}
   
 
       const _UploadIMG = (e) => {
-        const file = e.target.files[0];
-        var reader = new FileReader();
-        reader.onloadend = () => {
-            setEmployeeImage(reader.result);
+        let reader = new FileReader();
+        let file = e.target.files[0];
+        
+        if (file) {
+            reader.onloadend = () => {
+                setImage(reader.result);
+                setEmployeeImage(file);
+                console.log(reader.result);
+
+            }
+            console.log(file.name);
+            
+            reader.readAsDataURL(file)
         }
-        reader.readAsDataURL(file)
-        console.log(file);
-
-    }  
-   
-
-    console.log(EmployeeImage);
+    }
+ 
+    console.log("Designation is"+designationId);
+    console.log('image'+EmployeeImage);
 
     return(
         <Modal open={open} onClose={onCloseModal} center >
-        <form className="pt-2 col-lg-12 col-md-12 col-xs-4">
+        <form className="pt-2 col-lg-12 col-md-12 col-xs-4" encType="multipart/form-data" autoComplete="off">
             <h4 className="text-center pt-2 pb-4">Add New Employee</h4>
-            
-            <div className="text-center pb-3">
-            <input type='file' onChange={(e) => _UploadIMG(e)} />
+            <div className='img-circle'>
+            <img style={{ height: '200px' }} src={image} alt=""></img>
 
             </div>
-            <div className="text-center pb-2">
-            <img src={process.env.PUBLIC_URL+EmployeeImage} style={{ width: 100, height: 100 }} />            </div>
+            <input type="file" name="photo" id="upload-photo" onChange={(e) => _UploadIMG(e)} accept="image/*" />
+
             <div className="row">
                 <div className="col-lg-6">
                     <label>Employee Name</label>
@@ -170,7 +206,7 @@ console.log("Designation is"+designationId);
                                 margin="normal"
                                 id="date-picker-dialog"
                                 format="dd/MM/yyyy"
-                                value={DateOfBirth}
+                                value={EmployeeId? DateOfBirth :new Date()}
                                 onChange={(date)=>setDateOfBirth(moment(date).format("YYYY-MM-DD"))}
                                 KeyboardButtonProps={{
                                     "aria-label": "change date" 
@@ -192,7 +228,6 @@ console.log("Designation is"+designationId);
                         style={{ border: "1px solid gray" }}
                         maxLength={200}
                         onChange={(e)=>setNrcNo(e.target.value)}
-
                     />
                 </div>
             </div>
@@ -208,7 +243,7 @@ console.log("Designation is"+designationId);
                                 margin="normal"
                                 id="date-picker-dialog"
                                 format="dd/MM/yyyy"
-                                value={JoinDate}
+                                value={EmployeeId? JoinDate : new Date()}
                                 onChange={(date)=>setJoinDate(moment(date).format("YYYY-MM-DD"))}
                                 KeyboardButtonProps={{
                                     "aria-label": "change date"
@@ -222,9 +257,14 @@ console.log("Designation is"+designationId);
             <div className="row pb-3">
                 <div className="col-md-6 col-lg-6 col-sm-6"> <label>Department</label></div>
                 <div className="col-md-6 col-lg-6 col-sm-6">
-                    <select>
-                        <option value={1}>Department 1</option>
-                        <option value={2}>Department 2</option>
+                <select value={DepartmentId} onChange={_handleDepartment} >
+                        {/* <option value="1">Health</option>
+                        <option value="2">Account</option> */}
+                    {DepartmentData.map((v,k) => (
+                         <option value={v.departmentId}>
+                             {v.department}
+                         </option>
+                    ))}
                     </select>
                 </div>
             </div>
@@ -232,9 +272,13 @@ console.log("Designation is"+designationId);
             <div className="row pb-3">
                 <div className="col-md-6 col-lg-6 col-sm-6"> <label>Designation</label></div>
                 <div className="col-md-6 col-lg-6 col-sm-6">
-                    <select>
-                        <option value={1}>Designation 1</option>
-                        <option value={2}>Designation 2</option>
+                <select value={DesignationId} onChange={_handleDesignation}>
+                    {DesignationData.map((v,k)=>(
+                        <option value={v.designationId}>
+                            {v.designation}
+                        </option>
+                    ))}
+                       
                     </select>
                 </div>
             </div>
@@ -257,7 +301,7 @@ console.log("Designation is"+designationId);
             <div className="row pb-2">
                 <div className="col-md-6 col-lg-6"> <label>Gender</label></div>
                 <div className="col-md-6 col-lg-6">
-                    <select>
+                <select value={Gender} onChange={_handleGender}>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
                     </select>
@@ -323,6 +367,6 @@ console.log("Designation is"+designationId);
             </div>
         </form>
     </Modal>
-)
+    )
 }
 export default EmployeeModal

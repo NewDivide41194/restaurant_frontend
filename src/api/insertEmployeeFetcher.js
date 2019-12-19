@@ -1,22 +1,38 @@
 import * as API from "./url";
-export const InsertEmployeeFetcher = ({ EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active }, callback) => {
+export const InsertEmployeeFetcher = 
+({ EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active }, callback) => {
     console.log("DATA is ===>",EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active );
-    
+    let form=new FormData()
+    form.append("employeeName",EmployeeName)
+    form.append("employeeImage",EmployeeImage)
+    form.append("fatherName",FatherName)
+    form.append("dateOfBirth",DateOfBirth)
+    form.append("NRC",NrcNo)
+    form.append("joinDate",JoinDate)
+    form.append("departmentId",DepartmentId)
+    form.append("designationId",DesignationId)
+    form.append("education",Education)
+    form.append("gender",Gender)
+    form.append("address",Address)
+    form.append("userId",UserId)
+    form.append("createdDate",CreatedDate)
+    form.append("active",Active)
+    form.append("maritalStatus",MaritalStatus)
+
+
+
+console.log(form);
+
+
     fetch(API.InsertEmployeeFetcher, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Accept":"*/*"
       },
-      body: JSON.stringify({ employeeImage:EmployeeImage, employeeName:EmployeeName, fatherName:FatherName, dateOfBirth:DateOfBirth, nrcNo:NrcNo, joinDate:JoinDate, departmentId:DepartmentId, designationId:DesignationId, education:Education, gender:Gender, maritalStatus:MaritalStatus, address:Address, createdBy:UserId, createdDate:CreatedDate, active:Active }),
-      cache: "no-cache"
+      body: form
     })
       .then(response => {
-        if (response.status === 200) {
           console.log(response);
-          return response.json();
-        }
-          else{alert("Employee Name already Exist")}
-        
       })
       .then(data => {
         console.log(data);

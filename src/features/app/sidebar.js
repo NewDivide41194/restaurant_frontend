@@ -172,7 +172,7 @@ export default function MiniDrawer() {
      <Divider />
      <List>
         <Link to={`/${RoutePath.Report}`} style={{textDecoration: 'none'}}>
-            <ListItem buttonmkey="report">
+            <ListItem button key="report">
             <ListItemIcon><i className="fa fa-share-square-o" style={{ fontSize: '1.75em' }}></i></ListItemIcon>
             <ListItemText primary="Report" style={{color:'#000000'}}/>
             </ListItem>
