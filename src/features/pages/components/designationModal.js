@@ -23,7 +23,7 @@ const DesignationModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DesignationId, setDesignationId] = useState(designationId);
-  const regex = /^(?=.{1,50}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
   const _handleAdd = (e) => {
@@ -56,10 +56,10 @@ const DesignationModal = props => {
     e.preventDefault()
     const isValid = regex.test(document.getElementById("designation").value);
 
-    if (Designation === "") {
-      alert("Please Fill Designation Name");      
+    if (Designation.trim() === "") {
+      setDesignationErr("Please Fill Designation Name");      
     } else if (!isValid) {
-      alert("Designation Name Contains Special Characters!");
+      setDesignationErr("Designation Name Contains Special Characters!");
       return
   }else {
     UpdateDesignationFetcher(
@@ -68,7 +68,7 @@ const DesignationModal = props => {
         console.log(data);
 
         if (data.payload === null) {
-          alert("Designation Name Already Exist!");
+          setDesignationErr("Designation Name Already Exist!");
         } else {
           setLoading(true)
           window.location.reload();

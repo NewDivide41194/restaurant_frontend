@@ -30,15 +30,17 @@ const EmployeeModal = props =>{
         maritalStatus,
         address,
         createdBy,
+        index,
         userId,
+        employeeData,
         employeeImage} = props;
 
     const [EmployeeName, setEmployeeName] = useState(employeeName);
     const [FatherName, setFatherName] = useState(fatherName);
-    const [EmployeeImage, setEmployeeImage] = useState(null);
-    const [DateOfBirth, setDateOfBirth] = useState(moment(dateOfBirth).format("YYYY-MM-DD"));
+    const [EmployeeImage, setEmployeeImage] = useState(employeeImage);
+    const [DateOfBirth, setDateOfBirth] = useState(dateOfBirth);
     const [NrcNo, setNrcNo] = useState(nrcNo);
-    const [JoinDate, setJoinDate] = useState(useState(moment(joinDate).format("YYYY-MM-DD")));
+    const [JoinDate, setJoinDate] = useState(joinDate);
     const [Education, setEducation] = useState(education);
     const [Gender, setGender] = useState(gender);
     const [MaritalStatus, setMaritalStatus] = useState(maritalStatus);
@@ -55,14 +57,16 @@ const EmployeeModal = props =>{
     const [DesignationData, setDesignationData]= useState([]);
     const [DepartmentData, setDepartmentData]= useState([]);
 
+
     const [file, setFile] = useState('');
     const [image, setImage] = useState([]);
     const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
     // const regexNRC = /^(?=.{2,20}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
 
+   
     const MaritalOptions = [
         {value:'Single', label:"Single"},
-        {value:'Marriage', label:"Marriage"}
+        {value:'Married', label:"Married"}
     ]
 
     const GenderOptions = [
@@ -70,18 +74,13 @@ const EmployeeModal = props =>{
         {value:'Female', label:"Female"}
     ]
 
-    const _handleDepartment = (event) => {
-        
-        setDepartmentId(event.target.value);
-    }
-    const _handleDesignation = (event) => {
-        console.log("DESIGNATION ID",event.target.value);
+    const [selectedGender, setSelectedGender] = useState(index === -1
+        ? { value: 'Male', label: "Male" }
+        : employeeData[index].gender === 'Male'
+            ? GenderOptions[0]
+            : GenderOptions[1]
+    )
 
-        setDesignationId(event.target.value);
-    }
-    const _handleGender = (event) => {
-        setGender(event.target.value);
-    }
     const EmployeeFetch = () => {
         EmployeeFetcher((err,data)=>{
             setDepartmentData(data.payload[1]);
@@ -89,7 +88,9 @@ const EmployeeModal = props =>{
         });
     }
     useEffect(()=>{
-        EmployeeFetch()               
+        EmployeeFetch()      
+        EmployeeId ? setImage(`http://192.168.100.29:3001/uploads/${EmployeeImage}`) : setImage([])
+         
             },[]);
 
     const _handleAdd = e => {
@@ -147,7 +148,7 @@ const EmployeeModal = props =>{
           }
         );
       };}
-  console.log(DateOfBirth);
+  console.log("EmployeeImage=>>>>",EmployeeImage);
   
 
       const _UploadIMG = (e) => {
@@ -173,10 +174,10 @@ const EmployeeModal = props =>{
     return(
         <Modal open={open} onClose={onCloseModal} center >
         <form encType="multipart/form-data" autoComplete="off">
-            <h4 className="text-center pt-2 pb-4">Add New Employee</h4>
+            <h4 className="text-center pt-2 pb-4">{employeeId?'Edit Employee':'Add New Employee'}</h4>
             <div className='pb-3 text-center'>
             <div className="pb-3 pt-1 text-center">
-            <img style={{ height: '100px',width:'100px' }} src={image} alt={`${employeeImage}`}></img>
+            <img style={{ height: '100px',width:'100px' }} src={image} alt={`${EmployeeImage}`}></img>
             </div>
             <input style={{width:"100px"}} type="file" name="photo" id="in-btn" onChange={(e) => _UploadIMG(e)} accept="image/*" />
                 <span className="new py-2 px-4" style={{}}>Upload Image</span>
@@ -213,12 +214,12 @@ const EmployeeModal = props =>{
             </div>
             <div className="row">
                 <div className="col-lg-6 col-md-6">
+                <label>Date of Birth</label>
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justify="space-around">
                             <KeyboardDatePicker
                                 margin="normal"
                                 id="date-picker-dialog"
-                                // label="Date of Birth"
                                 format="dd/MM/yyyy"
                                 value={DateOfBirth}
                                 onChange={(date)=>setDateOfBirth(moment(date).format("YYYY-MM-DD"))}
@@ -252,7 +253,7 @@ const EmployeeModal = props =>{
                                 margin="normal"
                                 id="date-picker-dialog"
                                 format="dd/MM/yyyy"
-                                value={new Date()}
+                                value={JoinDate}
                                 onChange={(date)=>setJoinDate(moment(date).format("YYYY-MM-DD"))}
                                 KeyboardButtonProps={{
                                     "aria-label": "change date"
@@ -264,7 +265,7 @@ const EmployeeModal = props =>{
 
                 <div className="col-md-6 col-lg-6"> 
                 <label>Department</label><br/>
-                <select value={DepartmentId} onChange={_handleDepartment} >
+                <select value={DepartmentId} onChange={(e)=>setDepartmentId(e.target.value)} >
                         {/* <option value="1">Health</option>
                         <option value="2">Account</option> */}
                     {DepartmentData.map((v,k) => (
@@ -279,7 +280,7 @@ const EmployeeModal = props =>{
             <div className="row pb-3">
                 <div className="col-md-6 col-lg-6 col-sm-6"> 
                 <label>Designation</label><br/>
-                <select value={DesignationId} onChange={_handleDesignation}>
+                <select value={DesignationId} onChange={(e)=>setDesignationId(e.target.value)}>
                     {DesignationData.map((v,k)=>(
                         <option value={v.designationId}>
                             {v.designation}
@@ -305,12 +306,15 @@ const EmployeeModal = props =>{
                 <div className="col-md-6 col-lg-6">
                      <label>Gender</label><br/>
                      <MyDropDown
-                     type="text"
-                     value={Gender}
-                     maxLength={50}
-                     defaultValue={employeeId?Gender: GenderOptions[0]}
-                     onChange={(e)=>setGender(e.target.value)}
-                     options={GenderOptions}
+                    //  type="text"
+                    //  value={Gender}
+                    //  maxLength={50}
+                    //  defaultValue={employeeId?Gender: GenderOptions[0]}
+                    //  onChange={(e)=>setGender(e.target.value)}
+                    //  options={GenderOptions}
+                    value={selectedGender}
+                            onChange={selectedOption => setSelectedGender(selectedOption)}
+                            options={GenderOptions}
                      />
                 {/* <select value={Gender} onChange={_handleGender}>
                         <option value="Male">Male</option>
@@ -341,9 +345,7 @@ const EmployeeModal = props =>{
                         value={Address}
                         style={{ border: "1px solid gray" }}
                         maxLength={200}
-                        onChange={(e)=>setAddress(e.target.value)}
-
-                    
+                        onChange={(e)=>setAddress(e.target.value)}                    
                     />
                 </div>
             <div className="col-lg-6 col-md-6 pt-3">

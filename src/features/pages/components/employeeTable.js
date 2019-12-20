@@ -31,7 +31,11 @@ const EmployeeTable =props=>{
   const [open, setOpen]=useState(false);
   const [Loading, setLoading]= useState(true);
 
+  const [index, setIndex] = useState(-1);
+
+
   const _handleEdit = (e, index) =>{
+    setIndex(index)
     if(index===undefined){
       setOpen(true);
     }else{
@@ -73,11 +77,11 @@ console.log("Employee Data=>",employee_Data);
   };
   useEffect(()=>{
     EmployeeFetch()
-    setImage(`localhost:3001/uploads/${employeeData.employeeImage}`)
     
   },[]);
 
   const _handleAddNew=()=>{
+    setIndex(-1)
     setOpen(true);
     setEmployeeName("");
     setEmployeeImage("")
@@ -98,7 +102,7 @@ console.log("Employee Data=>",employee_Data);
     setUserId(employeeData[0].userId)
   };
  
-  console.log(Image);
+  console.log("Image Is====>",employeeImage);
   
     return(
 <div>
@@ -123,6 +127,8 @@ console.log("Employee Data=>",employee_Data);
         address={address}
         createdBy={createdBy}
         createdDate={createdDate}
+        index={index}
+        employeeData={employeeData}
         employeeImage={employeeImage}
         userId={userId}
         />
@@ -173,7 +179,7 @@ console.log("Employee Data=>",employee_Data);
                   <td>
                     <div style={{width:50,height:60,overflow:'hidden'}}>
                     <img className='img-fluid'
-                          src={v.employeeImage}
+                          src={`http://192.168.100.29:3001/uploads/${v.employeeImage}`}
                           id={v.id}
                           alt="styles"
                         />

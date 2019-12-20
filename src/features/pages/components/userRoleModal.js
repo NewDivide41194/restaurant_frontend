@@ -16,7 +16,7 @@ const UserRoleModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
-  const regex = /^(?=.{1,20}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
   const _handleAdd = e => {
@@ -24,12 +24,12 @@ const UserRoleModal = props => {
     e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);
 
-    if (RoleName === "") {
+    if (RoleName.trim() === "") {
       setRoleErr("Please Fill Role Name");
       document.getElementById("roleName").style.border = '1px solid red';
       return;
     } else if (!isValid) {
-      setRoleErr("Contains Special Characters");
+      setRoleErr("Role Name Contains Special Characters");
       document.getElementById("roleName").style.border = '1px solid red';
     } else {
       InsertRoleFetcher(
@@ -54,16 +54,16 @@ const UserRoleModal = props => {
     e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);
 
-    if (RoleName === "") {
-      alert("Please Fill Role Name");
+    if (RoleName.trim() === "") {
+      setRoleErr("Please Fill Role Name");
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      setRoleErr("Role Name Contains Special Characters!");
     } else {
       UpdateRoleFetcher({ RoleId, RoleName, Remark, Active }, (err, data) => {
         console.log(data);
 
         if (data.payload === null) {
-          alert("Role Name Already Exist!");
+          setRoleErr("Role Name Already Exist!");
         } else {
           window.location.reload();
         }

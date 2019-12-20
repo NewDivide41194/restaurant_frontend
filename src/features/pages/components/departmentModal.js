@@ -23,7 +23,7 @@ const DepartmentModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
-  const regex = /^(?=.{1,50}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
 
@@ -60,10 +60,10 @@ const DepartmentModal = props => {
     e.preventDefault();
     const isValid = regex.test(document.getElementById("department").value);
 
-    if (Department === "") {
-      alert("Please Fill Department Name");      
+    if (Department.trim() === "") {
+      setDepartmentErr("Please Fill Department Name");      
     } else if (!isValid) {
-      alert("Department Name Contains Special Characters!");
+      setDepartmentErr("Department Name Contains Special Characters!");
       return
   }else {
     UpdateDepartmentFetcher(
@@ -72,7 +72,7 @@ const DepartmentModal = props => {
         console.log(data);
 
         if (data.payload === null) {
-          alert("Department Name Already Exist!");
+          setDepartmentErr("Department Name Already Exist!");
         } else {
           setLoading(true)
           window.location.reload();
