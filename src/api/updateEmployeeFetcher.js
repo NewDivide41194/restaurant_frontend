@@ -1,26 +1,42 @@
 import * as API from "./url";
+export const UpdateEmployeeFetcher = 
+({ EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active }, callback) => {
 
-export const UpdateEmployeeFetcher = ({ EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active}, callback) => {
-    console.log(EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active);
-    
+    console.log("DATA is ===>",EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active );
+    let form=new FormData()
+    form.append("employeeId",EmployeeId)
+    form.append("employeeName",EmployeeName)
+    form.append("employeeImage",EmployeeImage)
+    form.append("fatherName",FatherName)
+    form.append("dateOfBirth",DateOfBirth)
+    form.append("NRC",NrcNo)
+    form.append("joinDate",JoinDate)
+    form.append("departmentId",DepartmentId)
+    form.append("designationId",DesignationId)
+    form.append("education",Education)
+    form.append("gender",Gender)
+    form.append("address",Address)
+    form.append("userId",UserId)
+    form.append("createdDate",CreatedDate)
+    form.append("active",Active)
+    form.append("maritalStatus",MaritalStatus)
+
+console.log(form);
+
     fetch(API.UpdateEmployeeFetcher, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Accept":"*/*"
       },
-      body: JSON.stringify({ employeeId:EmployeeId,employeeImage:EmployeeImage, employeeName:EmployeeName, fatherName:FatherName, dateOfBirth:DateOfBirth, nrcNo:NrcNo, joinDate:JoinDate, departmentId:DepartmentId, designationId:DesignationId, education:Education, gender:Gender, maritalStatus:MaritalStatus, address:Address, createdBy:CreatedBy, createdDate:CreatedDate, active:Active }),
-      cache: "no-cache"
+      body: form
     })
       .then(response => {
-        if (response.status === 200) {
           console.log(response);
-          return response.json();
-        }
-        else{alert("Employee Name already Exist")}
       })
       .then(data => {
         console.log(data);
         callback(null, data);
       })
       .catch(err => console.log(err));
+      
   };

@@ -19,10 +19,11 @@ const DepartmentModal = props => {
   } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [Department, setDepartment] = useState(department);
+  const [departmentErr, setDepartmentErr] = useState('');
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
-  const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,50}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
 
@@ -31,9 +32,12 @@ const DepartmentModal = props => {
     const isValid = regex.test(document.getElementById("department").value);
     
     if (Department.trim() === "") {
-      alert("Please Fill Department Name");
+      //alert("Please Fill Department Name");
+      setDepartmentErr("Please Fill Department Name");
+      document.getElementById("department").style.border="1px solid red";
     } else if (!isValid) {
-      alert("Department Name Contains Special Characters!");
+      setDepartmentErr("Department Name Contains Special Characters!");
+      document.getElementById("department").style.border="1px solid red";
       return
   }else {
       console.log("DATA IS ==>", Department, Remark, Active, CreatedDate);
@@ -41,10 +45,10 @@ const DepartmentModal = props => {
         { DepartmentId, Department, Remark, Active, CreatedDate },
         (err, data) => {
           if (data.payload === null) {
-            alert("Department Name Already Exist!");
+            setDepartmentErr("Department Name Already Exist!");
+            document.getElementById("department").style.border="1px solid red";
           } else{
             setLoading(true);
-
             window.location.reload();
           }
         }
@@ -57,7 +61,7 @@ const DepartmentModal = props => {
     const isValid = regex.test(document.getElementById("department").value);
 
     if (Department === "") {
-      alert("Please Fill Role Name");      
+      alert("Please Fill Department Name");      
     } else if (!isValid) {
       alert("Department Name Contains Special Characters!");
       return
@@ -114,6 +118,9 @@ const DepartmentModal = props => {
             onChange={e => setDepartment(e.target.value)}
             maxLength={50}
           />
+          <div style={{color:'red'}}>
+            {departmentErr}
+          </div>
         </div>
         <div>
           <label>Remark</label>

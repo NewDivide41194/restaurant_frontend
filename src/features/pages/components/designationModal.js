@@ -19,10 +19,11 @@ const DesignationModal = props => {
   } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [Designation, setDesignation] = useState(designation);
+  const [designationErr, setDesignationErr] = useState('');
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DesignationId, setDesignationId] = useState(designationId);
-  const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  const regex = /^(?=.{1,50}$)(?![_. 0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
 
   const _handleAdd = (e) => {
@@ -30,16 +31,19 @@ const DesignationModal = props => {
     const isValid = regex.test(document.getElementById("designation").value);
 
     if (Designation.trim() === "") {
-      alert("Please Fill Role Name");      
+      setDesignationErr("Please Fill Designation Name");    
+      document.getElementById("designation").style.border = "1px solid red"; 
     } else if (!isValid) {
-      alert("Designation Name Contains Special Characters!");
+      setDesignationErr("Designation Name Contains Special Characters!");
+      document.getElementById("designation").style.border = "1px solid red"; 
       return
   }else {
     InsertDesignationFetcher(
       { DesignationId, Designation, Remark, Active, CreatedDate },
       (err, data) => {
         if (data.payload === null) {
-          alert("Designation Name Already Exist!");
+          setDesignationErr("Designation Name Already Exist!");
+          document.getElementById("designation").style.border = "1px solid red"; 
         } else {
           setLoading(true);
           window.location.reload();
@@ -53,7 +57,7 @@ const DesignationModal = props => {
     const isValid = regex.test(document.getElementById("designation").value);
 
     if (Designation === "") {
-      alert("Please Fill Role Name");      
+      alert("Please Fill Designation Name");      
     } else if (!isValid) {
       alert("Designation Name Contains Special Characters!");
       return
@@ -103,6 +107,9 @@ const DesignationModal = props => {
             onChange={e => setDesignation(e.target.value)}
             maxLength={50}
           />
+           <div style={{color:'red'}}>
+            {designationErr}
+          </div>
         </div>
         <div>
           <label>Remark</label>

@@ -10,28 +10,28 @@ import Spinner from '../../../assets/icon/spinner.gif'
 const EmployeeTable =props=>{
   const [employeeData, setEmployeeData]= useState([]);
   const [departmentData,setDepartmentData]=useState([])
-  const [ImgUrl, setImgUrl]= useState("");
-  const [employeeId,setEmployeeId]=useState("")
-  const [employeeName, setEmployeeName]= useState("");
-  const [employeeImage, setEmployeeImage]= useState("");
+  const [Image, setImage]= useState([]);
+  const [employeeId,setEmployeeId]=useState(null)
+  const [employeeName, setEmployeeName]= useState(null);
+  const [employeeImage, setEmployeeImage]= useState(null);
   const [active, setActive]= useState(0);
-  const [fatherName, setFatherName]= useState("");
-  const [dateOfBirth, setDateOfBirth]= useState("");
-  const [nrcNo, setNrcNo]= useState("");
-  const [joinDate, setJoinDate]= useState("");
-  const [departmentId, setDepartmentId]= useState("");
-  const [designationId, setDesignationId]= useState("");
-  const [education, setEducation]= useState("");
-  const [gender, setGender]= useState("");
-  const [maritalStatus, setMaritalStatus]= useState("");
-  const [address, setAddress]= useState("");
-  const [createdBy, setCreatedBy]= useState("");
-  const [createdDate, setCreatedDate]= useState("");
+  const [fatherName, setFatherName]= useState(null);
+  const [dateOfBirth, setDateOfBirth]= useState(null);
+  const [nrcNo, setNrcNo]= useState(null);
+  const [joinDate, setJoinDate]= useState(null);
+  const [departmentId, setDepartmentId]= useState(null);
+  const [designationId, setDesignationId]= useState(null);
+  const [education, setEducation]= useState(null);
+  const [gender, setGender]= useState(null);
+  const [maritalStatus, setMaritalStatus]= useState(null);
+  const [address, setAddress]= useState(null);
+  const [createdBy, setCreatedBy]= useState(null);
+  const [createdDate, setCreatedDate]= useState(null);
   const [userId, setUserId]= useState(null);
   const [open, setOpen]=useState(false);
   const [Loading, setLoading]= useState(true);
 
-  const onOpenModal = (e, index) =>{
+  const _handleEdit = (e, index) =>{
     if(index===undefined){
       setOpen(true);
     }else{
@@ -54,11 +54,14 @@ const EmployeeTable =props=>{
       setEmployeeId(employee_Data.employeeId)
       setUserId(employee_Data.userId)
       setOpen(true);
+console.log("Employee Data=>",employee_Data);
 
       //16 Columns
 
     }
   };
+  console.log("IMG==>",employeeImage);
+
   const onCloseModal =()=>{
     setOpen(false);
   };  
@@ -70,10 +73,9 @@ const EmployeeTable =props=>{
   };
   useEffect(()=>{
     EmployeeFetch()
-
+    setImage(`localhost:3001/uploads/${employeeData.employeeImage}`)
     
   },[]);
-  const Data=employeeData
 
   const _handleAddNew=()=>{
     setOpen(true);
@@ -88,16 +90,15 @@ const EmployeeTable =props=>{
     setDepartmentId(employeeData[0].departmentId);
     setDesignationId(employeeData[0].designationId);
     setEducation("");
-    setGender("");
+    setGender(employeeData[0].gender);
     setMaritalStatus("");
     setAddress("");
     setCreatedBy("");
     setCreatedDate("");
     setUserId(employeeData[0].userId)
-
   };
- console.log(employeeData[0]);
  
+  console.log(Image);
   
     return(
 <div>
@@ -172,7 +173,7 @@ const EmployeeTable =props=>{
                   <td>
                     <div style={{width:50,height:60,overflow:'hidden'}}>
                     <img className='img-fluid'
-                          src={process.env.PUBLIC_URL + `${v.employeeImage}`}
+                          src={v.employeeImage}
                           id={v.id}
                           alt="styles"
                         />
@@ -201,7 +202,7 @@ const EmployeeTable =props=>{
                   <td>
                   <button
                     type={"button"}
-                    onClick={() => onOpenModal(v, k)}
+                    onClick={() => _handleEdit(v, k)}
                     style={{
                       borderRadius: "8px",
                       backgroundColor: "#c7821c",

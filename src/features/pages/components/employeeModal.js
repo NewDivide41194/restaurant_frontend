@@ -3,7 +3,6 @@ import Modal from 'react-responsive-modal'
 import moment from 'moment'
 import MyInput from '../../../tools/myInput'
 import MyButton from '../../../tools/myButton'
-import DatePicker from 'react-datepicker';
 import 'date-fns';
 import Grid from '@material-ui/core/Grid'
 import DateFnsUtils from '@date-io/date-fns'
@@ -11,6 +10,7 @@ import { MuiPickersUtilsProvider,KeyboardDatePicker } from '@material-ui/pickers
 import { EmployeeFetcher } from '../../../api/employeeFetcher';
 import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
 import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
+import MyDropDown from '../../../tools/myDropDown'
 
 const EmployeeModal = props =>{
     const { open, onCloseModal,
@@ -36,9 +36,9 @@ const EmployeeModal = props =>{
     const [EmployeeName, setEmployeeName] = useState(employeeName);
     const [FatherName, setFatherName] = useState(fatherName);
     const [EmployeeImage, setEmployeeImage] = useState(null);
-    const [DateOfBirth, setDateOfBirth] = useState(dateOfBirth);
+    const [DateOfBirth, setDateOfBirth] = useState(moment(dateOfBirth).format("YYYY-MM-DD"));
     const [NrcNo, setNrcNo] = useState(nrcNo);
-    const [JoinDate, setJoinDate] = useState(joinDate);
+    const [JoinDate, setJoinDate] = useState(useState(moment(joinDate).format("YYYY-MM-DD")));
     const [Education, setEducation] = useState(education);
     const [Gender, setGender] = useState(gender);
     const [MaritalStatus, setMaritalStatus] = useState(maritalStatus);
@@ -50,18 +50,33 @@ const EmployeeModal = props =>{
     const [Active, setActive] = useState(active === 1 ? true : false);
     const [DesignationId,setDesignationId]=useState(designationId)
     const [DepartmentId,setDepartmentId]=useState(departmentId);
+    console.log("Department===>",departmentId);
     
     const [DesignationData, setDesignationData]= useState([]);
     const [DepartmentData, setDepartmentData]= useState([]);
 
     const [file, setFile] = useState('');
     const [image, setImage] = useState([]);
-    const regex = /^(?=.{1,50}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+    const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+    // const regexNRC = /^(?=.{2,20}$)(?![.])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+
+    const MaritalOptions = [
+        {value:'Single', label:"Single"},
+        {value:'Marriage', label:"Marriage"}
+    ]
+
+    const GenderOptions = [
+        {value:'Male', label:"Male"},
+        {value:'Female', label:"Female"}
+    ]
 
     const _handleDepartment = (event) => {
+        
         setDepartmentId(event.target.value);
     }
     const _handleDesignation = (event) => {
+        console.log("DESIGNATION ID",event.target.value);
+
         setDesignationId(event.target.value);
     }
     const _handleGender = (event) => {
@@ -74,22 +89,24 @@ const EmployeeModal = props =>{
         });
     }
     useEffect(()=>{
-        EmployeeFetch()
+        EmployeeFetch()               
             },[]);
 
     const _handleAdd = e => {
         e.preventDefault()
     const isValid = regex.test(document.getElementById("employeeName").value);
+    const isValid1 = regex.test(document.getElementById("fatherName").value);
 
     if (EmployeeName.trim() === "") {
       alert("Please Fill Employee Name");      
     } else if (!isValid) {
-      alert("Employee Name Contains Special Characters!");
+      alert("Employee Name Contains Special Characters or Numbers!");
       return
-  }else {
-
-    //setEmployeeImage(process.env.PUBLIC_URL + employeeImage);
-
+  }
+  else if (!isValid1) {
+    alert("Father Name Contains Special Characters or Numbers!");
+    return}
+  else {
     InsertEmployeeFetcher(
       { EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, UserId, CreatedDate, Active },
       (err, data) => {
@@ -105,20 +122,20 @@ const EmployeeModal = props =>{
 
     const _handleUpdate = (e) => {
         e.preventDefault()
-        setDateOfBirth(dateOfBirth);
-        setJoinDate(joinDate);
+        setDateOfBirth(moment(dateOfBirth).format("YYYY-MM-DD"));
+        setJoinDate(moment(joinDate).format("YYYY-MM-DD"));
         const isValid = regex.test(document.getElementById("employeeName").value);
     
-        if (EmployeeName === "") {
+        if (EmployeeName.trim() === "") {
           alert("Please Fill Employee Name");      
         } else if (!isValid) {
           alert("Employee Name Contains Special Characters!");
           return
         }else 
         {
-            setEmployeeImage(process.env.PUBLIC_URL + employeeImage);
+            // setEmployeeImage(employeeImage);
             UpdateEmployeeFetcher(
-            {EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active},
+            {EmployeeId,EmployeeImage, EmployeeName, FatherName, DateOfBirth, NrcNo, JoinDate, DepartmentId, DesignationId,UserId, Education, Gender, MaritalStatus, Address, CreatedBy, CreatedDate, Active},
             (err, data) => {
                 console.log(data);
         
@@ -130,6 +147,7 @@ const EmployeeModal = props =>{
           }
         );
       };}
+  console.log(DateOfBirth);
   
 
       const _UploadIMG = (e) => {
@@ -149,24 +167,25 @@ const EmployeeModal = props =>{
         }
     }
  
-    console.log("Designation is"+designationId);
-    console.log('image'+EmployeeImage);
+    console.log("Gender=>>>",Gender);
+    console.log('USER ID'+UserId);
 
     return(
         <Modal open={open} onClose={onCloseModal} center >
-        <form className="pt-2 col-lg-12 col-md-12 col-xs-4" encType="multipart/form-data" autoComplete="off">
+        <form encType="multipart/form-data" autoComplete="off">
             <h4 className="text-center pt-2 pb-4">Add New Employee</h4>
-            <div className='img-circle'>
-            <img style={{ height: '200px' }} src={image} alt=""></img>
-
+            <div className='pb-3 text-center'>
+            <div className="pb-3 pt-1 text-center">
+            <img style={{ height: '100px',width:'100px' }} src={image} alt={`${employeeImage}`}></img>
             </div>
-            <input type="file" name="photo" id="upload-photo" onChange={(e) => _UploadIMG(e)} accept="image/*" />
+            <input style={{width:"100px"}} type="file" name="photo" id="in-btn" onChange={(e) => _UploadIMG(e)} accept="image/*" />
+                <span className="new py-2 px-4" style={{}}>Upload Image</span>
+            {/* <input type="file" name="photo" id="upload-photo" onChange={(e) => _UploadIMG(e)} accept="image/*" /> */}
+            </div>
 
             <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-6 col-md-6">
                     <label>Employee Name</label>
-                </div>
-                <div className="pb-2 col-lg-6">
                     <MyInput
                     id={"employeeName"}
                         className="w-100"
@@ -177,14 +196,11 @@ const EmployeeModal = props =>{
                         onChange={(e)=>setEmployeeName(e.target.value)}
                     />
                 </div>
-            </div>
            
-            <div className="row">
-                <div className="col-lg-6">
+                <div className="col-lg-6 col-md-6">
                     <label>Father Name</label>
-                </div>
-                <div className="pb-3 col-lg-6">
                     <MyInput
+                    id={"fatherName"}
                         className="w-100"
                         type="text"
                         value={FatherName}
@@ -193,20 +209,18 @@ const EmployeeModal = props =>{
                         onChange={(e)=>setFatherName(e.target.value)}
 
                     />
-                </div>
+                    </div>
             </div>
-            <div className="row pb-2">
-                <div className="col-lg-6">
-                    <label>Date Of Birth</label>
-                </div>
-                <div className="col-lg-6">
+            <div className="row">
+                <div className="col-lg-6 col-md-6">
                     <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justify="space-around">
                             <KeyboardDatePicker
                                 margin="normal"
                                 id="date-picker-dialog"
+                                // label="Date of Birth"
                                 format="dd/MM/yyyy"
-                                value={EmployeeId? DateOfBirth :new Date()}
+                                value={DateOfBirth}
                                 onChange={(date)=>setDateOfBirth(moment(date).format("YYYY-MM-DD"))}
                                 KeyboardButtonProps={{
                                     "aria-label": "change date" 
@@ -215,12 +229,9 @@ const EmployeeModal = props =>{
                         </Grid>
                     </MuiPickersUtilsProvider>
                 </div>
-            </div>
-            <div className="pb-2 row">
-                <div className="col-lg-6">
+                <div className="col-lg-6 col-md-6">
                     <label>NRC No.</label>
-                </div>
-                <div className="pb-3 col-lg-6">
+               
                     <MyInput
                         className="w-100"
                         type="text"
@@ -230,20 +241,18 @@ const EmployeeModal = props =>{
                         onChange={(e)=>setNrcNo(e.target.value)}
                     />
                 </div>
-            </div>
-           
-            <div className="pb-3 row">
-                <div className="col-lg-6">
-                    <label>Join Date</label>
                 </div>
-                <div className="col-lg-6">
-                    <MuiPickersUtilsProvider utils={DateFnsUtils}>
+
+            <div className="pb-2 row">
+                <div className="col-lg-6 col-md-6">
+                    <label>Join Date</label>
+                       <MuiPickersUtilsProvider utils={DateFnsUtils}>
                         <Grid container justify="space-around">
                             <KeyboardDatePicker
                                 margin="normal"
                                 id="date-picker-dialog"
                                 format="dd/MM/yyyy"
-                                value={EmployeeId? JoinDate : new Date()}
+                                value={new Date()}
                                 onChange={(date)=>setJoinDate(moment(date).format("YYYY-MM-DD"))}
                                 KeyboardButtonProps={{
                                     "aria-label": "change date"
@@ -252,11 +261,9 @@ const EmployeeModal = props =>{
                         </Grid>
                     </MuiPickersUtilsProvider>
                 </div>
-            </div>
 
-            <div className="row pb-3">
-                <div className="col-md-6 col-lg-6 col-sm-6"> <label>Department</label></div>
-                <div className="col-md-6 col-lg-6 col-sm-6">
+                <div className="col-md-6 col-lg-6"> 
+                <label>Department</label><br/>
                 <select value={DepartmentId} onChange={_handleDepartment} >
                         {/* <option value="1">Health</option>
                         <option value="2">Account</option> */}
@@ -267,11 +274,11 @@ const EmployeeModal = props =>{
                     ))}
                     </select>
                 </div>
-            </div>
+                </div>
 
             <div className="row pb-3">
-                <div className="col-md-6 col-lg-6 col-sm-6"> <label>Designation</label></div>
-                <div className="col-md-6 col-lg-6 col-sm-6">
+                <div className="col-md-6 col-lg-6 col-sm-6"> 
+                <label>Designation</label><br/>
                 <select value={DesignationId} onChange={_handleDesignation}>
                     {DesignationData.map((v,k)=>(
                         <option value={v.designationId}>
@@ -281,12 +288,8 @@ const EmployeeModal = props =>{
                        
                     </select>
                 </div>
-            </div>
-            <div className="pb-3 row">
-                <div className="col-lg-6">
+                <div className="col-lg-6 col-md-6">
                     <label>Education</label>
-                </div>
-                <div className="col-lg-6">
                     <MyInput
                         className="w-100"
                         type="text"
@@ -295,40 +298,43 @@ const EmployeeModal = props =>{
                         maxLength={200}
                         onChange={(e)=>setEducation(e.target.value)}
                     />
-                </div>
             </div>
-           
+            </div>
+
             <div className="row pb-2">
-                <div className="col-md-6 col-lg-6"> <label>Gender</label></div>
                 <div className="col-md-6 col-lg-6">
-                <select value={Gender} onChange={_handleGender}>
+                     <label>Gender</label><br/>
+                     <MyDropDown
+                     type="text"
+                     value={Gender}
+                     maxLength={50}
+                     defaultValue={employeeId?Gender: GenderOptions[0]}
+                     onChange={(e)=>setGender(e.target.value)}
+                     options={GenderOptions}
+                     />
+                {/* <select value={Gender} onChange={_handleGender}>
                         <option value="Male">Male</option>
                         <option value="Female">Female</option>
-                    </select>
+                    </select> */}
                 </div>
               
-            </div>
-            <div className="row pb-2">
-                <div className="col-lg-6">
+                <div className="col-lg-6 col-md-6">
                     <label>Marital Status</label>
-                </div>
-                <div className="col-lg-6">
-                    <MyInput
+                    <MyDropDown
                         className="w-100"
                         type="text"
                         value={MaritalStatus}
-                        style={{ border: "1px solid gray" }}
-                        maxLength={200}
+                        maxLength={50}
+                        defaultValue={employeeId?MaritalStatus: MaritalOptions[0]}
+                        options={MaritalOptions}
                         onChange={(e)=>setMaritalStatus(e.target.value)}
-
                     />
-                </div>
             </div>
-            <div className="row pb-4">
-                <div className="col-lg-6">
-                    <label>Address</label>
-                </div>
-                <div className="col-lg-6">
+            </div>
+
+            <div className="row">
+                <div className="col-lg-6 col-md-6">
+                    <label>Address</label>              
                     <MyInput
                         className="w-100"
                         type="text"
@@ -340,8 +346,7 @@ const EmployeeModal = props =>{
                     
                     />
                 </div>
-            </div>
-            <div className="pb-3">
+            <div className="col-lg-6 col-md-6 pt-3">
           <input
             type="checkbox"
             id="activecheck"
@@ -351,8 +356,9 @@ const EmployeeModal = props =>{
           />
           <label>Active</label>
         </div>
-            
-            <div className="pb-1">
+        </div>
+ 
+            <div className="pt-3 pb-3">
             <MyButton
                         style={{
                         backgroundImage:

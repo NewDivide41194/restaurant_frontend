@@ -12,6 +12,7 @@ const UserRoleModal = props => {
   const { open, onCloseModal, roleName, remark, active, roleId } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [RoleName, setRoleName] = useState(roleName);
+  const [roleErr, setRoleErr] = useState('');
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
@@ -24,10 +25,12 @@ const UserRoleModal = props => {
     const isValid = regex.test(document.getElementById("roleName").value);
 
     if (RoleName === "") {
-      alert("Please Fill Role Name");
+      setRoleErr("Please Fill Role Name");
+      document.getElementById("roleName").style.border = '1px solid red';
       return;
     } else if (!isValid) {
-      alert("Contains Special Characters!");
+      setRoleErr("Contains Special Characters");
+      document.getElementById("roleName").style.border = '1px solid red';
     } else {
       InsertRoleFetcher(
         { RoleId, RoleName, Remark, Active, CreatedDate },
@@ -35,7 +38,8 @@ const UserRoleModal = props => {
           // console.log(CreatedDate);
 
           if (data.payload === null) {
-            alert("Role Name Already Exist!");
+            setRoleErr("Role Name Already Exist!");
+            document.getElementById("roleName").style.border = '1px solid red';
           } else {
             setLoading(true);
             window.location.reload();
@@ -105,6 +109,9 @@ const UserRoleModal = props => {
             onChange={e => setRoleName(e.target.value)}
             maxLength={50}
           />
+           <div style={{color:'red'}}>
+            {roleErr}
+          </div>
         </div>
         <div>
           <label>Remark</label>

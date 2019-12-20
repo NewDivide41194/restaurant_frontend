@@ -19,8 +19,6 @@ export const InsertEmployeeFetcher =
     form.append("active",Active)
     form.append("maritalStatus",MaritalStatus)
 
-
-
 console.log(form);
 
 
@@ -33,11 +31,8 @@ console.log(form);
     })
       .then(response => {
           console.log(response);
-      })
-      .then(data => {
-        console.log(data);
-        callback(null, data);
-      })
-      .catch(err => console.log(err));
+          if(response.status===200)
+          {alert("Employee Added Successfully!")}
+      })     
       
   };
