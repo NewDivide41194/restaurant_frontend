@@ -11,7 +11,7 @@ import { EmployeeFetcher } from '../../../api/employeeFetcher';
 import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
 import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
 import MyDropDown from '../../../tools/myDropDown'
-import DefaultProfile from '../../../assets/icon/profile/defaultProfile.png'
+import DefaultProfile from '../../../assets/icon/profile/defaultProfile3.jpg'
 
 const EmployeeModal = props =>{
     const { open, onCloseModal,
