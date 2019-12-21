@@ -135,7 +135,7 @@ console.log("Employee Data=>",employee_Data);
       ):null}
         <MyButton
             className="my-2"
-            text={"+ Add New setEmployee"}
+            text={"+ Add New Employee"}
             onClick={_handleAddNew}
             type={"submit"}
             style={{ borderRadius: 5, fontSize: 18 }}

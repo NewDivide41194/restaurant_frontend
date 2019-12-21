@@ -11,6 +11,7 @@ import { EmployeeFetcher } from '../../../api/employeeFetcher';
 import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
 import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
 import MyDropDown from '../../../tools/myDropDown'
+import DefaultProfile from '../../../assets/icon/profile/defaultProfile.png'
 
 const EmployeeModal = props =>{
     const { open, onCloseModal,
@@ -89,9 +90,8 @@ const EmployeeModal = props =>{
     }
     useEffect(()=>{
         EmployeeFetch()      
-        EmployeeId ? setImage(`http://192.168.100.29:3001/uploads/${EmployeeImage}`) : setImage([])
-         
-            },[]);
+        EmployeeId ? setImage(`http://192.168.100.29:3001/uploads/${EmployeeImage}`) : setImage(DefaultProfile);                
+    },[]);
 
     const _handleAdd = e => {
         e.preventDefault()
@@ -128,7 +128,7 @@ const EmployeeModal = props =>{
         const isValid = regex.test(document.getElementById("employeeName").value);
     
         if (EmployeeName.trim() === "") {
-          alert("Please Fill Employee Name");      
+          alert("Please Fill Employee Name");
         } else if (!isValid) {
           alert("Employee Name Contains Special Characters!");
           return
@@ -150,7 +150,6 @@ const EmployeeModal = props =>{
       };}
   console.log("EmployeeImage=>>>>",EmployeeImage);
   
-
       const _UploadIMG = (e) => {
         let reader = new FileReader();
         let file = e.target.files[0];
