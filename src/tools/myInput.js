@@ -32,7 +32,7 @@ const MyInput = props => {
         ...defaultStyle,
         ...userStyle,
         boxShadow: "none",
-        borderRadius: 20
+        borderRadius: 10
       }}
       className={`form-control form-rounded ${className}`}
       type={type === undefined ? "text" : `${type}`}

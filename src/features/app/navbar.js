@@ -36,7 +36,7 @@ const NavBar = props => {
   }, []);
 
   const _handleLogout = () => {
-    removeCookie("token", "/");
+    removeCookie("token");
     window.location.pathname = "/";
   };
   console.log(userInfo);

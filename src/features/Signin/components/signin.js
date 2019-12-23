@@ -22,7 +22,7 @@ const Signin = props => {
     LoginFetcher({ userName, password }, (err, data) => {
       if (data.payload !== null) {
         
-        setCookie("token", data.payload.token, { path: "/" });
+        setCookie("token", data.message, { path: "/" });
       }
 
       if (err) {

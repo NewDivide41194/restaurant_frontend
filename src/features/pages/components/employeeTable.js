@@ -95,7 +95,7 @@ const EmployeeTable =props=>{
     setDesignationId(employeeData[0].designationId);
     setEducation("");
     setGender(employeeData[0].gender);
-    setMaritalStatus("");
+    setMaritalStatus(null);
     setAddress("");
     setCreatedBy("");
     setCreatedDate("");

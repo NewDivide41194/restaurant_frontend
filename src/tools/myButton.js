@@ -8,7 +8,7 @@ const MyButton = props => {
         width:  `${width === undefined ? "100%" : width}`,
         backgroundColor: "#c7821c",
         color:'white',
-        borderRadius:20,
+        borderRadius:10,
         border:"none",
         outline:'none' 
     };

@@ -1,4 +1,4 @@
-import React from "react";
+import React,{useEffect} from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -18,8 +18,13 @@ import SignIn from "./features/Signin/container/signinContainer";
 import Department from "./features/pages/container/departmentContainer";
 import Designation from "./features/pages/container/designationContainer";
 import EmployeeContainer from "./features/pages/container/employeeContainer.js";
+import {useCookies} from 'react-cookie'
 
-const AppRoute = () => {
+const AppRoute = (props) => {
+  const [cookies, setCookie] = useCookies(['token']);
+
+  useEffect(()=>{  
+},[])
   return (
     <div>
       <div>
