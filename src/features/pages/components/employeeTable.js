@@ -32,6 +32,8 @@ const EmployeeTable =props=>{
   const [Loading, setLoading]= useState(true);
 
   const [index, setIndex] = useState(-1);
+  const DefaultProfile=require('../../../assets/icon/profile/defaultProfile3.jpg')
+
 
   const _handleEdit = (e, index) =>{
     setIndex(index)
@@ -178,7 +180,7 @@ console.log("Employee Data=>",employee_Data);
                   <td>
                     <div style={{width:50,height:60,overflow:'hidden'}}>
                     <img className='img-fluid'
-                          src={`http://192.168.100.39:3001/uploads/${v.employeeImage}`}
+                          src={v.employeeImage?`http://192.168.100.39:3001/uploads/${v.employeeImage}`:DefaultProfile}
                           id={v.id}
                           alt="styles"
                         />

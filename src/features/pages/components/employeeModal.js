@@ -174,7 +174,7 @@ const EmployeeModal = props =>{
             <h4 className="text-center pt-2 pb-4">{employeeId?'Edit Employee':'Add New Employee'}</h4>
             <div className='pb-3 text-center'>
             <div className="pb-3 pt-1 text-center">
-            <img style={{ height: '100px',width:'100px' }} src={employeeId?image:DefaultProfile} alt={`${EmployeeImage}`}></img>
+            <img style={{ height: '100px',width:'100px' }} src={employeeImage?image:DefaultProfile} alt={`${EmployeeImage}`}></img>
             
             </div>
             <input style={{width:"100px"}} type="file" name="photo" id="in-btn" onChange={(e) => _UploadIMG(e)} accept="image/*" />
