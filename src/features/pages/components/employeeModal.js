@@ -53,8 +53,7 @@ const EmployeeModal = props =>{
     const [Active, setActive] = useState(active === 1 ? true : false);
     const [DesignationId,setDesignationId]=useState(designationId)
     const [DepartmentId,setDepartmentId]=useState(departmentId);
-    console.log("Department===>",departmentId);
-    
+
     const [DesignationData, setDesignationData]= useState([]);
     const [DepartmentData, setDepartmentData]= useState([]);
 
@@ -81,6 +80,12 @@ const EmployeeModal = props =>{
             ? GenderOptions[0]
             : GenderOptions[1]
     )
+
+    const [selectedMaritalStatus, setSelectedMaritalStatus] = useState(index === -1
+        ? { value: 'Single', label: "Single" }
+        : employeeData[index].maritalStatus === 'Male'
+            ? MaritalOptions[0]
+            : MaritalOptions[1]);
 
     const EmployeeFetch = () => {
         EmployeeFetcher((err,data)=>{
@@ -148,8 +153,7 @@ const EmployeeModal = props =>{
           }
         );
       };}
-  console.log("EmployeeImage=>>>>",EmployeeImage);
-  
+
       const _UploadIMG = (e) => {
         let reader = new FileReader();
         let file = e.target.files[0];
@@ -157,16 +161,15 @@ const EmployeeModal = props =>{
             reader.onloadend = () => {
                 setImage(reader.result);
                 setEmployeeImage(file);
-                console.log(reader.result);
 
             }
-            console.log(file.name);            
             reader.readAsDataURL(file)
         }
     }
  
-    console.log("Gender=>>>",Gender);
-    console.log('USER ID'+UserId);
+    // console.log("Gender=>>>",Gender);
+    // console.log('USER ID'+UserId);
+    console.log("EmployeeImage=>>>>",EmployeeImage);
 
     return(
         <Modal open={open} onClose={onCloseModal} center >
@@ -174,8 +177,9 @@ const EmployeeModal = props =>{
             <h4 className="text-center pt-2 pb-4">{employeeId?'Edit Employee':'Add New Employee'}</h4>
             <div className='pb-3 text-center'>
             <div className="pb-3 pt-1 text-center">
-            <img style={{ height: '100px',width:'100px' }} src={employeeImage?image:DefaultProfile} alt={`${EmployeeImage}`}></img>
-            
+           { EmployeeImage?<img style={{ height: '100px',width:'100px' }} src={image} alt={`${EmployeeImage}`}></img>
+            :<img style={{ height: '100px',width:'100px' }} src={DefaultProfile} alt={`${EmployeeImage}`}></img>
+}
             </div>
             <input style={{width:"100px"}} type="file" name="photo" id="in-btn" onChange={(e) => _UploadIMG(e)} accept="image/*" />
                 <span className="new py-2 px-4" style={{}}>Upload Image</span>
@@ -323,14 +327,10 @@ const EmployeeModal = props =>{
                 <div className="col-lg-6 col-md-6">
                     <label>Marital Status</label>
                     <MyDropDown
-                        className="w-100"
-                        type="text"
-                        value={MaritalStatus}
-                        maxLength={50}
-                        defaultValue={employeeId?MaritalStatus: MaritalOptions[0]}
-                        options={MaritalOptions}
-                        onChange={(e)=>setMaritalStatus(e.target.value)}
-                    />
+                            value={selectedMaritalStatus}
+                            onChange={selectedOption => setSelectedMaritalStatus(selectedOption)}
+                            options={MaritalOptions}
+                        />
             </div>
             </div>
 

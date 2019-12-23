@@ -59,7 +59,6 @@ const EmployeeTable =props=>{
       setEmployeeId(employee_Data.employeeId)
       setUserId(employee_Data.userId)
       setOpen(true);
-console.log("Employee Data=>",employee_Data);
 
       //16 Columns
 
@@ -104,6 +103,8 @@ console.log("Employee Data=>",employee_Data);
   };
  
   console.log("Image Is====>",employeeImage);
+  console.log("Employee Data=>",employeeData);
+
   
     return(
 <div>
@@ -195,7 +196,7 @@ console.log("Employee Data=>",employee_Data);
                     )}
                   </td>
                   <td>{v.fatherName}</td>
-                  <td>{moment(v.createdDate).format("MM/DD/YYYY")}</td>
+                  <td>{moment(v.dateOfBirth).format("MM/DD/YYYY")}</td>
                   <td>{v.nrcNo}</td>
                   <td>{moment(v.joinDate).format("MM/DD/YYYY")}</td>
                   <td>{v.department}</td>
