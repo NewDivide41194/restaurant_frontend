@@ -11,7 +11,7 @@ import { EmployeeFetcher } from '../../../api/employeeFetcher';
 import { InsertEmployeeFetcher } from '../../../api/insertEmployeeFetcher'
 import { UpdateEmployeeFetcher } from '../../../api/updateEmployeeFetcher'
 import MyDropDown from '../../../tools/myDropDown'
-import DefaultProfile from '../../../assets/icon/profile/defaultProfile3.jpg'
+const DefaultProfile=require('../../../assets/icon/profile/defaultProfile3.jpg')
 
 const EmployeeModal = props =>{
     const { open, onCloseModal,
@@ -90,7 +90,7 @@ const EmployeeModal = props =>{
     }
     useEffect(()=>{
         EmployeeFetch()      
-        EmployeeId ? setImage(`http://192.168.100.29:3001/uploads/${EmployeeImage}`) : setImage(DefaultProfile);                
+        EmployeeId ? setImage(`http://192.168.100.39:3001/uploads/${EmployeeImage}`) : setImage([]);                
     },[]);
 
     const _handleAdd = e => {
@@ -153,16 +153,14 @@ const EmployeeModal = props =>{
       const _UploadIMG = (e) => {
         let reader = new FileReader();
         let file = e.target.files[0];
-        
-        if (file) {
+          if (file) {
             reader.onloadend = () => {
                 setImage(reader.result);
                 setEmployeeImage(file);
                 console.log(reader.result);
 
             }
-            console.log(file.name);
-            
+            console.log(file.name);            
             reader.readAsDataURL(file)
         }
     }
@@ -176,7 +174,8 @@ const EmployeeModal = props =>{
             <h4 className="text-center pt-2 pb-4">{employeeId?'Edit Employee':'Add New Employee'}</h4>
             <div className='pb-3 text-center'>
             <div className="pb-3 pt-1 text-center">
-            <img style={{ height: '100px',width:'100px' }} src={image} alt={`${EmployeeImage}`}></img>
+            <img style={{ height: '100px',width:'100px' }} src={employeeId?image:DefaultProfile} alt={`${EmployeeImage}`}></img>
+            
             </div>
             <input style={{width:"100px"}} type="file" name="photo" id="in-btn" onChange={(e) => _UploadIMG(e)} accept="image/*" />
                 <span className="new py-2 px-4" style={{}}>Upload Image</span>
