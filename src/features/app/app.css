@@ -7,3 +7,13 @@
 .makeStyles-drawer-6{
     width:0 !important;
 }
+.MuiTableRow-root{
+    height: 0px!important;
+    }
+    .MuiTypography-root {
+        margin: auto!important;
+        /* margin-block-start: 0!important; */
+    }
+    .MuiTableCell-root {
+        padding: 0px!important;
+    }

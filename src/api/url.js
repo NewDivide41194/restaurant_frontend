@@ -1,4 +1,4 @@
-export const Base_URL = "http://localhost:3001";
+export const Base_URL = "http://192.168.100.43:3001";
 
 export const LOGIN = Base_URL + "/api/user/login";
 
@@ -26,4 +26,4 @@ export const EmployeeFetcher =  Base_URL + "/api/user/employee";
 
 export const UpdateEmployeeFetcher =  Base_URL + "/api/user/employee/updateEmployee";
 
-export const InsertEmployeeFetcher =  Base_URL + "/api/user/employee/addEmployee";
+export const InsertEmployeeFetcher =  Base_URL + "/api/user/employee/addEmployee"

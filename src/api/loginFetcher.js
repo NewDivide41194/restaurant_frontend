@@ -3,7 +3,8 @@ export const LoginFetcher = ({ userName, password }, callback) => {
     fetch(API.LOGIN, {
       method: "POST",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+                "Accept": "*/*"
       },
       cache: "no-cache",
       body: JSON.stringify({ userName: userName, password: password })
@@ -16,7 +17,7 @@ export const LoginFetcher = ({ userName, password }, callback) => {
         } else {
           window.alert("Something Wrong");
         }
-      })
+      })                  
       .then(data => {
         console.log(data);
   

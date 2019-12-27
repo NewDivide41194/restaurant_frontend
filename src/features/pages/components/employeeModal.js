@@ -72,11 +72,13 @@ const EmployeeModal = props => {
   const [addressErr, setAddressErr] = useState("");
   const [departmentErr, setDepartmentErr] = useState("");
   const [designationErr, setDesignationErr] = useState("");
+  const[genderErr, setGenderErr] = useState("");
+  const [maritalErr, setMaritalErr] = useState("");
+  const [birthDateErr, setBirthDateErr] = useState("");
 
-  const [file, setFile] = useState("");
   const [image, setImage] = useState([]);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
-  const regexNRC = /^[0-9]\/[A-Za-z]{6}\(N\)[0-9]{6}$/;
+  //const regexNRC = /^[0-9]*[0-9]\/[A-Za-z]{6}\(N\)[0-9]{6}$/;
 
   const MaritalOptions = [
     { value: "Single", label: "Single" },
@@ -95,7 +97,7 @@ const EmployeeModal = props => {
   ];
 
   const [selectedGender, setSelectedGender] = useState(
-    employeeId === ""
+    employeeId === ""||employeeData[index].gender===""
       ? { value: "", label: "Select Gender" }
       : employeeId && employeeData[index].gender === "Male"
       ? GenderOptions[0]
@@ -110,7 +112,7 @@ const EmployeeModal = props => {
   );
 
   const [selectedMaritalStatus, setSelectedMaritalStatus] = useState(
-    employeeId === ""
+    employeeId === ""||employeeData[index].maritalStatus===""
       ? { value: "", label: "Select MaritalStatus" }
       : employeeData[index].maritalStatus === "Single"
       ? MaritalOptions[0]
@@ -135,9 +137,13 @@ const EmployeeModal = props => {
     setSelectedDepartment();
     EmployeeFetch();
     EmployeeId
-      ? setImage(`http://192.168.100.39:3001/uploads/${EmployeeImage}`)
+      ? setImage(`http://192.168.100.43:3001/uploads/${EmployeeImage}`)
       : setImage([]);
   }, []);
+
+  console.log('this year = ', moment(new Date()).year());
+  console.log('birth date = ', moment(DateOfBirth).year());
+  console.log(moment(new Date()).year() - moment(DateOfBirth).year());
 
   const _handleAdd = e => {
     e.preventDefault();
@@ -147,8 +153,8 @@ const EmployeeModal = props => {
     const isValidFather = regex.test(
       document.getElementById("fatherName").value
     );
-    const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
-
+    //const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
+    
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
@@ -170,31 +176,47 @@ const EmployeeModal = props => {
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";
+
     }
-    if (DesignationId === "") {
-      setDesignationErr("Please Fill designation");
-      document.getElementById("designation").style.border = "1px solid red";
+    if (NrcNo.trim() === ""){
+      setNrcErr("Please Fill NRC number");
+      document.getElementById("nrcNo").style.border="1px solid red";
+    }
+    // }else if (!isValidNRC) {
+    //     setNrcErr("Please Fill as 9/AaAaAa(N)123456");
+    //     document.getElementById("nrcNo").style.border="1px solid red";
+    //   return;
+    // }
+    if (Education.trim() === ""){
+      setEducationErr("Please Fill Education");
+      document.getElementById("education").style.border="1px solid red";
+    }
+    if(Gender === ""){
+      setGenderErr("Please Fill Gender");
+      document.getElementById("gender").style.border = "1px solid red";
+     
+    }
+    if(MaritalStatus === ""){
+      setMaritalErr("Please Fill Marital Status");
+      document.getElementById("maritalStatus").style.border = "1px solid red";
       return;
     }
     if (DepartmentId === "") {
-      setDepartmentErr("Please Fill department");
+      setDepartmentErr("Please Fill Department");
       document.getElementById("department").style.border = "1px solid red";
-      return;
     }
-
-    if (NrcNo.trim() === "") {
-      setNrcErr("Please Fill NRC number");
-      document.getElementById("nrcNo").style.border = "1px solid red";
-    } else if (!isValidNRC) {
-      setNrcErr("Please Fill as 9/AaAaAa(N)123456");
-      document.getElementById("nrcNo").style.border = "1px solid red";
-      return;
+    if (DesignationId === "") {
+      setDesignationErr("Please Fill Designation");
+      document.getElementById("designation").style.border = "1px solid red";
+      
     }
+    if(moment(new Date()).year() - moment(DateOfBirth).year() <= 17)
+    {
+      setBirthDateErr("Age must be at least 18!");
+      document.getElementById("date-picker-dialog").style.border = "1px solid red";
 
-    if (Education.trim() === "") {
-      setEducationErr("Please Fill Education");
-      document.getElementById("education").style.border = "1px solid red";
-    } else {
+    }
+    else {
       InsertEmployeeFetcher(
         {
           EmployeeImage,
@@ -236,8 +258,8 @@ const EmployeeModal = props => {
     const isValidFather = regex.test(
       document.getElementById("fatherName").value
     );
-    const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
-
+    //const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
+    
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
@@ -259,31 +281,46 @@ const EmployeeModal = props => {
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";
+      return;
     }
-    if (DesignationId === "") {
-      setDesignationErr("Please Fill designation");
-      document.getElementById("designation").style.border = "1px solid red";
+    if (NrcNo.trim() === ""){
+      setNrcErr("Please Fill NRC number");
+      document.getElementById("nrcNo").style.border="1px solid red";
+    }
+    // }else if (!isValidNRC) {
+    //     setNrcErr("Please Fill as 9/AaAaAa(N)123456");
+    //     document.getElementById("nrcNo").style.border="1px solid red";
+    //   return;
+    // }
+    if (Education.trim() === ""){
+      setEducationErr("Please Fill Education");
+      document.getElementById("education").style.border="1px solid red";
+    }
+     if(Gender === ""){
+      setGenderErr("Please Fill Gender");
+      document.getElementById("gender").style.border = "1px solid red";
+      return;
+    }
+     if(MaritalStatus === ""){
+      setMaritalErr("Please Fill Marital Status");
+      document.getElementById("maritalStatus").style.border = "1px solid red";
       return;
     }
     if (DepartmentId === "") {
-      setDepartmentErr("Please Fill department");
+      setDepartmentErr("Please Fill Department");
       document.getElementById("department").style.border = "1px solid red";
-      return;
     }
-
-    if (NrcNo.trim() === "") {
-      setNrcErr("Please Fill NRC number");
-      document.getElementById("nrcNo").style.border = "1px solid red";
-    } else if (!isValidNRC) {
-      setNrcErr("Please Fill as 9/AaAaAa(N)123456");
-      document.getElementById("nrcNo").style.border = "1px solid red";
-      return;
+    if (DesignationId === "") {
+      setDesignationErr("Please Fill Designation");
+      document.getElementById("designation").style.border = "1px solid red";
+    
     }
+    if(moment(new Date()).year() - moment(DateOfBirth).year() <= 17)
+    {
+      setBirthDateErr("Age must be at least 18!");
+      document.getElementById("date-picker-dialog").style.border = "1px solid red";
 
-    if (Education.trim() === "") {
-      setEducationErr("Please Fill Education");
-      document.getElementById("education").style.border = "1px solid red";
-    } else {
+    }else {
       UpdateEmployeeFetcher(
         {
           EmployeeId,
@@ -310,7 +347,7 @@ const EmployeeModal = props => {
           }
         }
       );
-      // window.location.reload();
+      window.location.reload();
     }
   };
 
@@ -325,25 +362,71 @@ const EmployeeModal = props => {
       reader.readAsDataURL(file);
     }
   };
-
+  const _handleBirthDate = date => {
+      setDateOfBirth(moment(date).format("YYYY-MM-DD"));
+      document.getElementById("date-picker-dialog").style.border = '';
+      setBirthDateErr("");
+    
+  }
+  const _handleEmpName = e => {
+    setEmployeeName(e.target.value);
+    document.getElementById("employeeName").style.border = '';
+    setEmpErr("");
+  }
+  const _handleFatherName = e => {
+    setFatherName(e.target.value);
+    document.getElementById("fatherName").style.border = '';
+    setFatherErr("");
+  }
+  const _handleNRC = e => {
+    setNrcNo(e.target.value);
+    document.getElementById("nrcNo").style.border = '';
+    setNrcErr("");
+  }
+  const _handleEducation = e => {
+    setEducation(e.target.value);
+    document.getElementById("education").style.border = '';
+    setEducationErr("");
+  }
+  const _handleAddress = e => {
+    setAddress(e.target.value);
+    document.getElementById("address").style.border = '';
+    setAddressErr("");
+  }
   const _handleGender = e => {
     setGender(e.value);
     setSelectedGender(e);
+    document.getElementById("gender").style = {
+      border: "none"
+    }
+    setGenderErr("");
   };
 
   const _handleMaritial = e => {
     setMaritalStatus(e.value);
     setSelectedMaritalStatus(e);
+    document.getElementById("maritalStatus").style = {
+      border: "none"
+    }
+    setMaritalErr("");
   };
 
   const _handleDepartment = e => {
     setDepartmentId(e.value);
     setSelectedDepartment(e);
+    document.getElementById("department").style = {
+      border: "none"
+    }
+    setDepartmentErr("");
   };
 
   const _handleDesignation = e => {
     setDesignationId(e.value);
     setSelectedDesignation(e);
+    document.getElementById("designation").style = {
+      border: "none"
+    }
+    setDesignationErr("");
   };
 
   return (
@@ -392,7 +475,15 @@ const EmployeeModal = props => {
               value={EmployeeName}
               style={{ border: "1px solid gray" }}
               maxLength={50}
-              onChange={e => setEmployeeName(e.target.value)}
+              onChange={_handleEmpName}
+              // onChange={e =>
+              //   setEmployeeName(
+              //     e.target.value,
+              //     (document.getElementById("employeeName").style = {
+              //       border: "none"
+              //     })
+              //   )
+              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{empErr}</div>
           </div>
@@ -406,7 +497,15 @@ const EmployeeModal = props => {
               value={FatherName}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              onChange={e => setFatherName(e.target.value)}
+              onChange={_handleFatherName}
+              // onChange={e =>
+              //   setFatherName(
+              //     e.target.value,
+              //     (document.getElementById("fatherName").style = {
+              //       border: "none"
+              //     })
+              //   )
+              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{fatherErr}</div>
           </div>
@@ -422,15 +521,17 @@ const EmployeeModal = props => {
                   format="dd/MM/yyyy"
                   value={DateOfBirth}
                   className="w-100"
-                  onChange={date =>
-                    setDateOfBirth(moment(date).format("YYYY-MM-DD"))
-                  }
+                  // onChange={date =>
+                  //   setDateOfBirth(moment(date).format("YYYY-MM-DD"))
+                  // }
+                  onChange={_handleBirthDate}
                   KeyboardButtonProps={{
                     "aria-label": "change date"
                   }}
                 />
               </Grid>
             </MuiPickersUtilsProvider>
+            <div style={{color:"red", fontSize:"11px"}}>{birthDateErr}</div>
           </div>
           <div className="col-lg-6 col-md-6">
             <label>Join Date</label>
@@ -457,7 +558,6 @@ const EmployeeModal = props => {
         <div className="pb-2 row">
           <div className="col-lg-6 col-md-6">
             <label>NRC No.</label>
-
             <MyInput
               id={"nrcNo"}
               className="w-100"
@@ -465,8 +565,10 @@ const EmployeeModal = props => {
               value={NrcNo}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              onChange={e => setNrcNo(e.target.value)}
+              //onChange={e => setNrcNo(e.target.value)}
+              onChange={_handleNRC}
             />
+            <div style={{ color:"red", fontSize:"11px"}}>{nrcErr}</div>
           </div>
           <div className="col-md-6 col-lg-6">
             <label>Education</label>
@@ -477,7 +579,16 @@ const EmployeeModal = props => {
               value={Education}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              onChange={e => setEducation(e.target.value)}
+              onChange={_handleEducation}
+              // onChange={e =>
+              //   setEducation(
+              //     e.target.value,
+              //     (document.getElementById("education").style = {
+              //       border: "none"
+              //     })
+              //   ),
+              //   setEducationErr("")
+              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{educationErr}</div>
           </div>
@@ -497,7 +608,7 @@ const EmployeeModal = props => {
               {designationErr}
             </div>
           </div>
-          <div className="col-lg-6 col-md-6">
+          <div className="col-lg-6 col-md-6 col-sm-6">
             <label>Department</label>
             <br />
             <MyDropDown
@@ -514,23 +625,27 @@ const EmployeeModal = props => {
         </div>
 
         <div className="row pb-2">
-          <div className="col-md-6 col-lg-6">
+          <div className="col-md-6 col-lg-6 col-sm-6">
             <label>Gender</label>
             <br />
             <MyDropDown
+              id={"gender"}
               value={selectedGender}
               onChange={e => _handleGender(e)}
               options={GenderOptions}
             />
+            <div style={{ color: "red", fontSize:"11px"}}>{genderErr}</div>
           </div>
 
-          <div className="col-lg-6 col-md-6">
+          <div className="col-lg-6 col-md-6 col-sm-6">
             <label>Marital Status</label>
             <MyDropDown
+              id={"maritalStatus"}
               value={selectedMaritalStatus}
               onChange={e => _handleMaritial(e)}
               options={MaritalOptions}
             />
+          <div style={{ color: "red", fontSize:"11px"}}>{maritalErr}</div>
           </div>
         </div>
 
@@ -544,14 +659,15 @@ const EmployeeModal = props => {
               value={Address}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              onChange={e =>
-                setAddress(
-                  e.target.value,
-                  (document.getElementById("address").style = {
-                    border: "none"
-                  })
-                )
-              }
+              onChange = {_handleAddress}
+              // onChange={e =>
+              //   setAddress(
+              //     e.target.value,
+              //     (document.getElementById("address").style = {
+              //       border: "none"
+              //     })
+              //   )
+              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{addressErr}</div>
           </div>
