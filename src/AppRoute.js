@@ -1,4 +1,4 @@
-import React,{useEffect} from "react";
+import React,{useEffect, useState} from "react";
 import {
   BrowserRouter as Router,
   Redirect,
@@ -19,19 +19,21 @@ import Department from "./features/pages/container/departmentContainer";
 import Designation from "./features/pages/container/designationContainer";
 import EmployeeContainer from "./features/pages/container/employeeContainer.js";
 import {useCookies} from 'react-cookie'
+import { NavInfoFetcher } from "./api/navInfoFetcher.js";
+import { LoginFetcher } from "./api/loginFetcher.js";
 
 const AppRoute = (props) => {
   const [cookies, setCookie] = useCookies(['token']);
+  const Token=cookies.token
 
-  useEffect(()=>{  
-},[])
+  console.log(cookies.token==='undefined'?"Undefined":"Defined");
   return (
     <div>
       <div>
         <Router>
           <Switch>
             <Route path={`/`} exact component={SignIn} />
-            <Route path={`/${RoutePath.Dashboard}`} component={Dashboard} />
+            <Route path={Token==="undefined"?'/Login':`/${RoutePath.Dashboard}`} component={Token==="undefined"?SignIn:Dashboard} />
             <Route path={`/${RoutePath.AdminPanel}`} component={AdminPanel} />
             <Route path={`/${RoutePath.Report}`} component={Report} />
             <Route path={`/${RoutePath.Setting}`} component={Setting} />

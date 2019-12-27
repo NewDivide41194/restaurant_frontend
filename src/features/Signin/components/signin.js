@@ -1,67 +1,12 @@
-import React, { useState, useEffect } from "react";
+import React from "react";
 import { withRouter } from "react-router-dom";
-import { useCookies } from "react-cookie";
 
 import MyInput from "../../../tools/myInput.js";
 import MyButton from "../../../tools/myButton.js";
 import MyLabel from "../../../tools/myLabel.js";
-import background from "../../../assets/images/background2.jpg";
-import * as RoutePath from "../../../config/routeConfig.js";
-import { LoginFetcher } from "../../../api/loginFetcher";
 
-const Signin = props => {
-  const [userName, setUserName] = useState("");
-  const [password, setPassword] = useState("");
-  const [visible, setVisible] = useState(false);
-
-  const [cookies, setCookie] = useCookies(["token"]);
-
-  const _handleSignIn = e => {
-    e.preventDefault();
-
-    LoginFetcher({ userName, password }, (err, data) => {
-      if (data.payload !== null) {
-        
-        setCookie("token", data.message, { path: "/" });
-      }
-
-      if (err) {
-        console.log(err);
-      }
-      if (data.success === true) {
-        props.history.push(`/${RoutePath.Dashboard}`);
-      }
-      if (data.success === false) {
-        window.alert("User Name or Password Incorrect!");
-        setUserName("");
-        setPassword("");
-        document.getElementById("name").focus();
-      }
-    });
-  };
-  const View = () => {
-    setVisible(!visible)
-  }
-
-  const _handlePassword = e => {
-    setPassword(e.target.value);
-  };
-  const _handleUser = e => {
-    setUserName(e.target.value);
-  };
-  useEffect(()=>document.getElementById("name").focus(),[])
-  const bgstyle = {
-    // paddingTop: media.mobile ? '5rem' : media.tablet ? '6rem' : '8rem',
-    // paddingBottom: media.mobile ? "3rem" : media.tablet ? "7rem" : "7rem",
-    backgroundImage: `url(${background})`,
-    backgroundPosition: "center",
-    backgroundSize: "cover",
-    backgroundRepeat: "no-repeat",
-    width: "100%",
-    height: "550px",
-    borderRadius:"10px"
-  };
-
+const Signin = (props) => {
+  const{userName, password, visible,_handleSignIn,_handleUser,View,_handlePassword,bgstyle}=props
   return (
     <div className="d-flex align-items-center min-vh-100 text-left" style={{background: 'radial-gradient(circle, rgba(121,43,9,1) 0%, rgba(0,0,0,1) 100%)'}}>
       <div className='container'>

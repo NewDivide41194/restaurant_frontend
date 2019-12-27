@@ -29,8 +29,6 @@ const EmployeeModal = props => {
     joinDate,
     departmentId,
     designationId,
-    department,
-    designation,
     education,
     gender,
     maritalStatus,
@@ -45,9 +43,13 @@ const EmployeeModal = props => {
   const [EmployeeName, setEmployeeName] = useState(employeeName);
   const [FatherName, setFatherName] = useState(fatherName);
   const [EmployeeImage, setEmployeeImage] = useState(employeeImage);
-  const [DateOfBirth, setDateOfBirth] = useState(moment(employeeId?dateOfBirth:new Date()).format("YYYY-MM-DD"));
+  const [DateOfBirth, setDateOfBirth] = useState(
+    moment(employeeId ? dateOfBirth : new Date()).format("YYYY-MM-DD")
+  );
   const [NrcNo, setNrcNo] = useState(nrcNo);
-  const [JoinDate, setJoinDate] = useState(moment(employeeId?joinDate:new Date()).format("YYYY-MM-DD"));
+  const [JoinDate, setJoinDate] = useState(
+    moment(employeeId ? joinDate : new Date()).format("YYYY-MM-DD")
+  );
   const [Education, setEducation] = useState(education);
   const [Gender, setGender] = useState(gender);
   const [MaritalStatus, setMaritalStatus] = useState(maritalStatus);
@@ -63,54 +65,64 @@ const EmployeeModal = props => {
   const [DesignationData, setDesignationData] = useState([]);
   const [DepartmentData, setDepartmentData] = useState([]);
 
+  const [empErr, setEmpErr] = useState("");
+  const [fatherErr, setFatherErr] = useState("");
+  const [nrcErr, setNrcErr] = useState("");
+  const [educationErr, setEducationErr] = useState("");
+  const [addressErr, setAddressErr] = useState("");
+  const [departmentErr, setDepartmentErr] = useState("");
+  const [designationErr, setDesignationErr] = useState("");
+
   const [file, setFile] = useState("");
   const [image, setImage] = useState([]);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
-  // const regexNRC = /^(?=.{2,20}$)(?![._a-zA-Z])(?!.*[_. ]{2})[a-zA-Z0-9._]+(?<![_.])$/;
-  const regexAddress = /^(?=.{1,150}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
- 
+  const regexNRC = /^[0-9]\/[A-Za-z]{6}\(N\)[0-9]{6}$/;
+
   const MaritalOptions = [
     { value: "Single", label: "Single" },
     { value: "Married", label: "Married" }
   ];
 
+  const designationOptions = DesignationData.map((v, k) => {
+    return { value: v.value, label: v.label };
+  });
+  const departmentOptions = DepartmentData.map((v, k) => {
+    return { value: v.value, label: v.label };
+  });
   const GenderOptions = [
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" }
   ];
 
   const [selectedGender, setSelectedGender] = useState(
-    index === -1
-      ? { value: "Male", label: "Male" }
-      : employeeData[index].gender === "Male"
+    employeeId === ""
+      ? { value: "", label: "Select Gender" }
+      : employeeId && employeeData[index].gender === "Male"
       ? GenderOptions[0]
       : GenderOptions[1]
   );
+  const [selectedDepartment, setSelectedDepartment] = useState(
+    employeeId && {
+      value: `${DepartmentId}`,
+      label: `${employeeData[index].department}`
+    }
+    // departmentOptions.find()
+  );
 
   const [selectedMaritalStatus, setSelectedMaritalStatus] = useState(
-    index === -1
-      ? { value: "Single", label: "Single" }
+    employeeId === ""
+      ? { value: "", label: "Select MaritalStatus" }
       : employeeData[index].maritalStatus === "Single"
       ? MaritalOptions[0]
       : MaritalOptions[1]
   );
 
-  const [selectedDepartment, setSelectedDepartment] = useState(
-    index === -1
-      ? { value: "0", label: "Select Department" }
-      : employeeData[index].departmentId === 1
-      ? DepartmentData[0]
-      : DepartmentData[1]
-  );
-
   const [selectedDesignation, setSelectedDesignation] = useState(
-    index === -1
-      ? { value: "0", label: "Select Designation" }
-      : employeeData[index].designationId === `${designationId}`
-      ? DesignationData[`${designationId}`]
-      : DesignationData[0]
+    employeeId && {
+      value: `${DesignationId}`,
+      label: `${employeeData[index].designation}`
+    }
   );
-
 
   const EmployeeFetch = () => {
     EmployeeFetcher((err, data) => {
@@ -119,6 +131,8 @@ const EmployeeModal = props => {
     });
   };
   useEffect(() => {
+    setSelectedDesignation();
+    setSelectedDepartment();
     EmployeeFetch();
     EmployeeId
       ? setImage(`http://192.168.100.39:3001/uploads/${EmployeeImage}`)
@@ -127,29 +141,60 @@ const EmployeeModal = props => {
 
   const _handleAdd = e => {
     e.preventDefault();
-    const isValid = regex.test(document.getElementById("employeeName").value);
-    const isValid1 = regex.test(document.getElementById("fatherName").value);
-    const isValidAddress = regexAddress.test(document.getElementById("address").value);
-    // const isValidNRC=regexNRC.test(document.getElementById("nrcNo").value)
+    const isValidName = regex.test(
+      document.getElementById("employeeName").value
+    );
+    const isValidFather = regex.test(
+      document.getElementById("fatherName").value
+    );
+    const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
+
     if (EmployeeName.trim() === "") {
-      alert("Please Fill Employee Name");
-    } else if (!isValid) {
-      alert("Employee Name Contains Special Characters or Numbers!");
-      return;
-    } else if (!isValid1) {
-      alert("Father Name Contains Special Characters or Numbers!");
+      setEmpErr("Please Fill Employee Name");
+      document.getElementById("employeeName").style.border = "1px solid red";
+    } else if (!isValidName) {
+      setEmpErr("Employee Name Contains Special Characters or Numbers!");
+      document.getElementById("employeeName").style.border = "1px solid red";
       return;
     }
-    else if (Address.trim() === "") {
-      alert("Please Fill Address");
-    } 
-    else if (!isValidAddress) {
-      alert("Address Contains Special Characters or Numbers!");
-      return}
-      // else if (!isValidNRC) {
-      //   alert("NRC Contains Special Characters or Numbers!");
-      //   return }
-    else {
+
+    if (FatherName.trim() === "") {
+      setFatherErr("Please Fill Father Name");
+      document.getElementById("fatherName").style.border = "1px solid red";
+    } else if (!isValidFather) {
+      setFatherErr("Father Name Contains Special Characters or Numbers!");
+      document.getElementById("fatherName").style.border = "1px solid red";
+      return;
+    }
+
+    if (Address.trim() === "") {
+      setAddressErr("Please Fill Address");
+      document.getElementById("address").style.border = "1px solid red";
+    }
+    if (DesignationId === "") {
+      setDesignationErr("Please Fill designation");
+      document.getElementById("designation").style.border = "1px solid red";
+      return;
+    }
+    if (DepartmentId === "") {
+      setDepartmentErr("Please Fill department");
+      document.getElementById("department").style.border = "1px solid red";
+      return;
+    }
+
+    if (NrcNo.trim() === "") {
+      setNrcErr("Please Fill NRC number");
+      document.getElementById("nrcNo").style.border = "1px solid red";
+    } else if (!isValidNRC) {
+      setNrcErr("Please Fill as 9/AaAaAa(N)123456");
+      document.getElementById("nrcNo").style.border = "1px solid red";
+      return;
+    }
+
+    if (Education.trim() === "") {
+      setEducationErr("Please Fill Education");
+      document.getElementById("education").style.border = "1px solid red";
+    } else {
       InsertEmployeeFetcher(
         {
           EmployeeImage,
@@ -171,7 +216,9 @@ const EmployeeModal = props => {
         (err, data) => {
           if (data.payload === null) {
             alert("Employee Name Already Exist!");
+            return;
           } else {
+            alert("Employee Added!");
             window.location.reload();
           }
         }
@@ -183,28 +230,60 @@ const EmployeeModal = props => {
     e.preventDefault();
     setDateOfBirth(moment(dateOfBirth).format("YYYY-MM-DD"));
     setJoinDate(moment(joinDate).format("YYYY-MM-DD"));
-    const isValid = regex.test(document.getElementById("employeeName").value);
-    const isValid1 = regex.test(document.getElementById("fatherName").value);
-    const isValidAddress = regexAddress.test(document.getElementById("address").value);
-    // const isValidNRC=regexNRC.test(document.getElementById("nrcNo").value)
+    const isValidName = regex.test(
+      document.getElementById("employeeName").value
+    );
+    const isValidFather = regex.test(
+      document.getElementById("fatherName").value
+    );
+    const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
+
     if (EmployeeName.trim() === "") {
-      alert("Please Fill Employee Name");
-    } else if (!isValid) {
-      alert("Employee Name Contains Special Characters!");
-      return;
-    } 
-    else if (!isValid1) {
-      alert("Father Name Contains Special Characters or Numbers!");
+      setEmpErr("Please Fill Employee Name");
+      document.getElementById("employeeName").style.border = "1px solid red";
+    } else if (!isValidName) {
+      setEmpErr("Employee Name Contains Special Characters or Numbers!");
+      document.getElementById("employeeName").style.border = "1px solid red";
       return;
     }
-    else if (!isValidAddress) {
-      alert("Address Contains Special Characters or Numbers!");
-      return}
-      // else if (!isValidNRC) {
-      //   alert("NRC Contains Special Characters or Numbers!");
-      //   return }
-        else {
-      // setEmployeeImage(employeeImage);
+
+    if (FatherName.trim() === "") {
+      setFatherErr("Please Fill Father Name");
+      document.getElementById("fatherName").style.border = "1px solid red";
+    } else if (!isValidFather) {
+      setFatherErr("Father Name Contains Special Characters or Numbers!");
+      document.getElementById("fatherName").style.border = "1px solid red";
+      return;
+    }
+
+    if (Address.trim() === "") {
+      setAddressErr("Please Fill Address");
+      document.getElementById("address").style.border = "1px solid red";
+    }
+    if (DesignationId === "") {
+      setDesignationErr("Please Fill designation");
+      document.getElementById("designation").style.border = "1px solid red";
+      return;
+    }
+    if (DepartmentId === "") {
+      setDepartmentErr("Please Fill department");
+      document.getElementById("department").style.border = "1px solid red";
+      return;
+    }
+
+    if (NrcNo.trim() === "") {
+      setNrcErr("Please Fill NRC number");
+      document.getElementById("nrcNo").style.border = "1px solid red";
+    } else if (!isValidNRC) {
+      setNrcErr("Please Fill as 9/AaAaAa(N)123456");
+      document.getElementById("nrcNo").style.border = "1px solid red";
+      return;
+    }
+
+    if (Education.trim() === "") {
+      setEducationErr("Please Fill Education");
+      document.getElementById("education").style.border = "1px solid red";
+    } else {
       UpdateEmployeeFetcher(
         {
           EmployeeId,
@@ -226,17 +305,14 @@ const EmployeeModal = props => {
           Active
         },
         (err, data) => {
-          console.log(data);
-
           if (data.payload === null) {
             alert("Employee Name Already Exist!");
-          } else {
-            window.location.reload();
           }
         }
       );
+      // window.location.reload();
     }
-  };    
+  };
 
   const _UploadIMG = e => {
     let reader = new FileReader();
@@ -250,20 +326,26 @@ const EmployeeModal = props => {
     }
   };
 
-  console.log("Department=>>>", DepartmentId);
-  console.log("DesignationId=>>>", DesignationId);
-const _handleGender=(e)=>{setGender(e.value)
-setSelectedGender(e)}
+  const _handleGender = e => {
+    setGender(e.value);
+    setSelectedGender(e);
+  };
 
-const _handleMaritial=(e)=>{setMaritalStatus(e.value)
-    setSelectedMaritalStatus(e)}
+  const _handleMaritial = e => {
+    setMaritalStatus(e.value);
+    setSelectedMaritalStatus(e);
+  };
 
-    const _handleDepartment=(e)=>{setDepartmentId(e.value)
-        setSelectedDepartment(e)}
+  const _handleDepartment = e => {
+    setDepartmentId(e.value);
+    setSelectedDepartment(e);
+  };
 
-        const _handleDesignation=(e)=>{setDesignationId(e.value)
-          setSelectedDesignation(e)}
- 
+  const _handleDesignation = e => {
+    setDesignationId(e.value);
+    setSelectedDesignation(e);
+  };
+
   return (
     <Modal open={open} onClose={onCloseModal} center>
       <form encType="multipart/form-data" autoComplete="off">
@@ -300,7 +382,7 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
           {/* <input type="file" name="photo" id="upload-photo" onChange={(e) => _UploadIMG(e)} accept="image/*" /> */}
         </div>
 
-        <div className="row">
+        <div className="row pb-2">
           <div className="col-lg-6 col-md-6">
             <label>Employee Name</label>
             <MyInput
@@ -312,6 +394,7 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
               maxLength={50}
               onChange={e => setEmployeeName(e.target.value)}
             />
+            <div style={{ color: "red", fontSize: "11px" }}>{empErr}</div>
           </div>
 
           <div className="col-lg-6 col-md-6">
@@ -325,6 +408,7 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
               maxLength={200}
               onChange={e => setFatherName(e.target.value)}
             />
+            <div style={{ color: "red", fontSize: "11px" }}>{fatherErr}</div>
           </div>
         </div>
         <div className="row">
@@ -337,6 +421,7 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
                   id="date-picker-dialog"
                   format="dd/MM/yyyy"
                   value={DateOfBirth}
+                  className="w-100"
                   onChange={date =>
                     setDateOfBirth(moment(date).format("YYYY-MM-DD"))
                   }
@@ -348,22 +433,6 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
             </MuiPickersUtilsProvider>
           </div>
           <div className="col-lg-6 col-md-6">
-            <label>NRC No.</label>
-
-            <MyInput
-            id={'nrcNo'}
-              className="w-100"
-              type="text"
-              value={NrcNo}
-              style={{ border: "1px solid gray" }}
-              maxLength={200}
-              onChange={e => setNrcNo(e.target.value)}
-            />
-          </div>
-        </div>
-
-        <div className="pb-2 row">
-          <div className="col-lg-6 col-md-6">
             <label>Join Date</label>
             <MuiPickersUtilsProvider utils={DateFnsUtils}>
               <Grid container justify="space-around">
@@ -372,6 +441,7 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
                   id="date-picker-dialog"
                   format="dd/MM/yyyy"
                   value={JoinDate}
+                  className="w-100"
                   onChange={date =>
                     setJoinDate(moment(date).format("YYYY-MM-DD"))
                   }
@@ -382,16 +452,34 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
               </Grid>
             </MuiPickersUtilsProvider>
           </div>
+        </div>
 
-          <div className="col-md-6 col-lg-6">
-            <label>Department</label>
-            <br />            
-             <MyDropDown
-              value={selectedDepartment}
-              onChange={(e)=>_handleDepartment(e)
-              }
-              options={DepartmentData}
+        <div className="pb-2 row">
+          <div className="col-lg-6 col-md-6">
+            <label>NRC No.</label>
+
+            <MyInput
+              id={"nrcNo"}
+              className="w-100"
+              type="text"
+              value={NrcNo}
+              style={{ border: "1px solid gray" }}
+              maxLength={200}
+              onChange={e => setNrcNo(e.target.value)}
             />
+          </div>
+          <div className="col-md-6 col-lg-6">
+            <label>Education</label>
+            <MyInput
+              id={"education"}
+              className="w-100"
+              type="text"
+              value={Education}
+              style={{ border: "1px solid gray" }}
+              maxLength={200}
+              onChange={e => setEducation(e.target.value)}
+            />
+            <div style={{ color: "red", fontSize: "11px" }}>{educationErr}</div>
           </div>
         </div>
 
@@ -401,21 +489,27 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
             <br />
             <MyDropDown
               value={selectedDesignation}
-              onChange={(e)=>_handleDesignation(e)
-              }
-              options={DesignationData}
+              id={"designation"}
+              onChange={e => _handleDesignation(e)}
+              options={designationOptions}
             />
+            <div style={{ color: "red", fontSize: "11px" }}>
+              {designationErr}
+            </div>
           </div>
           <div className="col-lg-6 col-md-6">
-            <label>Education</label>
-            <MyInput
-              className="w-100"
-              type="text"
-              value={Education}
-              style={{ border: "1px solid gray" }}
-              maxLength={200}
-              onChange={e => setEducation(e.target.value)}
+            <label>Department</label>
+            <br />
+            <MyDropDown
+              id={"department"}
+              value={selectedDepartment}
+              defaultValue={selectedDepartment}
+              onChange={e => _handleDepartment(e)}
+              options={departmentOptions}
             />
+            <div style={{ color: "red", fontSize: "11px" }}>
+              {departmentErr}
+            </div>
           </div>
         </div>
 
@@ -424,28 +518,17 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
             <label>Gender</label>
             <br />
             <MyDropDown
-              //  type="text"
-              //  value={Gender}
-              //  maxLength={50}
-              //  defaultValue={employeeId?Gender: GenderOptions[0]}
-              //  onChange={(e)=>setGender(e.target.value)}
-              //  options={GenderOptions}
               value={selectedGender}
-              onChange={(e)=>_handleGender(e)}
+              onChange={e => _handleGender(e)}
               options={GenderOptions}
             />
-            {/* <select value={Gender} onChange={_handleGender}>
-                        <option value="Male">Male</option>
-                        <option value="Female">Female</option>
-                    </select> */}
           </div>
 
           <div className="col-lg-6 col-md-6">
             <label>Marital Status</label>
             <MyDropDown
               value={selectedMaritalStatus}
-              onChange={(e)=>_handleMaritial(e)
-              }
+              onChange={e => _handleMaritial(e)}
               options={MaritalOptions}
             />
           </div>
@@ -455,14 +538,22 @@ const _handleMaritial=(e)=>{setMaritalStatus(e.value)
           <div className="col-lg-6 col-md-6">
             <label>Address</label>
             <MyInput
-            id={'address'}
+              id={"address"}
               className="w-100"
               type="text"
               value={Address}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              onChange={e => setAddress(e.target.value)}
+              onChange={e =>
+                setAddress(
+                  e.target.value,
+                  (document.getElementById("address").style = {
+                    border: "none"
+                  })
+                )
+              }
             />
+            <div style={{ color: "red", fontSize: "11px" }}>{addressErr}</div>
           </div>
           <div className="col-lg-6 col-md-6 pt-3">
             <input
