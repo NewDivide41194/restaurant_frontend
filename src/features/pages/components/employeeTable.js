@@ -335,10 +335,10 @@ export default function EnhancedTable(props) {
     setDateOfBirth("");
     setNrcNo("");
     setJoinDate("");
-    setDepartmentId(employeeData[0].departmentId);
-    setDesignationId(employeeData[0].designationId);
+    setDepartmentId("");
+    setDesignationId("");
     setEducation("");
-    setGender(employeeData[0].gender);
+    setGender("");
     setMaritalStatus("");
     setAddress("");
     setCreatedBy("");

@@ -78,7 +78,6 @@ const EmployeeModal = props => {
 
   const [image, setImage] = useState([]);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
-  //const regexNRC = /^[0-9]*[0-9]\/[A-Za-z]{6}\(N\)[0-9]{6}$/;
 
   const MaritalOptions = [
     { value: "Single", label: "Single" },
@@ -108,7 +107,6 @@ const EmployeeModal = props => {
       value: `${DepartmentId}`,
       label: `${employeeData[index].department}`
     }
-    // departmentOptions.find()
   );
 
   const [selectedMaritalStatus, setSelectedMaritalStatus] = useState(
@@ -153,7 +151,6 @@ const EmployeeModal = props => {
     const isValidFather = regex.test(
       document.getElementById("fatherName").value
     );
-    //const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
     
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
@@ -161,7 +158,6 @@ const EmployeeModal = props => {
     } else if (!isValidName) {
       setEmpErr("Employee Name Contains Special Characters or Numbers!");
       document.getElementById("employeeName").style.border = "1px solid red";
-      return;
     }
 
     if (FatherName.trim() === "") {
@@ -170,23 +166,16 @@ const EmployeeModal = props => {
     } else if (!isValidFather) {
       setFatherErr("Father Name Contains Special Characters or Numbers!");
       document.getElementById("fatherName").style.border = "1px solid red";
-      return;
     }
 
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";
-
     }
     if (NrcNo.trim() === ""){
       setNrcErr("Please Fill NRC number");
       document.getElementById("nrcNo").style.border="1px solid red";
     }
-    // }else if (!isValidNRC) {
-    //     setNrcErr("Please Fill as 9/AaAaAa(N)123456");
-    //     document.getElementById("nrcNo").style.border="1px solid red";
-    //   return;
-    // }
     if (Education.trim() === ""){
       setEducationErr("Please Fill Education");
       document.getElementById("education").style.border="1px solid red";
@@ -194,12 +183,10 @@ const EmployeeModal = props => {
     if(Gender === ""){
       setGenderErr("Please Fill Gender");
       document.getElementById("gender").style.border = "1px solid red";
-     
     }
     if(MaritalStatus === ""){
       setMaritalErr("Please Fill Marital Status");
       document.getElementById("maritalStatus").style.border = "1px solid red";
-      return;
     }
     if (DepartmentId === "") {
       setDepartmentErr("Please Fill Department");
@@ -208,13 +195,11 @@ const EmployeeModal = props => {
     if (DesignationId === "") {
       setDesignationErr("Please Fill Designation");
       document.getElementById("designation").style.border = "1px solid red";
-      
     }
     if(moment(new Date()).year() - moment(DateOfBirth).year() <= 17)
     {
       setBirthDateErr("Age must be at least 18!");
       document.getElementById("date-picker-dialog").style.border = "1px solid red";
-
     }
     else {
       InsertEmployeeFetcher(
@@ -258,40 +243,29 @@ const EmployeeModal = props => {
     const isValidFather = regex.test(
       document.getElementById("fatherName").value
     );
-    //const isValidNRC = regexNRC.test(document.getElementById("nrcNo").value);
-    
+
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
     } else if (!isValidName) {
       setEmpErr("Employee Name Contains Special Characters or Numbers!");
       document.getElementById("employeeName").style.border = "1px solid red";
-      return;
     }
-
     if (FatherName.trim() === "") {
       setFatherErr("Please Fill Father Name");
       document.getElementById("fatherName").style.border = "1px solid red";
     } else if (!isValidFather) {
       setFatherErr("Father Name Contains Special Characters or Numbers!");
       document.getElementById("fatherName").style.border = "1px solid red";
-      return;
     }
-
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";
-      return;
     }
     if (NrcNo.trim() === ""){
       setNrcErr("Please Fill NRC number");
       document.getElementById("nrcNo").style.border="1px solid red";
     }
-    // }else if (!isValidNRC) {
-    //     setNrcErr("Please Fill as 9/AaAaAa(N)123456");
-    //     document.getElementById("nrcNo").style.border="1px solid red";
-    //   return;
-    // }
     if (Education.trim() === ""){
       setEducationErr("Please Fill Education");
       document.getElementById("education").style.border="1px solid red";
@@ -299,12 +273,10 @@ const EmployeeModal = props => {
      if(Gender === ""){
       setGenderErr("Please Fill Gender");
       document.getElementById("gender").style.border = "1px solid red";
-      return;
     }
      if(MaritalStatus === ""){
       setMaritalErr("Please Fill Marital Status");
       document.getElementById("maritalStatus").style.border = "1px solid red";
-      return;
     }
     if (DepartmentId === "") {
       setDepartmentErr("Please Fill Department");
@@ -313,13 +285,11 @@ const EmployeeModal = props => {
     if (DesignationId === "") {
       setDesignationErr("Please Fill Designation");
       document.getElementById("designation").style.border = "1px solid red";
-    
     }
     if(moment(new Date()).year() - moment(DateOfBirth).year() <= 17)
     {
       setBirthDateErr("Age must be at least 18!");
       document.getElementById("date-picker-dialog").style.border = "1px solid red";
-
     }else {
       UpdateEmployeeFetcher(
         {
