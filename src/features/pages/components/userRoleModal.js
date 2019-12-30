@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAlert } from "react-alert";
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
@@ -12,25 +13,25 @@ const UserRoleModal = props => {
   const { open, onCloseModal, roleName, remark, active, roleId } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [RoleName, setRoleName] = useState(roleName);
-  const [roleErr, setRoleErr] = useState('');
+  const [roleErr, setRoleErr] = useState("");
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
   const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
+  const alert = useAlert();
 
   const _handleAdd = e => {
-    console.log("DATA IS ==>", RoleName, Remark, Active, CreatedDate);
     e.preventDefault();
     const isValid = regex.test(document.getElementById("roleName").value);
 
     if (RoleName.trim() === "") {
       setRoleErr("Please Fill Role Name");
-      document.getElementById("roleName").style.border = '1px solid red';
+      document.getElementById("roleName").style.border = "1px solid red";
       return;
     } else if (!isValid) {
       setRoleErr("Role Name Contains Special Characters");
-      document.getElementById("roleName").style.border = '1px solid red';
+      document.getElementById("roleName").style.border = "1px solid red";
     } else {
       InsertRoleFetcher(
         { RoleId, RoleName, Remark, Active, CreatedDate },
@@ -39,10 +40,13 @@ const UserRoleModal = props => {
 
           if (data.payload === null) {
             setRoleErr("Role Name Already Exist!");
-            document.getElementById("roleName").style.border = '1px solid red';
+            document.getElementById("roleName").style.border = "1px solid red";
           } else {
-            setLoading(true);
-            window.location.reload();
+            alert.success("Role Added!", {
+              onClose: () => {
+                window.location.reload();
+              }
+            });
           }
         }
       );
@@ -65,7 +69,11 @@ const UserRoleModal = props => {
         if (data.payload === null) {
           setRoleErr("Role Name Already Exist!");
         } else {
-          window.location.reload();
+          alert.success("Updated!", {
+            onClose: () => {
+              window.location.reload();
+            }
+          });
         }
       });
     }
@@ -74,17 +82,17 @@ const UserRoleModal = props => {
 
   return (
     <Modal open={open} onClose={onCloseModal} center>
-        {Loading && (
-          <div className="mx-auto text-white position-absolute">
-            <img
-              src={Spinner}
-              style={{ marginTop: "25%", width: 50, height: 50 }}
-              alt="spinner"
-            />
-            <br />
-            Loading . . .
-          </div>
-        )}
+      {Loading && (
+        <div className="mx-auto text-white position-absolute">
+          <img
+            src={Spinner}
+            style={{ marginTop: "25%", width: 50, height: 50 }}
+            alt="spinner"
+          />
+          <br />
+          Loading . . .
+        </div>
+      )}
       <div
         style={{
           color: "black"
@@ -109,9 +117,7 @@ const UserRoleModal = props => {
             onChange={e => setRoleName(e.target.value)}
             maxLength={50}
           />
-           <div style={{color:'red'}}>
-            {roleErr}
-          </div>
+          <div style={{ color: "red" }}>{roleErr}</div>
         </div>
         <div>
           <label>Remark</label>

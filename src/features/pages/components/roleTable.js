@@ -7,7 +7,7 @@ import UserRoleModal from "./userRoleModal";
 import moment from "moment";
 export default function RoleTable() {
   const [roleData, setRoleData] = useState([]);
-
+  
   const [roleName, setRoleName] = useState("");
   const [Remark, setRemark] = useState("");
   const [active, setActive] = useState(0);
@@ -22,7 +22,7 @@ export default function RoleTable() {
       setOpen(true);
     } else {
       const role_data = roleData[index];
-      console.log(role_data);
+      console.log("RoleDATA=>>>",role_data);
       setRoleName(role_data.roleName);
       setRemark(role_data.remark);
       setActive(role_data.active.data[0]);

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { useAlert } from "react-alert";
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
@@ -25,6 +26,7 @@ const DesignationModal = props => {
   const [DesignationId, setDesignationId] = useState(designationId);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
+  const alert = useAlert();
 
   const _handleAdd = (e) => {
     e.preventDefault()
@@ -32,7 +34,8 @@ const DesignationModal = props => {
 
     if (Designation.trim() === "") {
       setDesignationErr("Please Fill Designation Name");    
-      document.getElementById("designation").style.border = "1px solid red"; 
+      document.getElementById("designation").style.border = "1px solid red";
+      return
     } else if (!isValid) {
       setDesignationErr("Designation Name Contains Special Characters!");
       document.getElementById("designation").style.border = "1px solid red"; 
@@ -45,8 +48,11 @@ const DesignationModal = props => {
           setDesignationErr("Designation Name Already Exist!");
           document.getElementById("designation").style.border = "1px solid red"; 
         } else {
-          setLoading(true);
-          window.location.reload();
+          alert.success("Designation Added!", {
+            onClose: () => {
+              window.location.reload();
+            }
+          });
         }
       }
     );
@@ -58,6 +64,7 @@ const DesignationModal = props => {
 
     if (Designation.trim() === "") {
       setDesignationErr("Please Fill Designation Name");      
+      return
     } else if (!isValid) {
       setDesignationErr("Designation Name Contains Special Characters!");
       return
@@ -70,8 +77,11 @@ const DesignationModal = props => {
         if (data.payload === null) {
           setDesignationErr("Designation Name Already Exist!");
         } else {
-          setLoading(true)
-          window.location.reload();
+          alert.success("Updated!", {
+            onClose: () => {
+              window.location.reload();
+            }
+          });
         }
       }
     );

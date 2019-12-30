@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from "react";
+import { useAlert } from "react-alert";
+
 import Modal from "react-responsive-modal";
 import MyInput from "../../../tools/myInput";
 import MyButton from "../../../tools/myButton";
@@ -25,7 +27,7 @@ const DepartmentModal = props => {
   const [DepartmentId, setDepartmentID] = useState(departmentId);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
-
+  const alert = useAlert();
 
   const _handleAdd = e => {
     e.preventDefault();    
@@ -48,8 +50,11 @@ const DepartmentModal = props => {
             setDepartmentErr("Department Name Already Exist!");
             document.getElementById("department").style.border="1px solid red";
           } else{
-            setLoading(true);
-            window.location.reload();
+            alert.success("Department Added!", {
+              onClose: () => {
+                window.location.reload();
+              }
+            });
           }
         }
       );
@@ -74,8 +79,11 @@ const DepartmentModal = props => {
         if (data.payload === null) {
           setDepartmentErr("Department Name Already Exist!");
         } else {
-          setLoading(true)
-          window.location.reload();
+          alert.success("Updated!", {
+            onClose: () => {
+              window.location.reload();
+            }
+          });
         }
       }
     );

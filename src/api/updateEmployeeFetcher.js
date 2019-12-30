@@ -30,13 +30,17 @@ console.log(form);
       },
       body: form
     })
-      .then(response => {
-          console.log(response);
-      })
-      .then(data => {
-        console.log(data);
-        callback(null, data);
-      })
-      .catch(err => console.log(err));
+    .then(response => {
+      console.log(response);
+      if (response.status === 200) {
+        console.log(response);
+        return response.json();
+      }
+    })
+    .then(data => {
+      console.log(data);
+      callback(null, data);
+    })
+    .catch(err => console.log(err));
       
   };

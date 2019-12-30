@@ -29,7 +29,6 @@ const AppRoute = (props) => {
   console.log(cookies.token==='undefined'?"Undefined":"Defined");
   return (
     <div>
-      <div>
         <Router>
           <Switch>
             <Route path={`/`} exact component={SignIn} />
@@ -54,7 +53,6 @@ const AppRoute = (props) => {
             <Redirect to={`/`} />
           </Switch>
         </Router>
-      </div>
     </div>
   );
 };

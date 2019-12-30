@@ -1,88 +1,23 @@
 import React, { useEffect, useState } from "react";
-import PropTypes from "prop-types";
-import { lighten, makeStyles } from "@material-ui/core/styles";
+import { makeStyles } from "@material-ui/core/styles";
 import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
-// import TableContainer from '@material-ui/core/TableContainer';
+import TableContainer from '@material-ui/core/TableContainer';
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Switch from "@material-ui/core/Switch";
 import moment from "moment";
 
-import Sidebar from "../../app/sidebar.js";
 import MyButton from "../../../tools/myButton.js";
 import { EmployeeFetcher } from "../../../api/employeeFetcher";
 import EmployeeModal from "./employeeModal";
 import Spinner from "../../../assets/icon/spinner.gif";
 import "../../app/app.css";
 
-const createData = (
-  sino,
-  employeeImage,
-  active,
-  employeeName,
-  fatherName,
-  dateOfBirth,
-  nrcNo,
-  joinDate,
-  department,
-  designation,
-  education,
-  gender,
-  maritalStatus,
-  address,
-  createdBy,
-  createdDate
-) => {
-  return {
-    employeeImage,
-    active,
-    employeeName,
-    fatherName,
-    dateOfBirth,
-    nrcNo,
-    joinDate,
-    department,
-    designation,
-    education,
-    gender,
-    maritalStatus,
-    address,
-    createdBy,
-    createdDate
-  };
-};
 
-function desc(a, b, orderBy) {
-  if (b[orderBy] < a[orderBy]) {
-    return -1;
-  }
-  if (b[orderBy] > a[orderBy]) {
-    return 1;
-  }
-  return 0;
-}
-
-function stableSort(array, cmp) {
-  const stabilizedThis = array.map((el, index) => [el, index]);
-  stabilizedThis.sort((a, b) => {
-    const order = cmp(a[0], b[0]);
-    if (order !== 0) return order;
-    return a[1] - b[1];
-  });
-  return stabilizedThis.map(el => el[0]);
-}
-
-function getSorting(order, orderBy) {
-  return order === "desc"
-    ? (a, b) => desc(a, b, orderBy)
-    : (a, b) => -desc(a, b, orderBy);
-}
 const headCells = [
   { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
   {
@@ -192,15 +127,6 @@ function EnhancedTableHead(props) {
   );
 }
 
-EnhancedTableHead.propTypes = {
-  classes: PropTypes.object.isRequired,
-  numSelected: PropTypes.number.isRequired,
-  onRequestSort: PropTypes.func.isRequired,
-  onSelectAllClick: PropTypes.func.isRequired,
-  order: PropTypes.oneOf(["asc", "desc"]).isRequired,
-  orderBy: PropTypes.string.isRequired,
-  rowCount: PropTypes.number.isRequired
-};
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -226,6 +152,35 @@ const useStyles = makeStyles(theme => ({
   }
 }));
 
+
+function desc(a, b, orderBy) {
+  if (b[orderBy] < a[orderBy]) {
+    return -1;
+  }
+  if (b[orderBy] > a[orderBy]) {
+    return 1;
+  }
+  return 0;
+}
+
+function stableSort(array, cmp) {
+  const stabilizedThis = array.map((el, index) => [el, index]);
+  stabilizedThis.sort((a, b) => {
+    const order = cmp(a[0], b[0]);
+    if (order !== 0) return order;
+    return a[1] - b[1];
+  });
+
+  return stabilizedThis.map(el => el[0]);
+}
+
+function getSorting(order, orderBy) {
+  console.log("orderBy:", orderBy)
+  return order === "desc"
+    ? (a, b) => desc(a, b, orderBy)
+    : (a, b) => -desc(a, b, orderBy);
+}
+
 export default function EnhancedTable(props) {
   const classes = useStyles();
   const [order, setOrder] = React.useState("asc");
@@ -239,6 +194,7 @@ export default function EnhancedTable(props) {
   const [Image, setImage] = useState([]);
   const [employeeId, setEmployeeId] = useState(null);
   const [employeeName, setEmployeeName] = useState(null);
+  // const [modelEmployee, setModelEmployee] = useState(null)
   const [employeeImage, setEmployeeImage] = useState(null);
   const [active, setActive] = useState(0);
   const [fatherName, setFatherName] = useState(null);
@@ -260,34 +216,74 @@ export default function EnhancedTable(props) {
   const [index, setIndex] = useState(-1);
   const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
 
+  console.log({ rowsPerPage })
+  const _handleEdit = (employee) => {
 
-  const _handleEdit = (e, index) => {
+    console.log("employee", employee)
+    const index = employeeData.findIndex( e => e.employeeId===employee.employeeId )  
+    
     setIndex(index);
-    if (index === undefined) {
-      setOpen(true);
+    if (index===-1) {
+      setOpen(false);
     } else {
-      const employee_Data = employeeData[index];
-      setEmployeeName(employee_Data.employeeName);
-      setEmployeeImage(employee_Data.employeeImage);
-      setActive(employee_Data.active);
-      setFatherName(employee_Data.fatherName);
-      setDateOfBirth(employee_Data.dateOfBirth);
-      setNrcNo(employee_Data.nrcNo);
-      setJoinDate(employee_Data.joinDate);
-      setDepartmentId(employee_Data.departmentId);
-      setDesignationId(employee_Data.designationId);
-      setEducation(employee_Data.education);
-      setGender(employee_Data.gender);
-      setMaritalStatus(employee_Data.maritalStatus);
-      setAddress(employee_Data.address);
-      setCreatedBy(employee_Data.createdBy);
-      setCreatedDate(employee_Data.createdDate);
-      setEmployeeId(employee_Data.employeeId);
-      setUserId(employee_Data.userId);
+      // const employee_Data = employeeData[index];
+      setEmployeeName(employee.employeeName);
+      setEmployeeImage(employee.employeeImage);
+      setActive(employee.active);
+      setFatherName(employee.fatherName);
+      setDateOfBirth(employee.dateOfBirth);
+      setNrcNo(employee.nrcNo);
+      setJoinDate(employee.joinDate);
+      setDepartmentId(employee.departmentId);
+      setDesignationId(employee.designationId);
+      setEducation(employee.education);
+      setGender(employee.gender);
+      setMaritalStatus(employee.maritalStatus);
+      setAddress(employee.address);
+      setCreatedBy(employee.createdBy);
+      setCreatedDate(employee.createdDate);
+      setEmployeeId(employee.employeeId);
+      setUserId(employee.userId);
       setOpen(true);
 
       //16 Columns
     }
+  };
+  const createData = (
+    sino,
+    employeeImage,
+    active,
+    employeeName,
+    fatherName,
+    dateOfBirth,
+    nrcNo,
+    joinDate,
+    department,
+    designation,
+    education,
+    gender,
+    maritalStatus,
+    address,
+    createdBy,
+    createdDate
+  ) => {
+    return {
+      employeeImage,
+      active,
+      employeeName,
+      fatherName,
+      dateOfBirth,
+      nrcNo,
+      joinDate,
+      department,
+      designation,
+      education,
+      gender,
+      maritalStatus,
+      address,
+      createdBy,
+      createdDate
+    };
   };
 
   const rows = [
@@ -353,39 +349,11 @@ export default function EnhancedTable(props) {
     setOrderBy(property);
   };
 
-  // const handleSelectAllClick = event => {
-  //   if (event.target.checked) {
-  //     const newSelecteds = rows.map(n => n.name);
-  //     setSelected(newSelecteds);
-  //     return;
-  //   }
-  //   setSelected([]);
-  // };
-
-  const handleClick = (event, employeeName) => {
-    const selectedIndex = selected.indexOf(employeeName);
-    let newSelected = [];
-
-    if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, employeeName);
-    } else if (selectedIndex === 0) {
-      newSelected = newSelected.concat(selected.slice(1));
-    } else if (selectedIndex === selected.length - 1) {
-      newSelected = newSelected.concat(selected.slice(0, -1));
-    } else if (selectedIndex > 0) {
-      newSelected = newSelected.concat(
-        selected.slice(0, selectedIndex),
-        selected.slice(selectedIndex + 1)
-      );
-    }
-
-    setSelected(newSelected);
-  };
 
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-
+  console.log(rowsPerPage)
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -401,7 +369,6 @@ export default function EnhancedTable(props) {
 
   return (
     <div className={classes.root}>
-      <Sidebar />
       <div className="py-5" style={{ paddingLeft: 78 }}>
         {open ? (
           <EmployeeModal
@@ -446,135 +413,147 @@ export default function EnhancedTable(props) {
             Loading . . .
           </div>
         ) : (
-          <Paper className={classes.paper}>
-            {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
-            <Table
-              className={classes.table}
-              aria-labelledby="tableTitle"
-              size={dense ? "small" : "medium"}
-              aria-label="enhanced table"
-            >
-              <EnhancedTableHead
-                classes={classes}
-                numSelected={selected.length}
-                order={order}
-                orderBy={orderBy}
-                // onSelectAllClick={handleSelectAllClick}
-                onRequestSort={handleRequestSort}
-                rowCount={rows.length}
-              />
-              {employeeData.map((v, k) => (
-                <TableBody key={k}>
-                  {stableSort(rows, getSorting(order, orderBy))
-                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    .map((row, index) => {
-                      console.log({row})
-                      const isItemSelected = isSelected(row.employeeName);
-                      const labelId = `enhanced-table-${index}`;
+            <Paper className={classes.paper}>
+              <TableContainer>
+                {/* <EnhancedTableToolbar numSelected={selected.length} /> */}
+                <Table
+                  className={classes.table}
+                  aria-labelledby="tableTitle"
+                  size={dense ? "small" : "medium"}
+                  aria-label="enhanced table"
+                >
+                  <EnhancedTableHead
+                    classes={classes}
+                    numSelected={selected.length}
+                    order={order}
+                    orderBy={orderBy}
+                    // onSelectAllClick={handleSelectAllClick}
+                    onRequestSort={handleRequestSort}
+                    rowCount={rows.length}
+                  />
+                  {
+                  // employeeData.map((v, k) => {
+                    // console.log(page* rowsPerPage, (page* rowsPerPage) + rowsPerPage)
+                    // const d = stableSort(employeeData, getSorting(order, orderBy))
+                    // const dd = d.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    // console.log("d - dd: ", d.length+" - "+ dd.length)
+                    // console.log("d1: ", d)
+                    // return (
+                      <TableBody>
+                        {
+                          stableSort(employeeData, getSorting(order, orderBy))
+                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                            .map((row, index) => {
+                              const isItemSelected = isSelected(row.employeeName);
+                              const labelId = `enhanced-table-${index}`;
 
-                      return (
-                        <TableRow
-                          hover
-                          onClick={event =>
-                            handleClick(event, row.employeeName)
-                          }
-                          role="checkbox"
-                          aria-checked={isItemSelected}
-                          tabIndex={-1}
-                          key={row.employeeName}
-                          // key={row.employeeName}
-                          selected={isItemSelected}
-                        >
-                          <TableCell align="left">{k + 1}</TableCell>
-                          <TableCell align="left">
-                            <div
-                              style={{
-                                width: 50,
-                                height: 60,
-                                overflow: "hidden"
-                              }}
-                            >
-                              <img
-                                className="img-fluid"
-                                src={
-                                  v.employeeImage
-                                    ? `http://192.168.100.43:3001/uploads/${v.employeeImage}`
-                                    : DefaultProfile
-                                }
-                                id={v.id}
-                                alt="styles"
-                              />
-                            </div>
-                          </TableCell>
-                          <TableCell align="left" style={{ fontSize: 18 }}>
-                              {v.active === 1 ? (
-                                <i className="fa fa-check-square" />
-                              ) : (
-                                <i className="fa fa-square" />
-                              )}
-                  </TableCell>
-                          <TableCell
-                            component="th"
-                            id={labelId}
-                            scope="row"
-                            padding="none"
-                          >
-                            {v.employeeName}
-                          </TableCell>
-                          <TableCell align="left">{v.fatherName}</TableCell>
-                          <TableCell align="left">
-                            {moment(v.dateOfBirth).format("MM/DD/YYYY")}
-                          </TableCell>
-                          <TableCell align="left">{v.nrcNo}</TableCell>
-                          <TableCell align="left">
-                            {moment(v.joinDate).format("MM/DD/YYYY")}
-                          </TableCell>
-                          <TableCell align="left">{v.department}</TableCell>
-                          <TableCell align="left">{v.designation}</TableCell>
-                          <TableCell align="left">{v.education}</TableCell>
-                          <TableCell align="left">{v.gender}</TableCell>
-                          <TableCell align="left">{v.maritalStatus}</TableCell>
-                          <TableCell align="left">{v.address}</TableCell>
-                          <TableCell align="left">{v.createdBy}</TableCell>
-                          <TableCell align="left">
-                            {moment(v.createdDate).format("MM/DD/YYYY hh:mm A")}
-                          </TableCell>
-                          <TableCell align="left">
-                            <button
-                              type={"button"}
-                              onClick={() => _handleEdit(v, k)}
-                              style={{
-                                borderRadius: "8px",
-                                backgroundColor: "#c7821c",
-                                color: "white",
-                                width: "75px"
-                              }}
-                            >
-                              Edit
+                              return (
+                                <TableRow
+                                  hover
+
+                                  role="checkbox"
+                                  aria-checked={isItemSelected}
+                                  tabIndex={-1}
+                                  key={row.employeeName}
+                                  // key={row.employeeName}
+                                  selected={isItemSelected}
+                                >
+                                  <TableCell align="left">{index + 1}</TableCell>
+                                  <TableCell align="left">
+                                    <div
+                                      style={{
+                                        width: 50,
+                                        height: 60,
+                                        overflow: "hidden"
+                                      }}
+                                    >
+                                      <img
+                                        className="img-fluid"
+                                        src={
+                                          row.employeeImage
+                                            ? `http://localhost:3001/uploads/${row.employeeImage}`
+                                            : DefaultProfile
+                                        }
+                                        id={row.id}
+                                        alt="styles"
+                                      />
+                                    </div>
+                                  </TableCell>
+                                  <TableCell align="left" style={{ fontSize: 18 }}>
+                                    {row.active === 1 ? (
+                                      <i className="fa fa-check-square" />
+                                    ) : (
+                                        <i className="fa fa-square" />
+                                      )}
+                                  </TableCell>
+                                  <TableCell
+                                    component="th"
+                                    id={labelId}
+                                    scope="row"
+                                    padding="none"
+                                  >
+                                    {row.employeeName}
+                                  </TableCell>
+                                  <TableCell align="left">{row.fatherName}</TableCell>
+                                  <TableCell align="left">
+                                    {moment(row.dateOfBirth).format("MM/DD/YYYY")}
+                                  </TableCell>
+                                  <TableCell align="left">{row.nrcNo}</TableCell>
+                                  <TableCell align="left">
+                                    {moment(row.joinDate).format("MM/DD/YYYY")}
+                                  </TableCell>
+                                  <TableCell align="left">{row.department}</TableCell>
+                                  <TableCell align="left">{row.designation}</TableCell>
+                                  <TableCell align="left">{row.education}</TableCell>
+                                  <TableCell align="left">{row.gender}</TableCell>
+                                  <TableCell align="left">{row.maritalStatus}</TableCell>
+                                  <TableCell align="left">{row.address}</TableCell>
+                                  <TableCell align="left">{row.createdBy}</TableCell>
+                                  <TableCell align="left">
+                                    {moment(row.createdDate).format("MM/DD/YYYY hh:mm A")}
+                                  </TableCell>
+                                  <TableCell align="left">
+                                    <button
+                                      type={"button"}
+                                      onClick={() => _handleEdit(row)}
+                                      style={{
+                                        borderRadius: "8px",
+                                        backgroundColor: "#c7821c",
+                                        color: "white",
+                                        width: "75px"
+                                      }}
+                                    >
+                                      Edit
                             </button>
-                          </TableCell>
-                        </TableRow>
-                      );
-                    })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                      <TableCell colSpan={16} />
-                    </TableRow>
-                  )}
-                </TableBody>
-              ))}
-            </Table>
-            <TablePagination
-              rowsPerPageOptions={[5, 10, 25]}
-              component="div"
-              count={rows.length}
-              rowsPerPage={rowsPerPage}
-              page={page}
-              onChangePage={handleChangePage}
-              onChangeRowsPerPage={handleChangeRowsPerPage}
-            />
-          </Paper>
-        )}
+                                  </TableCell>
+                                </TableRow>
+                              );
+                            })}
+                        {emptyRows > 0 && (
+                          <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                            <TableCell colSpan={16} />
+                          </TableRow>
+                        )}
+                      </TableBody>
+                  //   )
+                  // })
+                  }
+                </Table>
+                <TablePagination
+                  rowsPerPageOptions={[5, 10, 25]}
+                  component="div"
+                  count={employeeData.length}
+                  rowsPerPage={rowsPerPage}
+                  page={page}
+                  onChangePage={handleChangePage}
+                  onChangeRowsPerPage={handleChangeRowsPerPage}
+                />
+              </TableContainer>
+
+            </Paper>
+
+          )}
+
       </div>
       {/* <FormControlLabel
         control={<Switch checked={dense} onChange={handleChangeDense} />}

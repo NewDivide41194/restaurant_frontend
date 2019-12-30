@@ -60,3 +60,9 @@
 .MuiInput-underline.Mui-error:after{
   border-bottom: none;
 }
+table tr:nth-of-type(n) th {
+  border-right: 1px solid black;
+  text-align: center;
+  font-weight: bold;
+  height: 50px;
+}

@@ -7,7 +7,7 @@ import { transitions, positions, Provider as AlertProvider } from "react-alert";
 import AlertTemplate from "react-alert-template-basic";
 const options = {
   position: positions.MIDDLE,
-  timeout: 8000,
+  timeout: 2000,
   offset: "30px",
   transition: transitions.SCALE,
   containerStyle: {
