@@ -1,4 +1,4 @@
-export const Base_URL = "http://localhost:3001";
+export const Base_URL = "http://192.168.100.51:3001";
 
 export const LOGIN = Base_URL + "/api/auth/login";
 

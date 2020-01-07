@@ -16,6 +16,8 @@ import { DesignationFetcher } from "../../../api/designationFetcher";
 import DesignationModal from "./designationModal";
 import Spinner from "../../../assets/icon/spinner.gif";
 import "../../app/app.css";
+import checked from '../../../assets/icon/checked-2.png';
+import unchecked from '../../../assets/icon/unchecked.png';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -293,9 +295,9 @@ export default function EnhancedTable(props) {
             <TableCell align="center" id={labelId}>{row.designation}</TableCell>
             <TableCell align="center"  style={{ fontSize: 18 }}>
                {row.active === 1 ? (
-                 <img src="https://img.icons8.com/officexs/16/000000/checked-2--v1.png"  alt="checkbox"></img>
+                 <img src={checked}  alt="checkbox"></img>
                ) : (
-                 <img src="https://img.icons8.com/officexs/16/000000/unchecked-checkbox.png"  alt="checkbox"  />
+                 <img src={unchecked}  alt="checkbox"  />
                  )}
             </TableCell>
             <TableCell align="center">{row.remark}</TableCell>

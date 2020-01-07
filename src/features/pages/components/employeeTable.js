@@ -15,6 +15,8 @@ import MyButton from "../../../tools/myButton.js";
 import { EmployeeFetcher } from "../../../api/employeeFetcher";
 import EmployeeModal from "./employeeModal";
 import Spinner from "../../../assets/icon/spinner.gif";
+import checked from '../../../assets/icon/checked-2.png';
+import unchecked from '../../../assets/icon/unchecked.png';
 
 const useStyles = makeStyles(theme => ({
   root: {
@@ -417,7 +419,7 @@ export default function EnhancedTable(props) {
                                 className="img-fluid"
                                 src={
                                   row.employeeImage
-                                    ? `http://localhost:3001/uploads/${row.employeeImage}`
+                                    ? `http://192.168.100.51:3001/uploads/${row.employeeImage}`
                                     : DefaultProfile
                                 }
                                 id={row.id}
@@ -432,9 +434,9 @@ export default function EnhancedTable(props) {
                           </TableCell>
                           <TableCell align="left"  style={{ fontSize: 18 }}>
                             {row.active === 1 ? (
-                              <img src="https://img.icons8.com/officexs/16/000000/checked-2--v1.png" className='px-3' alt="checkbox"></img>
+                              <img src={checked} className='px-3' alt="checkbox"></img>
                             ) : (
-                              <img src="https://img.icons8.com/officexs/16/000000/unchecked-checkbox.png" className='px-3' alt="checkbox"  />
+                              <img src={unchecked} className='px-3' alt="checkbox"  />
                               )}
                           </TableCell>
                           <TableCell id={labelId}  >

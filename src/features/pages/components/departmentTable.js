@@ -17,6 +17,8 @@ import MyButton from "../../../tools/myButton.js";
 import { DepartmentFetcher } from "../../../api/departmentFetcher";
 import DepartmentModal from "./departmentModal";
 import Spinner from "../../../assets/icon/spinner.gif";
+import checked from '../../../assets/icon/checked-2.png';
+import unchecked from '../../../assets/icon/unchecked.png';
 // import "../../app/app.css";
 
 const useStyles = makeStyles(theme => ({
@@ -241,7 +243,6 @@ export default function EnhancedTable(props) {
           createDate={createdDate}
           departmentId={departmentId}
           userId={userId}
-          token={token}
           />
         ) : null}
         <MyButton
@@ -301,9 +302,9 @@ export default function EnhancedTable(props) {
             <TableCell  id={labelId}>{row.department}</TableCell>
             <TableCell align="center"  style={{ fontSize: 18 }}>
                {row.active === 1 ? (
-                 <img src="https://img.icons8.com/officexs/16/000000/checked-2--v1.png"  alt="checkbox"></img>
+                 <img src={checked}  alt="checkbox"></img>
                ) : (
-                 <img src="https://img.icons8.com/officexs/16/000000/unchecked-checkbox.png"  alt="checkbox"  />
+                 <img src={unchecked} alt="checkbox"  />
                  )}
             </TableCell>
             <TableCell align="center">{row.remark}</TableCell>
@@ -336,7 +337,7 @@ export default function EnhancedTable(props) {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={departmentData.length}
+                  count={rows.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onChangePage={handleChangePage}

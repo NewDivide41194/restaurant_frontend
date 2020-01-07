@@ -16,6 +16,8 @@ import {RoleFetcher} from "../../../api/roleFetcher";
 import AdminRoleModal from "./adminRoleModal";
 import Spinner from "../../../assets/icon/spinner.gif";
 import "../../app/app.css";
+import checked from '../../../assets/icon/checked-2.png';
+import unchecked from '../../../assets/icon/unchecked.png';
 
 
 const useStyles = makeStyles(theme => ({
@@ -220,6 +222,8 @@ export default function EnhancedTable(props) {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
+  console.log('Pages --->'+ rows.length);
+
   return (
     <div className={classes.root}>
       <div className="py-5" style={{ paddingLeft: 14 }}>
@@ -294,9 +298,9 @@ export default function EnhancedTable(props) {
             <TableCell align="center" id={labelId}>{row.roleName}</TableCell>
             <TableCell align="center"  style={{ fontSize: 18 }}>
                {row.active === 1 ? (
-                 <img src="https://img.icons8.com/officexs/16/000000/checked-2--v1.png"  alt="checkbox"></img>
+                 <img src={checked}  alt="checkbox"></img>
                ) : (
-                 <img src="https://img.icons8.com/officexs/16/000000/unchecked-checkbox.png"  alt="checkbox"  />
+                 <img src={unchecked}  alt="checkbox"  />
                  )}
             </TableCell>
             <TableCell align="center">{row.remark}</TableCell>
