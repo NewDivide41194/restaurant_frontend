@@ -101,6 +101,7 @@ export default function EnhancedTable(props) {
   const [open, setOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   const [cookies]=useCookies(["token"])    
+  const token=cookies.token
 
   const [index, setIndex] = useState(-1);
   const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
@@ -274,7 +275,6 @@ export default function EnhancedTable(props) {
     setOpen(false);
   };
   const EmployeeFetch = () => {
-    const token=cookies.token
     EmployeeFetcher(token,(err, data)  => {
       setEmployeeData(data.payload[0]);
       setLoading(false);
@@ -352,6 +352,7 @@ export default function EnhancedTable(props) {
             employeeData={employeeData}
             employeeImage={employeeImage}
             userId={userId}
+            token={token}
           />
         ) : null}
         <MyButton

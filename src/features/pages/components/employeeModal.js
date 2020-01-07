@@ -78,6 +78,7 @@ const EmployeeModal = props => {
   const [maritalErr, setMaritalErr] = useState("");
   const [birthDateErr, setBirthDateErr] = useState("");
   const [image, setImage] = useState([]);
+  console.log("EMP===>>>",employeeData);
 
   //const regex = /^(?=.{1,50}$)(?![_.0-9+=*;:,<>\?/|$&%^`~()])(?!.*[_.]{2})[a-zA-Z0-9._\'\"()-@& ]+(?<![_.+=*;:\?/|,$<>~`^$])$/;
   const regex = /[^!#$%*:;,/?+_<>={}"]+$/;
@@ -437,6 +438,7 @@ const EmployeeModal = props => {
       console.log(DateOfBirth);
     }
   };
+  
 
   return (
     <Modal open={open} onClose={onCloseModal} center>

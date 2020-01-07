@@ -3,7 +3,7 @@ export const InsertDesignationFetcher = (
   { DesignationId, Designation, Remark, Active, CreatedDate, UserId,token },
   callback
 ) => {
-  console.log("DATA is ===>", Remark, Active, Designation, CreatedDate);
+  console.log("DATA is ===>", Remark, Active, Designation, CreatedDate,token);
 
   fetch(API.InsertDesignation, {
     method: "POST",

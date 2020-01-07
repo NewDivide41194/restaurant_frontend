@@ -89,10 +89,11 @@ export default function EnhancedTable(props) {
   const [open, setOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
   const [cookies]=useCookies(["token"])    
+  const token=cookies.token 
 
   const [index, setIndex] = useState(-1);
  
-  console.log({ rowsPerPage })
+  console.log(token)
   const _handleEdit = (designation) => {
 
     const index = designationData.findIndex( e => e.designationId===designation.designationId )  
@@ -180,7 +181,6 @@ export default function EnhancedTable(props) {
     setOpen(false);
   };
   const DesignationFetch = () => {
-    const token=cookies.token 
     DesignationFetcher(token,(err, data) => {
       setDesignationData(data.payload);
       setLoading(false);
@@ -233,6 +233,7 @@ export default function EnhancedTable(props) {
           createdBy={createdBy}
           createDate={createdDate}
           designationId={designationId}
+          token={token}
           />
         ) : null}
         <MyButton

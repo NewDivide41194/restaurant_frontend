@@ -241,6 +241,7 @@ export default function EnhancedTable(props) {
           createDate={createdDate}
           departmentId={departmentId}
           userId={userId}
+          token={token}
           />
         ) : null}
         <MyButton
