@@ -1,14 +1,16 @@
 import * as API from "./url";
 
-export const UpdateDepartmentFetcher = ({ DepartmentId,Department,Remark,Active }, callback) => {
+export const UpdateDepartmentFetcher = ({ DepartmentId,Department,Remark,Active,UserId,token }, callback) => {
     console.log(DepartmentId,Department,Remark,Active);
     
     fetch(API.UpdateDepartment, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Authorization":`Bearer ${token}`
       },
-      body: JSON.stringify({ departmentId:DepartmentId,department:Department,remark:Remark,active:Active}),
+      body: JSON.stringify({ departmentId:DepartmentId,department:Department,remark:Remark,active:Active,userId:UserId}),
       cache: "no-cache"
     })
       .then(response => {

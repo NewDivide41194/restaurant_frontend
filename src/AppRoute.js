@@ -32,7 +32,7 @@ const AppRoute = (props) => {
         <Router>
           <Switch>
             <Route path={`/`} exact component={SignIn} />
-            <Route path={Token==="undefined"?'/Login':`/${RoutePath.Dashboard}`} component={Token==="undefined"?SignIn:Dashboard} />
+            <Route path={`/${RoutePath.Dashboard}`} component={Dashboard} />
             <Route path={`/${RoutePath.AdminPanel}`} component={AdminPanel} />
             <Route path={`/${RoutePath.Report}`} component={Report} />
             <Route path={`/${RoutePath.Setting}`} component={Setting} />

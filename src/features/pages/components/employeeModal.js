@@ -17,7 +17,6 @@ import { UpdateEmployeeFetcher } from "../../../api/updateEmployeeFetcher";
 import MyDropDown from "../../../tools/myDropDown";
 const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
 
-
 const EmployeeModal = props => {
   const {
     open,
@@ -39,7 +38,8 @@ const EmployeeModal = props => {
     index,
     userId,
     employeeData,
-    employeeImage
+    employeeImage,
+    token
   } = props;
 
   const [EmployeeName, setEmployeeName] = useState(employeeName);
@@ -48,10 +48,10 @@ const EmployeeModal = props => {
   const [DateOfBirth, setDateOfBirth] = useState(
     moment(employeeId ? dateOfBirth : new Date()).format("YYYY-MM-DD")
   );
-  const [NrcNo, setNrcNo] = useState(nrcNo);
   const [JoinDate, setJoinDate] = useState(
     moment(employeeId ? joinDate : new Date()).format("YYYY-MM-DD")
   );
+  const [NrcNo, setNrcNo] = useState(nrcNo);
   const [Education, setEducation] = useState(education);
   const [Gender, setGender] = useState(gender);
   const [MaritalStatus, setMaritalStatus] = useState(maritalStatus);
@@ -77,16 +77,16 @@ const EmployeeModal = props => {
   const [genderErr, setGenderErr] = useState("");
   const [maritalErr, setMaritalErr] = useState("");
   const [birthDateErr, setBirthDateErr] = useState("");
-
   const [image, setImage] = useState([]);
-  const regex = /^(?=.{1,50}$)(?![_.0-9]"')(?!.*"[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+
+  //const regex = /^(?=.{1,50}$)(?![_.0-9+=*;:,<>\?/|$&%^`~()])(?!.*[_.]{2})[a-zA-Z0-9._\'\"()-@& ]+(?<![_.+=*;:\?/|,$<>~`^$])$/;
+  const regex = /[^!#$%*:;,/?+_<>={}"]+$/;
   const alert = useAlert();
 
   const MaritalOptions = [
     { value: "Single", label: "Single" },
     { value: "Married", label: "Married" }
   ];
-
   const designationOptions = DesignationData.map((v, k) => {
     return { value: v.value, label: v.label };
   });
@@ -97,7 +97,6 @@ const EmployeeModal = props => {
     { value: "Male", label: "Male" },
     { value: "Female", label: "Female" }
   ];
-
   const [selectedGender, setSelectedGender] = useState(
     employeeId === "" || employeeData[index].gender === ""
       ? { value: "", label: "Select Gender" }
@@ -111,7 +110,6 @@ const EmployeeModal = props => {
       label: `${employeeData[index].department}`
     }
   );
-
   const [selectedMaritalStatus, setSelectedMaritalStatus] = useState(
     employeeId === "" || employeeData[index].maritalStatus === ""
       ? { value: "", label: "Select MaritalStatus" }
@@ -119,7 +117,6 @@ const EmployeeModal = props => {
       ? MaritalOptions[0]
       : MaritalOptions[1]
   );
-
   const [selectedDesignation, setSelectedDesignation] = useState(
     employeeId && {
       value: `${DesignationId}`,
@@ -133,18 +130,93 @@ const EmployeeModal = props => {
       setDesignationData(data.payload[2]);
     });
   };
+
   useEffect(() => {
     setSelectedDesignation();
     setSelectedDepartment();
     EmployeeFetch();
     EmployeeId
-      ? setImage(`http://192.168.100.52:3001/uploads/${EmployeeImage}`)
+      ? setImage(`http://192.168.100.39:3002/uploads/${EmployeeImage}`)
       : setImage([]);
   }, []);
 
-  console.log("this year = ", moment(new Date()).year());
-  console.log("birth date = ", moment(DateOfBirth).year());
-  console.log(moment(new Date()).year() - moment(DateOfBirth).year());
+  const _UploadIMG = e => {
+    let reader = new FileReader();
+    let file = e.target.files[0];
+    if (file) {
+      reader.onloadend = () => {
+        setImage(reader.result);
+        setEmployeeImage(file);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+  const _handleBirthDate = date => {
+    setDateOfBirth(moment(date).format("YYYY-MM-DD"));
+    //console.log(moment(date).format("YYYY-MM-DD"));
+    document.getElementById("date-picker-dialog").style.border = "";
+    setBirthDateErr("");
+  };
+  const _handleEmpName = e => {
+    setEmployeeName(e.target.value);
+    document.getElementById("employeeName").style.border = "";
+    setEmpErr("");
+  };
+  const _handleFatherName = e => {
+    setFatherName(e.target.value);
+    document.getElementById("fatherName").style.border = "";
+    setFatherErr("");
+  };
+  const _handleNRC = e => {
+    setNrcNo(e.target.value);
+    document.getElementById("nrcNo").style.border = "";
+    setNrcErr("");
+  };
+  const _handleEducation = e => {
+    setEducation(e.target.value);
+    document.getElementById("education").style.border = "";
+    setEducationErr("");
+  };
+  const _handleAddress = e => {
+    setAddress(e.target.value);
+    document.getElementById("address").style.border = "";
+    setAddressErr("");
+  };
+  const _handleGender = e => {
+    setGender(e.value);
+    setSelectedGender(e);
+    document.getElementById("gender").style = {
+      border: "none"
+    };
+    setGenderErr("");
+  };
+
+  const _handleMaritial = e => {
+    setMaritalStatus(e.value);
+    setSelectedMaritalStatus(e);
+    document.getElementById("maritalStatus").style = {
+      border: "none"
+    };
+    setMaritalErr("");
+  };
+
+  const _handleDepartment = e => {
+    setDepartmentId(e.value);
+    setSelectedDepartment(e);
+    document.getElementById("department").style = {
+      border: "none"
+    };
+    setDepartmentErr("");
+  };
+
+  const _handleDesignation = e => {
+    setDesignationId(e.value);
+    setSelectedDesignation(e);
+    document.getElementById("designation").style = {
+      border: "none"
+    };
+    setDesignationErr("");
+  };
 
   const _handleAdd = e => {
     e.preventDefault();
@@ -215,6 +287,7 @@ const EmployeeModal = props => {
       document.getElementById("address").style.border = "1px solid red";
       return;
     } else {
+      setDateOfBirth(moment(DateOfBirth).format("YYYY-MM-DD"));
       InsertEmployeeFetcher(
         {
           EmployeeImage,
@@ -231,13 +304,14 @@ const EmployeeModal = props => {
           Address,
           UserId,
           CreatedDate,
-          Active
+          Active,
+          token
         },
         (err, data) => {
-          if (data.payload === null && data.error === "E2601") {
+          if (data.success === false && data.error === "E2601") {
             alert.error("Employee Name Already Exist!");
             return;
-          } else if (data.payload === null && data.error === "N2601") {
+          } else if (data.success === false && data.error === "N2601") {
             alert.error("NRC Already Exist!");
             return;
           } else {
@@ -320,8 +394,9 @@ const EmployeeModal = props => {
       setBirthDateErr("Age must be at least 18!");
       document.getElementById("date-picker-dialog").style.border =
         "1px solid red";
-        return;
+      return;
     } else {
+      setDateOfBirth(moment(DateOfBirth).format("YYYY-MM-DD"));
       UpdateEmployeeFetcher(
         {
           EmployeeId,
@@ -340,16 +415,17 @@ const EmployeeModal = props => {
           Address,
           CreatedBy,
           CreatedDate,
-          Active
+          Active,
+          token
         },
         (err, data) => {
-          if (data.payload === null && data.error === "E2601") {
+          if (data.success === false && data.error === "E2601") {
             alert.error("Employee Name Already Exist!");
             return;
-          } else if (data.payload === null && data.error === "N2601") {
+          } else if (data.success === false && data.error === "N2601") {
             alert.error("NRC Number Already Exist!");
             return;
-          }  else {
+          } else {
             alert.success("Updated!", {
               onClose: () => {
                 window.location.reload();
@@ -358,84 +434,8 @@ const EmployeeModal = props => {
           }
         }
       );
+      console.log(DateOfBirth);
     }
-  };
-
-  const _UploadIMG = e => {
-    let reader = new FileReader();
-    let file = e.target.files[0];
-    if (file) {
-      reader.onloadend = () => {
-        setImage(reader.result);
-        setEmployeeImage(file);
-      };
-      reader.readAsDataURL(file);
-    }
-  };
-  const _handleBirthDate = date => {
-    setDateOfBirth(moment(date).format("YYYY-MM-DD"));
-    document.getElementById("date-picker-dialog").style.border = "";
-    setBirthDateErr("");
-  };
-  const _handleEmpName = e => {
-    setEmployeeName(e.target.value);
-    document.getElementById("employeeName").style.border = "";
-    setEmpErr("");
-  };
-  const _handleFatherName = e => {
-    setFatherName(e.target.value);
-    document.getElementById("fatherName").style.border = "";
-    setFatherErr("");
-  };
-  const _handleNRC = e => {
-    setNrcNo(e.target.value);
-    document.getElementById("nrcNo").style.border = "";
-    setNrcErr("");
-  };
-  const _handleEducation = e => {
-    setEducation(e.target.value);
-    document.getElementById("education").style.border = "";
-    setEducationErr("");
-  };
-  const _handleAddress = e => {
-    setAddress(e.target.value);
-    document.getElementById("address").style.border = "";
-    setAddressErr("");
-  };
-  const _handleGender = e => {
-    setGender(e.value);
-    setSelectedGender(e);
-    document.getElementById("gender").style = {
-      border: "none"
-    };
-    setGenderErr("");
-  };
-
-  const _handleMaritial = e => {
-    setMaritalStatus(e.value);
-    setSelectedMaritalStatus(e);
-    document.getElementById("maritalStatus").style = {
-      border: "none"
-    };
-    setMaritalErr("");
-  };
-
-  const _handleDepartment = e => {
-    setDepartmentId(e.value);
-    setSelectedDepartment(e);
-    document.getElementById("department").style = {
-      border: "none"
-    };
-    setDepartmentErr("");
-  };
-
-  const _handleDesignation = e => {
-    setDesignationId(e.value);
-    setSelectedDesignation(e);
-    document.getElementById("designation").style = {
-      border: "none"
-    };
-    setDesignationErr("");
   };
 
   return (
@@ -471,7 +471,6 @@ const EmployeeModal = props => {
           <span className="new py-2 px-4" style={{}}>
             {EmployeeImage ? "Change Photo" : "Upload Photo"}
           </span>
-          {/* <input type="file" name="photo" id="upload-photo" onChange={(e) => _UploadIMG(e)} accept="image/*" /> */}
         </div>
 
         <div className="row pb-2">
@@ -485,14 +484,6 @@ const EmployeeModal = props => {
               style={{ border: "1px solid gray" }}
               maxLength={50}
               onChange={_handleEmpName}
-              // onChange={e =>
-              //   setEmployeeName(
-              //     e.target.value,
-              //     (document.getElementById("employeeName").style = {
-              //       border: "none"
-              //     })
-              //   )
-              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{empErr}</div>
           </div>
@@ -507,14 +498,6 @@ const EmployeeModal = props => {
               style={{ border: "1px solid gray" }}
               maxLength={200}
               onChange={_handleFatherName}
-              // onChange={e =>
-              //   setFatherName(
-              //     e.target.value,
-              //     (document.getElementById("fatherName").style = {
-              //       border: "none"
-              //     })
-              //   )
-              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{fatherErr}</div>
           </div>
@@ -530,9 +513,6 @@ const EmployeeModal = props => {
                   format="dd/MM/yyyy"
                   value={DateOfBirth}
                   className="w-100"
-                  // onChange={date =>
-                  //   setDateOfBirth(moment(date).format("YYYY-MM-DD"))
-                  // }
                   onChange={_handleBirthDate}
                   KeyboardButtonProps={{
                     "aria-label": "change date"
@@ -574,7 +554,6 @@ const EmployeeModal = props => {
               value={NrcNo}
               style={{ border: "1px solid gray" }}
               maxLength={200}
-              //onChange={e => setNrcNo(e.target.value)}
               onChange={_handleNRC}
             />
             <div style={{ color: "red", fontSize: "11px" }}>{nrcErr}</div>
@@ -589,15 +568,6 @@ const EmployeeModal = props => {
               style={{ border: "1px solid gray" }}
               maxLength={200}
               onChange={_handleEducation}
-              // onChange={e =>
-              //   setEducation(
-              //     e.target.value,
-              //     (document.getElementById("education").style = {
-              //       border: "none"
-              //     })
-              //   ),
-              //   setEducationErr("")
-              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{educationErr}</div>
           </div>
@@ -669,14 +639,6 @@ const EmployeeModal = props => {
               style={{ border: "1px solid gray" }}
               maxLength={200}
               onChange={_handleAddress}
-              // onChange={e =>
-              //   setAddress(
-              //     e.target.value,
-              //     (document.getElementById("address").style = {
-              //       border: "none"
-              //     })
-              //   )
-              // }
             />
             <div style={{ color: "red", fontSize: "11px" }}>{addressErr}</div>
           </div>
@@ -701,7 +663,7 @@ const EmployeeModal = props => {
             }}
             className="w-100"
             text={EmployeeId ? "UPDATE" : "ADD"}
-            type={"submit"}
+            type={"button"}
             onClick={EmployeeId ? _handleUpdate : _handleAdd}
           />
         </div>

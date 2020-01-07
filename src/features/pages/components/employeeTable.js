@@ -4,140 +4,29 @@ import Table from "@material-ui/core/Table";
 import TableBody from "@material-ui/core/TableBody";
 import TableCell from "@material-ui/core/TableCell";
 import TableContainer from '@material-ui/core/TableContainer';
-import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import TableSortLabel from "@material-ui/core/TableSortLabel";
 import Paper from "@material-ui/core/Paper";
 import moment from "moment";
+import {useCookies} from 'react-cookie'
 
+import EnhancedTableHead from '../../../tools/myTable.js';
 import MyButton from "../../../tools/myButton.js";
 import { EmployeeFetcher } from "../../../api/employeeFetcher";
 import EmployeeModal from "./employeeModal";
 import Spinner from "../../../assets/icon/spinner.gif";
-import "../../app/app.css";
-
-
-const headCells = [
-  { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
-  {
-    id: 'employeeImage',
-    numeric: false,
-    disablePadding: true,
-    label: 'Employee Image'
-  },
-  {
-    id: 'active',
-    numeric: false,
-    disablePadding: true,
-    label: 'active'
-  },
-  {
-    id: 'employeeName',
-    numeric: false,
-    disablePadding: true,
-    label: 'Employee Name'
-  },
-  {
-    id: 'fatherName ',
-    numeric: false,
-    disablePadding: false,
-    label: 'Father Name'
-  },
-  {
-    id: 'dateOfBirth',
-    numeric: false,
-    disablePadding: false,
-    label: 'Date Of Birth'
-  },
-  { id: 'nrcNo', numeric: false, disablePadding: false, label: 'NRC No' },
-  { id: 'joinDate', numeric: false, disablePadding: false, label: 'Join Date' },
-  {
-    id: 'department',
-    numeric: false,
-    disablePadding: false,
-    label: 'Department'
-  },
-  {
-    id: 'designation',
-    numeric: false,
-    disablePadding: false,
-    label: 'Designation'
-  },
-  {
-    id: 'education',
-    numeric: false,
-    disablePadding: false,
-    label: 'Education'
-  },
-  { id: 'gender', numeric: false, disablePadding: false, label: 'Gender' },
-  {
-    id: 'maritalStatus',
-    numeric: false,
-    disablePadding: false,
-    label: 'Marital Status'
-  },
-  { id: 'address', numeric: false, disablePadding: false, label: 'Address' },
-  {
-    id: 'createdBy',
-    numeric: false,
-    disablePadding: false,
-    label: 'Created By'
-  },
-  {
-    id: 'createdDate',
-    numeric: false,
-    disablePadding: false,
-    label: 'Created Date'
-  }
-];
-
-function EnhancedTableHead(props) {
-  const { classes, order, orderBy, onRequestSort } = props;
-  const createSortHandler = property => event => {
-    onRequestSort(event, property);
-  };
-
-  return (
-    <TableHead>
-      <TableRow>
-        {headCells.map(headCell => (
-          <TableCell
-            key={headCell.id}
-            align={headCell.numeric ? "right" : "left"}
-            padding={headCell.disablePadding ? "none" : "default"}
-            sortDirection={orderBy === headCell.id ? order : false}
-          >
-            <TableSortLabel
-              active={orderBy === headCell.id}
-              direction={order}
-              onClick={createSortHandler(headCell.id)}
-            >
-              {headCell.label}
-              {orderBy === headCell.id ? (
-                <span className={classes.visuallyHidden}>
-                  {order === "desc" ? "sorted descending" : "sorted ascending"}
-                </span>
-              ) : null}
-            </TableSortLabel>
-          </TableCell>
-        ))}
-      </TableRow>
-    </TableHead>
-  );
-}
-
 
 const useStyles = makeStyles(theme => ({
   root: {
-    width: "100%"
+    width: "100%",
   },
   paper: {
     width: "100%",
-    marginBottom: theme.spacing(2)
+    marginBottom: theme.spacing(2),
+    
   },
   table: {
-    minWidth: 750
+    minWidth: 750,
   },
   visuallyHidden: {
     border: 0,
@@ -149,6 +38,7 @@ const useStyles = makeStyles(theme => ({
     position: "absolute",
     top: 20,
     width: 1
+    
   }
 }));
 
@@ -187,14 +77,12 @@ export default function EnhancedTable(props) {
   const [orderBy, setOrderBy] = React.useState("employeeName");
   const [selected, setSelected] = React.useState([]);
   const [page, setPage] = React.useState(0);
-  const [dense, setDense] = React.useState(false);
+  const [dense, setDense] = React.useState(true);
   const [rowsPerPage, setRowsPerPage] = React.useState(5);
   const [employeeData, setEmployeeData] = useState([]);
-  const [departmentData, setDepartmentData] = useState([]);
   const [Image, setImage] = useState([]);
   const [employeeId, setEmployeeId] = useState(null);
   const [employeeName, setEmployeeName] = useState(null);
-  // const [modelEmployee, setModelEmployee] = useState(null)
   const [employeeImage, setEmployeeImage] = useState(null);
   const [active, setActive] = useState(0);
   const [fatherName, setFatherName] = useState(null);
@@ -212,6 +100,7 @@ export default function EnhancedTable(props) {
   const [userId, setUserId] = useState(null);
   const [open, setOpen] = useState(false);
   const [Loading, setLoading] = useState(true);
+  const [cookies]=useCookies(["token"])    
 
   const [index, setIndex] = useState(-1);
   const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
@@ -226,7 +115,6 @@ export default function EnhancedTable(props) {
     if (index===-1) {
       setOpen(false);
     } else {
-      // const employee_Data = employeeData[index];
       setEmployeeName(employee.employeeName);
       setEmployeeImage(employee.employeeImage);
       setActive(employee.active);
@@ -308,11 +196,86 @@ export default function EnhancedTable(props) {
     )
   ];
 
+  const headCells = [
+    { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
+    {
+      id: 'employeeImage',
+      numeric: false,
+      disablePadding: true,
+      label: 'Employee Image'
+    },
+    {
+      id: 'active',
+      numeric: false,
+      disablePadding: true,
+      label: 'Active'
+    },
+    {
+      id: 'employeeName',
+      numeric: false,
+      disablePadding: true,
+      label: 'Employee Name'
+    },
+    {
+      id: 'fatherName ',
+      numeric: false,
+      disablePadding: false,
+      label: 'Father Name'
+    },
+    {
+      id: 'dateOfBirth',
+      numeric: false,
+      disablePadding: false,
+      label: 'Date Of Birth'
+    },
+    { id: 'nrcNo', numeric: false, disablePadding: false, label: 'NRC No' },
+    { id: 'joinDate', numeric: false, disablePadding: false, label: 'Join Date' },
+    {
+      id: 'department',
+      numeric: false,
+      disablePadding: false,
+      label: 'Department'
+    },
+    {
+      id: 'designation',
+      numeric: false,
+      disablePadding: false,
+      label: 'Designation'
+    },
+    {
+      id: 'education',
+      numeric: false,
+      disablePadding: false,
+      label: 'Education'
+    },
+    { id: 'gender', numeric: false, disablePadding: false, label: 'Gender' },
+    {
+      id: 'maritalStatus',
+      numeric: false,
+      disablePadding: false,
+      label: 'Marital Status'
+    },
+    { id: 'address', numeric: false, disablePadding: false, label: 'Address' },
+    {
+      id: 'createdBy',
+      numeric: false,
+      disablePadding: false,
+      label: 'Created By'
+    },
+    {
+      id: 'createdDate',
+      numeric: false,
+      disablePadding: false,
+      label: 'Created Date'
+    }
+  ];
+  
   const onCloseModal = () => {
     setOpen(false);
   };
   const EmployeeFetch = () => {
-    EmployeeFetcher((err, data) => {
+    const token=cookies.token
+    EmployeeFetcher(token,(err, data)  => {
       setEmployeeData(data.payload[0]);
       setLoading(false);
     });
@@ -358,10 +321,6 @@ export default function EnhancedTable(props) {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
   };
-  // const handleChangeDense = event => {
-  //   setDense(event.target.checked);
-  // };
-
   const isSelected = employeeName => selected.indexOf(employeeName) !== -2;
 
   const emptyRows =
@@ -422,122 +381,106 @@ export default function EnhancedTable(props) {
                   size={dense ? "small" : "medium"}
                   aria-label="enhanced table"
                 >
-                  <EnhancedTableHead
+                 <EnhancedTableHead
+                    headCells={headCells}
                     classes={classes}
                     numSelected={selected.length}
                     order={order}
                     orderBy={orderBy}
-                    // onSelectAllClick={handleSelectAllClick}
                     onRequestSort={handleRequestSort}
                     rowCount={rows.length}
                   />
-                  {
-                  // employeeData.map((v, k) => {
-                    // console.log(page* rowsPerPage, (page* rowsPerPage) + rowsPerPage)
-                    // const d = stableSort(employeeData, getSorting(order, orderBy))
-                    // const dd = d.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                    // console.log("d - dd: ", d.length+" - "+ dd.length)
-                    // console.log("d1: ", d)
-                    // return (
-                      <TableBody>
-                        {
-                          stableSort(employeeData, getSorting(order, orderBy))
-                            .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
-                            .map((row, index) => {
-                              const isItemSelected = isSelected(row.employeeName);
-                              const labelId = `enhanced-table-${index}`;
+               
+                <TableBody>
+                {
+                  stableSort(employeeData, getSorting(order, orderBy))
+                    .slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
+                    .map((row, index) => {
+                      const isItemSelected = isSelected(row.employeeName);
+                      const labelId = `enhanced-table-${index}`;
 
-                              return (
-                                <TableRow
-                                  hover
-
-                                  role="checkbox"
-                                  aria-checked={isItemSelected}
-                                  tabIndex={-1}
-                                  key={row.employeeName}
-                                  // key={row.employeeName}
-                                  selected={isItemSelected}
-                                >
-                                  <TableCell align="left">{index + 1}</TableCell>
-                                  <TableCell align="left">
-                                    <div
-                                      style={{
-                                        width: 50,
-                                        height: 60,
-                                        overflow: "hidden"
-                                      }}
-                                    >
-                                      <img
-                                        className="img-fluid"
-                                        src={
-                                          row.employeeImage
-                                            ? `http://192.168.100.52:3001/uploads/${row.employeeImage}`
-                                            : DefaultProfile
-                                        }
-                                        id={row.id}
-                                        alt="styles"
-                                      />
-                                    </div>
-                                  </TableCell>
-                                  <TableCell align="left" style={{ fontSize: 18 }}>
-                                    {row.active === 1 ? (
-                                      <i className="fa fa-check-square" />
-                                    ) : (
-                                        <i className="fa fa-square" />
-                                      )}
-                                  </TableCell>
-                                  <TableCell
-                                    component="th"
-                                    id={labelId}
-                                    scope="row"
-                                    padding="none"
-                                  >
-                                    {row.employeeName}
-                                  </TableCell>
-                                  <TableCell align="left">{row.fatherName}</TableCell>
-                                  <TableCell align="left">
-                                    {moment(row.dateOfBirth).format("MM/DD/YYYY")}
-                                  </TableCell>
-                                  <TableCell align="left">{row.nrcNo}</TableCell>
-                                  <TableCell align="left">
-                                    {moment(row.joinDate).format("MM/DD/YYYY")}
-                                  </TableCell>
-                                  <TableCell align="left">{row.department}</TableCell>
-                                  <TableCell align="left">{row.designation}</TableCell>
-                                  <TableCell align="left">{row.education}</TableCell>
-                                  <TableCell align="left">{row.gender}</TableCell>
-                                  <TableCell align="left">{row.maritalStatus}</TableCell>
-                                  <TableCell align="left">{row.address}</TableCell>
-                                  <TableCell align="left">{row.createdBy}</TableCell>
-                                  <TableCell align="left">
-                                    {moment(row.createdDate).format("MM/DD/YYYY hh:mm A")}
-                                  </TableCell>
-                                  <TableCell align="left">
-                                    <button
-                                      type={"button"}
-                                      onClick={() => _handleEdit(row)}
-                                      style={{
-                                        borderRadius: "8px",
-                                        backgroundColor: "#c7821c",
-                                        color: "white",
-                                        width: "75px"
-                                      }}
-                                    >
-                                      Edit
-                            </button>
-                                  </TableCell>
-                                </TableRow>
-                              );
-                            })}
-                        {emptyRows > 0 && (
-                          <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
-                            <TableCell colSpan={16} />
-                          </TableRow>
-                        )}
-                      </TableBody>
-                  //   )
-                  // })
-                  }
+                      return (
+                        <TableRow
+                          hover
+                          role="checkbox"
+                          aria-checked={isItemSelected}
+                          tabIndex={-1}
+                          key={row.employeeName}
+                          selected={isItemSelected}
+                         
+                        >
+                          <TableCell  align="left"  >{index + 1}</TableCell>
+                          <TableCell align="left"   >
+                            <div>
+                              <img
+                                className="img-fluid"
+                                src={
+                                  row.employeeImage
+                                    ? `http://localhost:3001/uploads/${row.employeeImage}`
+                                    : DefaultProfile
+                                }
+                                id={row.id}
+                                alt="styles"
+                                style={{
+                                  width: 50,
+                                  height: 50,
+                                  overflow: "hidden"
+                                }}
+                              />
+                            </div>
+                          </TableCell>
+                          <TableCell align="left"  style={{ fontSize: 18 }}>
+                            {row.active === 1 ? (
+                              <img src="https://img.icons8.com/officexs/16/000000/checked-2--v1.png" className='px-3' alt="checkbox"></img>
+                            ) : (
+                              <img src="https://img.icons8.com/officexs/16/000000/unchecked-checkbox.png" className='px-3' alt="checkbox"  />
+                              )}
+                          </TableCell>
+                          <TableCell id={labelId}  >
+                            {row.employeeName}
+                          </TableCell>
+                          <TableCell align="left"   >{row.fatherName}</TableCell>
+                          <TableCell align="left"  >
+                            {moment(row.dateOfBirth).format("MM/DD/YYYY")}
+                          </TableCell>
+                          <TableCell align="left"  >{row.nrcNo}</TableCell>
+                          <TableCell align="left"  >
+                            {moment(row.joinDate).format("MM/DD/YYYY")}
+                          </TableCell>
+                          <TableCell align="left"  >{row.department}</TableCell>
+                          <TableCell align="left"  >{row.designation}</TableCell>
+                          <TableCell align="left"  >{row.education}</TableCell>
+                          <TableCell align="left"  >{row.gender}</TableCell>
+                          <TableCell align="left"  >{row.maritalStatus}</TableCell>
+                          <TableCell align="left"  >{row.address}</TableCell>
+                          <TableCell align="left"  >{row.createdBy}</TableCell>
+                          <TableCell align="left"  >
+                            {moment(row.createdDate).format("MM/DD/YYYY hh:mm A")}
+                          </TableCell>
+                          <TableCell align="left"  >
+                            <button
+                              type={"button"}
+                              onClick={() => _handleEdit(row)}
+                              style={{
+                                borderRadius: "8px",
+                                backgroundColor: "#c7821c",
+                                color: "white",
+                                width: "75px"
+                              }}
+                            >
+                              Edit
+                    </button>
+                          </TableCell>
+                        </TableRow>
+                      );
+                    })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: (dense ? 23 : 43) * emptyRows }}>
+                    <TableCell colSpan={17} />
+                  </TableRow>
+                )}
+              </TableBody>
+                  
                 </Table>
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
@@ -555,10 +498,6 @@ export default function EnhancedTable(props) {
           )}
 
       </div>
-      {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
     </div>
   );
 }

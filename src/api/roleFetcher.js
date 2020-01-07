@@ -1,10 +1,12 @@
 import * as API from "./url";
 
-export const RoleFetcher = callback => {
+export const RoleFetcher = (token,callback) => {
     fetch(API.ROLE, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Authorization":`Bearer ${token}`
       },
       cache: "no-cache"
     })

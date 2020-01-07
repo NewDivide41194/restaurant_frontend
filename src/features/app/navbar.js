@@ -9,7 +9,8 @@ import MyButton from "../../tools/myButton.js";
 const NavBar = props => {
   const { media } = props;
   const [userInfo, setUserInfo] = useState([]);
-  const [cookies, removeCookie] = useCookies(["token"]);
+  const [cookies, removeCookie] = useCookies();
+  const token=cookies.token
   const headerstyle = {
     zIndex: 5,
     top: 0,
@@ -27,8 +28,9 @@ const NavBar = props => {
     paddingRight: "30px"
   };
   const UserInfoFetch = () => {
-    NavInfoFetcher((err, data) => {
+    NavInfoFetcher(token,(err, data) => {
       setUserInfo(data.payload[0]);
+      
     });
   };
   useEffect(() => {
@@ -39,11 +41,9 @@ const NavBar = props => {
     removeCookie("token");
     window.location.pathname = "/";
   };
-  console.log(userInfo);
   return (
     <header style={headerstyle}>
       <nav style={navstyle}>
-        {userInfo.map((v, k) => (
           <ul
             style={{
               display: "flex",
@@ -51,7 +51,6 @@ const NavBar = props => {
               margin: 0,
               padding: 0
             }}
-            key={k}
             className="pt-2"
           >
             <li className="pl-3 pt-2">
@@ -68,7 +67,7 @@ const NavBar = props => {
             </li>
             <li className="pl-3" style={{ marginTop: "-8px" }}>
               <img
-                src={`http://192.168.100.52:3001/uploads/${v.employeeImage}`}
+                src={`http://localhost:3001/uploads/${userInfo.employeeImage}`}
                 className="rounded-circle"
                 style={{ width: 50, height: 50, border:"2px solid gray" }}
                 alt="userprofile"
@@ -86,7 +85,7 @@ const NavBar = props => {
                     background: "none"
                   }}
                 >
-                  {v.userName}
+                  {userInfo.userName}
                 </Dropdown.Toggle>
                 <Dropdown.Menu
                   style={{
@@ -96,13 +95,12 @@ const NavBar = props => {
                     fontSize: fsc(media, 20)
                   }}
                 >
-                  <Dropdown.Item href="">{v.designation}</Dropdown.Item>
+                  <Dropdown.Item href="">{userInfo.designation}</Dropdown.Item>
                   <Dropdown.Item onClick={_handleLogout}>LogOut</Dropdown.Item>
                 </Dropdown.Menu>
               </Dropdown>
             </li>
           </ul>
-        ))}
       </nav>
     </header>
   );

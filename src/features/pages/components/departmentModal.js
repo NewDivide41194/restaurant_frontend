@@ -17,12 +17,15 @@ const DepartmentModal = props => {
     department,
     remark,
     active,
-    departmentId
+    departmentId,
+    userId,
+    token
   } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [Department, setDepartment] = useState(department);
   const [departmentErr, setDepartmentErr] = useState('');
   const [Remark, setRemark] = useState(remark);
+  const [UserId,setUserId]=useState(userId)
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
@@ -34,19 +37,18 @@ const DepartmentModal = props => {
     const isValid = regex.test(document.getElementById("department").value);
     
     if (Department.trim() === "") {
-      //alert("Please Fill Department Name");
       setDepartmentErr("Please Fill Department Name");
       document.getElementById("department").style.border="1px solid red";
     } else if (!isValid) {
       setDepartmentErr("Department Name Contains Special Characters!");
       document.getElementById("department").style.border="1px solid red";
       return
-  }else {
+    }else {
       console.log("DATA IS ==>", Department, Remark, Active, CreatedDate);
       InsertDepartmentFetcher(
-        { DepartmentId, Department, Remark, Active, CreatedDate },
+        { DepartmentId, Department, Remark, Active, CreatedDate,UserId,token},
         (err, data) => {
-          if (data.payload === null) {
+          if (data.success === false) {
             setDepartmentErr("Department Name Already Exist!");
             document.getElementById("department").style.border="1px solid red";
           } else{
@@ -72,11 +74,11 @@ const DepartmentModal = props => {
       return
   }else {
     UpdateDepartmentFetcher(
-      { DepartmentId, Department, Remark, Active },
+      { DepartmentId, Department, Remark, Active,UserId,token },
       (err, data) => {
         console.log(data);
 
-        if (data.payload === null) {
+        if (data.success === false) {
           setDepartmentErr("Department Name Already Exist!");
         } else {
           alert.success("Updated!", {
@@ -88,7 +90,6 @@ const DepartmentModal = props => {
       }
     );
   };}
-  console.log(Active);
 
   return (
     <Modal open={open} onClose={onCloseModal} center>
@@ -103,15 +104,12 @@ const DepartmentModal = props => {
             Loading . . .
         </div>)}
       <div
-        style={{
-          color: "black"
-        }}
+        style={{color: "black"}}
       ></div>
       <form className="form pt-2 col-lg-12 col-md-12 col-xs-4">
         <h4 className="text-center pt-4 pb-4">
           {DepartmentId ? "Edit Department" : "Add New Department"}
         </h4>
-
         <div>
           <label>Department Name</label>
         </div>

@@ -61,8 +61,12 @@
   border-bottom: none;
 }
 table tr:nth-of-type(n) th {
-  border-right: 1px solid gray;
-  text-align: center;
+  border-right: 1px solid rgb(210, 215, 223);
+  text-align: center!important;
   font-weight: bold;
-  height: 50px;
+  /* color: white; */
+  /* height: 20px; */
+}
+table tr:nth-of-type(n) td{
+  border-right: 1px solid rgb(210, 215, 223);
 }

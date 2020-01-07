@@ -1,10 +1,13 @@
 import * as API from "./url";
 
-export const DesignationFetcher = callback => {
+export const DesignationFetcher = (token,callback) => {
     fetch(API.DesignationFetcher, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Authorization":`Bearer ${token}`
+
       },
       cache: "no-cache"
     })

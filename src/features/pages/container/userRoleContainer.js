@@ -1,5 +1,5 @@
 import React from 'react'
-import UserRoleModal from '../components/userRoleModal'
+import AdminRoleModal from '../components/adminRoleModal'
 import Sidebar from '../../app/sidebar'
 import Navbar from '../../app/navbar'
 import RoleTable from '../components/roleTable'

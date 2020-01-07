@@ -15,7 +15,8 @@ export const InsertEmployeeFetcher = (
     Address,
     UserId,
     CreatedDate,
-    Active
+    Active,
+    token
   },
   callback
 ) => {
@@ -59,7 +60,9 @@ export const InsertEmployeeFetcher = (
   fetch(API.InsertEmployeeFetcher, {
     method: "POST",
     headers: {
-      Accept: "*/*"
+      "Content-Type": "application/json",
+      "Accept": "*/*",
+      "Authorization":`Bearer ${token}`
     },
     body: form
   })

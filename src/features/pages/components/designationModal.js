@@ -16,7 +16,9 @@ const DesignationModal = props => {
     designation,
     remark,
     active,
-    designationId
+    designationId,
+    userId,
+    token
   } = props;
   const CreatedDate = moment().format("YYYY-MM-DD HH:mm");
   const [Designation, setDesignation] = useState(designation);
@@ -24,6 +26,7 @@ const DesignationModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DesignationId, setDesignationId] = useState(designationId);
+  const [UserId,setUserId]=useState(userId)
   const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
@@ -40,11 +43,11 @@ const DesignationModal = props => {
       setDesignationErr("Designation Name Contains Special Characters!");
       document.getElementById("designation").style.border = "1px solid red"; 
       return
-  }else {
+    }else {
     InsertDesignationFetcher(
-      { DesignationId, Designation, Remark, Active, CreatedDate },
+      { DesignationId, Designation, Remark, Active, CreatedDate,UserId,token },
       (err, data) => {
-        if (data.payload === null) {
+        if (data.success=== false) {
           setDesignationErr("Designation Name Already Exist!");
           document.getElementById("designation").style.border = "1px solid red"; 
         } else {
@@ -68,13 +71,13 @@ const DesignationModal = props => {
     } else if (!isValid) {
       setDesignationErr("Designation Name Contains Special Characters!");
       return
-  }else {
+    }else {
     UpdateDesignationFetcher(
-      { DesignationId, Designation, Remark, Active },
+      { DesignationId, Designation, Remark, Active,UserId,token },
       (err, data) => {
         console.log(data);
 
-        if (data.payload === null) {
+        if (data.success===false) {
           setDesignationErr("Designation Name Already Exist!");
         } else {
           alert.success("Updated!", {

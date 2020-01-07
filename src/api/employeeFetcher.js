@@ -1,10 +1,12 @@
 import * as API from "./url";
 
-export const EmployeeFetcher = callback => {
+export const EmployeeFetcher = (token,callback) => {
     fetch(API.EmployeeFetcher, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json"
+        "Content-Type": "application/json",
+        "Accept": "*/*",
+        "Authorization":`Bearer ${token}`
       },
       cache: "no-cache"
     })

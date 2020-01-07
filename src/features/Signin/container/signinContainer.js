@@ -10,20 +10,17 @@ const SiginContainer = (props) => {
   const [userName, setUserName] = useState("");
   const [password, setPassword] = useState("");
   const [visible, setVisible] = useState(false);
-  const [cookies, setCookie] = useCookies(["token"]);
+  const [cookies, setCookie] = useCookies();
 
   const _handleSignIn = e => {
     e.preventDefault();
 
     LoginFetcher({ userName, password }, (err, data) => {
-      if (data.payload !== null) {
-        setCookie("token", data.message, { path: "/" });
-      }
-
       if (err) {
         console.log(err);
       }
       if (data.success === true) {
+        setCookie("token", data.payload.token, { path: "/" });
         props.history.push(`/${RoutePath.Dashboard}`);
       }
       if (data.success === false) {
