@@ -296,9 +296,10 @@ export default function EnhancedTable(props) {
                       aria-checked={isItemSelected}
                       tabIndex={-1}
                       key={row.department}
-                      selected={isItemSelected}
+                      selected = {isItemSelected}
+
                     >
-                      <TableCell align="center">{index+1}</TableCell>
+            <TableCell align="center">{index+1}</TableCell>
             <TableCell  id={labelId}>{row.department}</TableCell>
             <TableCell align="center"  style={{ fontSize: 18 }}>
                {row.active === 1 ? (
@@ -328,7 +329,7 @@ export default function EnhancedTable(props) {
           );
             })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableRow >
                   <TableCell colSpan={16} />
                 </TableRow>
               )}
@@ -344,14 +345,10 @@ export default function EnhancedTable(props) {
                   onChangeRowsPerPage={handleChangeRowsPerPage}
                 />
               </TableContainer>
-
             </Paper>
 
           )}
-     {/* <FormControlLabel
-        control={<Switch checked={dense} onChange={handleChangeDense} />}
-        label="Dense padding"
-      /> */}
+          
       </div>
     </div>
   );

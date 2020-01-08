@@ -137,7 +137,7 @@ const EmployeeModal = props => {
     setSelectedDepartment();
     EmployeeFetch();
     EmployeeId
-      ? setImage(`http://192.168.100.51:3002/uploads/${EmployeeImage}`)
+      ? setImage(`http://192.168.100.112:3001/uploads/${EmployeeImage}`)
       : setImage([]);
   }, []);
 

@@ -419,7 +419,7 @@ export default function EnhancedTable(props) {
                                 className="img-fluid"
                                 src={
                                   row.employeeImage
-                                    ? `http://192.168.100.51:3001/uploads/${row.employeeImage}`
+                                    ? `http://192.168.100.112:3001/uploads/${row.employeeImage}`
                                     : DefaultProfile
                                 }
                                 id={row.id}
@@ -478,7 +478,7 @@ export default function EnhancedTable(props) {
                       );
                     })}
                 {emptyRows > 0 && (
-                  <TableRow style={{ height: (dense ? 23 : 43) * emptyRows }}>
+                  <TableRow >
                     <TableCell colSpan={17} />
                   </TableRow>
                 )}

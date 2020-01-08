@@ -118,7 +118,7 @@ export default function EnhancedTable(props) {
       //16 Columns
     }
   };
-  console.log("Role Data=>", roleData);
+  
   const createData = (
     sino,
     roleName,
@@ -147,6 +147,7 @@ export default function EnhancedTable(props) {
       )
     )
   ];
+
   const headCells = [
     { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
     {
@@ -222,7 +223,6 @@ export default function EnhancedTable(props) {
   const emptyRows =
     rowsPerPage - Math.min(rowsPerPage, rows.length - page * rowsPerPage);
 
-  console.log('Pages --->'+ rows.length);
 
   return (
     <div className={classes.root}>
@@ -324,7 +324,7 @@ export default function EnhancedTable(props) {
           );
             })}
               {emptyRows > 0 && (
-                <TableRow style={{ height: (dense ? 33 : 53) * emptyRows }}>
+                <TableRow>
                   <TableCell colSpan={16} />
                 </TableRow>
               )}
