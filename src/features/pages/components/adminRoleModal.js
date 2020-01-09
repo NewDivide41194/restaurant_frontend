@@ -16,35 +16,34 @@ const AdminRoleModal = props => {
   const [Remark, setRemark] = useState(remark);
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [RoleId, setRoleID] = useState(roleId);
-  const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+ //const regex = /^(?=.{1,20}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
 
   useEffect(() => {
-    RoleName.replace("'", "\'");
   });
   const _handleAdd = e => {
     e.preventDefault();
-    const isValid = regex.test(document.getElementById("roleName").value);
-
+    
     if (RoleName.trim() === "") {
       setRoleErr("Please Fill Role Name");
       document.getElementById("roleName").style.border = "1px solid red";
       return;
-    } else if (!isValid) {
-      setRoleErr("Role Name Contains Special Characters");
-      document.getElementById("roleName").style.border = "1px solid red";
-    } else {
+    }
+  
+     else {
+      //RoleName.replace("ee", "dd");
       InsertRoleFetcher(
         { RoleId, RoleName, Remark, Active, CreatedDate,userId,token },
         (err, data) => {
           if (data.success===false) {
             setRoleErr("Role Name Already Exist!");
             document.getElementById("roleName").style.border = "1px solid red";
+            return;
           } else {
             alert.success("Role Added!", {
               onClose: () => {
-                window.location.reload();
+               window.location.reload();
               }
             });
           }
@@ -55,16 +54,17 @@ const AdminRoleModal = props => {
 
   const _handleUpdate = e => {
     e.preventDefault();
-    const isValid = regex.test(document.getElementById("roleName").value);
+    //const isValid = regex.test(document.getElementById("roleName").value);
 
     if (RoleName.trim() === "") {
       setRoleErr("Please Fill Role Name");
-    } else if (!isValid) {
-      setRoleErr("Role Name Contains Special Characters!");
-    } else {
-      UpdateRoleFetcher({ RoleId, RoleName, Remark, Active,userId,token }, (err, data) => {
-        console.log(data);
-
+    } 
+    // else if (!isValid) {
+    //   setRoleErr("Role Name Contains Special Characters!");
+    // } 
+    else {
+      UpdateRoleFetcher({ RoleId, RoleName, Remark, Active,userId,token }, 
+        (err, data) => {
         if (data.success === false) {
           setRoleErr("Role Name Already Exist!");
         } else {

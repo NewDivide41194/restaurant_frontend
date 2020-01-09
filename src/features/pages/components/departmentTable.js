@@ -97,7 +97,7 @@ export default function EnhancedTable(props) {
 
   const [index, setIndex] = useState(-1);
  
-  console.log({ rowsPerPage })
+  
   const _handleEdit = (department) => {
 
     console.log("department", department)
@@ -136,7 +136,7 @@ export default function EnhancedTable(props) {
       createdBy
     };
   };
-  console.log("Department Data=>", departmentData);
+ 
   const rows = [
     departmentData.map((v, k) =>
       createData(
@@ -218,7 +218,6 @@ export default function EnhancedTable(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  console.log(rowsPerPage)
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -338,7 +337,7 @@ export default function EnhancedTable(props) {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={rows.length}
+                  count={departmentData.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onChangePage={handleChangePage}

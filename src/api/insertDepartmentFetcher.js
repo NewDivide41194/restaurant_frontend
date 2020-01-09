@@ -5,7 +5,7 @@ export const InsertDepartmentFetcher = ({ DepartmentId,Department,Remark,Active,
     fetch(API.InsertDepartment, {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "*/*",
         "Authorization":`Bearer ${token}`
       },

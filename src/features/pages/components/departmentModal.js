@@ -28,23 +28,25 @@ const DepartmentModal = props => {
   const [UserId,setUserId]=useState(userId)
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DepartmentId, setDepartmentID] = useState(departmentId);
-  const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  //const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
 
   const _handleAdd = e => {
     e.preventDefault();    
-    const isValid = regex.test(document.getElementById("department").value);
+    //const isValid = regex.test(document.getElementById("department").value);
     
     if (Department.trim() === "") {
       setDepartmentErr("Please Fill Department Name");
       document.getElementById("department").style.border="1px solid red";
-    } else if (!isValid) {
-      setDepartmentErr("Department Name Contains Special Characters!");
-      document.getElementById("department").style.border="1px solid red";
-      return
-    }else {
-      console.log("DATA IS ==>", Department, Remark, Active, CreatedDate);
+    } 
+    // else if (!isValid) {
+    //   setDepartmentErr("Department Name Contains Special Characters!");
+    //   document.getElementById("department").style.border="1px solid red";
+    //   return
+    // }
+    else {
+      //console.log("DATA IS ==>", Department, Remark, Active, CreatedDate);
       InsertDepartmentFetcher(
         { DepartmentId, Department, Remark, Active, CreatedDate,UserId,token},
         (err, data) => {
@@ -65,14 +67,16 @@ const DepartmentModal = props => {
 
   const _handleUpdate = e => {
     e.preventDefault();
-    const isValid = regex.test(document.getElementById("department").value);
+    //const isValid = regex.test(document.getElementById("department").value);
 
     if (Department.trim() === "") {
       setDepartmentErr("Please Fill Department Name");      
-    } else if (!isValid) {
-      setDepartmentErr("Department Name Contains Special Characters!");
-      return
-  }else {
+    } 
+    // else if (!isValid) {
+    //   setDepartmentErr("Department Name Contains Special Characters!");
+    //   return
+    // }
+    else {
     UpdateDepartmentFetcher(
       { DepartmentId, Department, Remark, Active,UserId,token },
       (err, data) => {

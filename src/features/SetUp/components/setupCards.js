@@ -41,7 +41,7 @@ const Cards=({icon,text,img})=>{
         <div>
             <div className='pt-5 pb-4'>
                 <i className={icon} style={{color:'white'}}/>
-               {img===undefined?null: <img className='img-fluid' src={img} style={{width:'50px'}} alt="Setup Cards"/>}
+               {img===undefined?null: <img className='img-fluid' src={img} style={{width:'60px'}} alt="Setup Cards"/>}
 
             </div>
             <div className='text-center text-light pt-3'>

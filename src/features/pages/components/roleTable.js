@@ -68,7 +68,7 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  console.log("orderBy:", orderBy)
+ 
   return order === "desc"
     ? (a, b) => desc(a, b, orderBy)
     : (a, b) => -desc(a, b, orderBy);
@@ -88,6 +88,7 @@ export default function EnhancedTable(props) {
   const [roleName, setRoleName] = useState("");
   const [roleId, setRoleId]= useState("");
   const [createdBy, setCreatedBy] = useState(null);
+  const [employeeName, setEmployeeName] = useState(null);
   const [createdDate, setCreatedDate] = useState(null);
   const [userId, setUserId] = useState(null);
   const [open, setOpen] = useState(false);
@@ -97,7 +98,6 @@ export default function EnhancedTable(props) {
 
   const [index, setIndex] = useState(-1);
  
-  console.log({ rowsPerPage })
   const _handleEdit = (role) => {
     console.log("role--", role)
     const index = roleData.findIndex( e => e.roleId===role.roleId )  
@@ -108,11 +108,12 @@ export default function EnhancedTable(props) {
     } else {
       const role_data = roleData[index];
       console.log("RoleDATA=>>>",role_data);
-      setRoleName(role_data.roleName);
-      setRemark(role_data.remark);
-      setActive(role_data.active);
+      setRoleName(role.roleName);
+      setRemark(role.remark);
+      setActive(role.active);
       setRoleId(role.roleId);
-      setUserId(role_data.userId)
+      setUserId(role.userId)
+      setEmployeeName(role.employeeName);
       setOpen(true);
 
       //16 Columns
@@ -202,6 +203,7 @@ export default function EnhancedTable(props) {
     setRemark("");
     setCreatedBy("");
     setCreatedDate("");
+    setEmployeeName("",)
     setUserId(roleData[0].userId);
   };
  
@@ -213,7 +215,6 @@ export default function EnhancedTable(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  console.log(rowsPerPage)
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -231,6 +232,7 @@ export default function EnhancedTable(props) {
           <AdminRoleModal
           token={token}
           open={open}
+          employeeName={employeeName}
           onCloseModal={onCloseModal}
           roleName={roleName}
           remark={Remark}
@@ -333,7 +335,7 @@ export default function EnhancedTable(props) {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={rows.length}
+                  count={roleData.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onChangePage={handleChangePage}

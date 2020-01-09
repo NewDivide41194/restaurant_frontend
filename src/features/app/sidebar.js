@@ -42,10 +42,11 @@ const useStyles = makeStyles(theme => ({
       duration: theme.transitions.duration.enteringScreen,
     }),
   },
-  menuButton: {
-    marginRight: 36,
-    position:'fixed'
-  },
+  // menuButton: {
+  //   marginLeft: 0,
+  //   position:'relative',
+  //   paddingTop:0
+  // },
   hide: {
     display: 'none',
   },
@@ -106,8 +107,9 @@ export default function MiniDrawer() {
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
-        style={{width:"70px",background:'none',color:'black',boxShadow:'none'}}
-      ><IconButton
+        style={{marginLeft:'0px', background:'none',color:'black',boxShadow:'none'}}
+      >
+        {/* <IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -115,12 +117,10 @@ export default function MiniDrawer() {
             className={clsx(classes.menuButton, {
               [classes.hide]: open,
             })}
-            style={{top:'0px',marginTop:13,marginLeft:10}}
+            style={{marginLeft:10}}
           >
           <MenuIcon />
-          </IconButton>
-
-          
+          </IconButton> */}
       </AppBar>
       <Drawer
         variant="permanent"
@@ -139,7 +139,18 @@ export default function MiniDrawer() {
         <div className={classes.toolbar}>
          {open? <IconButton onClick={handleDrawerClose}>
             {theme.direction === 'rtl' ? <ChevronRightIcon /> : <i className="fa fa-times"></i>}
-          </IconButton>:null}
+          </IconButton>:<IconButton
+            color="inherit"
+            aria-label="open drawer"
+            onClick={handleDrawerOpen}
+            edge="start"
+            className={clsx(classes.menuButton, {
+              [classes.hide]: open,
+            })}
+            style={{top:'15px', right:'5px'}}
+          >
+          <MenuIcon />
+          </IconButton>}
         </div>
         <List>
             <Link to={`/${RoutePath.Dashboard}`} style={{textDecoration: 'none'}}>

@@ -6,7 +6,7 @@ export const InsertRoleFetcher = ({ RoleId,RoleName,Remark,Active,CreatedDate,us
     fetch(API.InsertRole, {
       method: "POST",
       headers: {
-        // "Content-Type": "application/json",
+        "Content-Type": "application/json",
         "Accept": "*/*",
         "Authorization":`Bearer ${token}`
       },

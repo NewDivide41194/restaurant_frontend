@@ -27,23 +27,25 @@ const DesignationModal = props => {
   const [Active, setActive] = useState(active === 1 ? true : false);
   const [DesignationId, setDesignationId] = useState(designationId);
   const [UserId,setUserId]=useState(userId)
-  const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
+  //const regex = /^(?=.{1,50}$)(?![_.0-9])(?!.*[_.]{2})[a-zA-Z0-9._ ]+(?<![_.])$/;
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
 
   const _handleAdd = (e) => {
     e.preventDefault()
-    const isValid = regex.test(document.getElementById("designation").value);
+    //const isValid = regex.test(document.getElementById("designation").value);
 
     if (Designation.trim() === "") {
       setDesignationErr("Please Fill Designation Name");    
       document.getElementById("designation").style.border = "1px solid red";
       return
-    } else if (!isValid) {
-      setDesignationErr("Designation Name Contains Special Characters!");
-      document.getElementById("designation").style.border = "1px solid red"; 
-      return
-    }else {
+    } 
+    // else if (!isValid) {
+    //   setDesignationErr("Designation Name Contains Special Characters!");
+    //   document.getElementById("designation").style.border = "1px solid red"; 
+    //   return
+    // }
+    else {
     InsertDesignationFetcher(
       { DesignationId, Designation, Remark, Active, CreatedDate,UserId,token },
       (err, data) => {
@@ -63,15 +65,17 @@ const DesignationModal = props => {
 
   const _handleUpdate = (e) => {
     e.preventDefault()
-    const isValid = regex.test(document.getElementById("designation").value);
+    //const isValid = regex.test(document.getElementById("designation").value);
 
     if (Designation.trim() === "") {
       setDesignationErr("Please Fill Designation Name");      
       return
-    } else if (!isValid) {
-      setDesignationErr("Designation Name Contains Special Characters!");
-      return
-    }else {
+    } 
+    // else if (!isValid) {
+    //   setDesignationErr("Designation Name Contains Special Characters!");
+    //   return
+    // }
+    else {
     UpdateDesignationFetcher(
       { DesignationId, Designation, Remark, Active,UserId,token },
       (err, data) => {

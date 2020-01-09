@@ -70,3 +70,19 @@ table tr:nth-of-type(n) th {
 table tr:nth-of-type(n) td{
   border-right: 1px solid rgb(210, 215, 223);
 }
+.MuiAppBar-positionFixed{
+    left: 10px!important;
+    right: 0px!important;
+    position: absolute!important;
+    padding-bottom: 1px!important;
+    padding-top:0px!important;
+    top: 0px!important;
+}
+.MuiButtonBase-root{
+  padding-top:0px;
+}
+
+MuiButtonBase-root MuiIconButton-root makeStyles-menuButton-4 MuiIconButton-colorInherit MuiIconButton-edgeStart button:focus{
+  outline:none;
+  
+}

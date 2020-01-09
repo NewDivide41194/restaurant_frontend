@@ -4,7 +4,7 @@ export const DepartmentFetcher =(token,callback) => {
     fetch(API.DepartmentFetcher, {
       method: "GET",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         "Accept": "*/*",
         "Authorization":`Bearer ${token}`
 

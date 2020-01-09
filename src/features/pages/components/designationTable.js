@@ -116,7 +116,6 @@ export default function EnhancedTable(props) {
       //16 Columns
     }
   };
-  console.log("Designation Data=>", designationData);
   const createData = (
     sino,
     designation,
@@ -211,7 +210,7 @@ export default function EnhancedTable(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  console.log(rowsPerPage)
+ 
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -330,7 +329,7 @@ export default function EnhancedTable(props) {
                 <TablePagination
                   rowsPerPageOptions={[5, 10, 25]}
                   component="div"
-                  count={rows.length}
+                  count={designationData.length}
                   rowsPerPage={rowsPerPage}
                   page={page}
                   onChangePage={handleChangePage}

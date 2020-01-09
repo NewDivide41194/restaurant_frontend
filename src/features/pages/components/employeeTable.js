@@ -414,7 +414,7 @@ export default function EnhancedTable(props) {
                         >
                           <TableCell  align="left"  >{index + 1}</TableCell>
                           <TableCell align="left"   >
-                            <div>
+                            <div className="pl-2">
                               <img
                                 className="img-fluid"
                                 src={
@@ -427,7 +427,8 @@ export default function EnhancedTable(props) {
                                 style={{
                                   width: 50,
                                   height: 50,
-                                  overflow: "hidden"
+                                  overflow: "hidden",
+                                  
                                 }}
                               />
                             </div>

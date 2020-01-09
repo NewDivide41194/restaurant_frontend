@@ -81,7 +81,7 @@ const EmployeeModal = props => {
   console.log("EMP===>>>",employeeData);
 
   //const regex = /^(?=.{1,50}$)(?![_.0-9+=*;:,<>\?/|$&%^`~()])(?!.*[_.]{2})[a-zA-Z0-9._\'\"()-@& ]+(?<![_.+=*;:\?/|,$<>~`^$])$/;
-  const regex = /[^!#$%*:;,/?+_<>={}"]+$/;
+  //const regex = /[^!#$%*:;,/?+_<>={}"]+$/;
   const alert = useAlert();
 
   const MaritalOptions = [
@@ -220,32 +220,34 @@ const EmployeeModal = props => {
 
   const _handleAdd = e => {
     e.preventDefault();
-    const isValidName = regex.test(
-      document.getElementById("employeeName").value
-    );
-    const isValidFather = regex.test(
-      document.getElementById("fatherName").value
-    );
+    // const isValidName = regex.test(
+    //   document.getElementById("employeeName").value
+    // );
+    // const isValidFather = regex.test(
+    //   document.getElementById("fatherName").value
+    // );
 
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
       return;
-    } else if (!isValidName) {
-      setEmpErr("Employee Name Contains Special Characters or Numbers!");
-      document.getElementById("employeeName").style.border = "1px solid red";
-      return;
-    }
+    } 
+    // else if (!isValidName) {
+    //   setEmpErr("Employee Name Contains Special Characters or Numbers!");
+    //   document.getElementById("employeeName").style.border = "1px solid red";
+    //   return;
+    // }
 
     if (FatherName.trim() === "") {
       setFatherErr("Please Fill Father Name");
       document.getElementById("fatherName").style.border = "1px solid red";
       return;
-    } else if (!isValidFather) {
-      setFatherErr("Father Name Contains Special Characters or Numbers!");
-      document.getElementById("fatherName").style.border = "1px solid red";
-      return;
-    }
+    } 
+    // else if (!isValidFather) {
+    //   setFatherErr("Father Name Contains Special Characters or Numbers!");
+    //   document.getElementById("fatherName").style.border = "1px solid red";
+    //   return;
+    // }
     if (moment(new Date()).year() - moment(DateOfBirth).year() <= 17) {
       setBirthDateErr("Age must be at least 18!");
       document.getElementById("date-picker-dialog").style.border =
@@ -330,31 +332,33 @@ const EmployeeModal = props => {
     e.preventDefault();
     setDateOfBirth(moment(dateOfBirth).format("YYYY-MM-DD"));
     setJoinDate(moment(joinDate).format("YYYY-MM-DD"));
-    const isValidName = regex.test(
-      document.getElementById("employeeName").value
-    );
-    const isValidFather = regex.test(
-      document.getElementById("fatherName").value
-    );
+    // const isValidName = regex.test(
+    //   document.getElementById("employeeName").value
+    // );
+    // const isValidFather = regex.test(
+    //   document.getElementById("fatherName").value
+    // );
 
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
       return;
-    } else if (!isValidName) {
-      setEmpErr("Employee Name Contains Special Characters or Numbers!");
-      document.getElementById("employeeName").style.border = "1px solid red";
-      return;
-    }
+    } 
+    // else if (!isValidName) {
+    //   setEmpErr("Employee Name Contains Special Characters or Numbers!");
+    //   document.getElementById("employeeName").style.border = "1px solid red";
+    //   return;
+    // }
     if (FatherName.trim() === "") {
       setFatherErr("Please Fill Father Name");
       document.getElementById("fatherName").style.border = "1px solid red";
       return;
-    } else if (!isValidFather) {
-      setFatherErr("Father Name Contains Special Characters or Numbers!");
-      document.getElementById("fatherName").style.border = "1px solid red";
-      return;
-    }
+    } 
+    // else if (!isValidFather) {
+    //   setFatherErr("Father Name Contains Special Characters or Numbers!");
+    //   document.getElementById("fatherName").style.border = "1px solid red";
+    //   return;
+    // }
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";
