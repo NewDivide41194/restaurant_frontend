@@ -125,18 +125,17 @@ const EmployeeModal = props => {
     }
   );
 
-  const EmployeeFetch = () => {
-    EmployeeFetcher((err, data) => {
-      setDepartmentData(data.payload[1]);
-      setDesignationData(data.payload[2]);
-    });
-  };
+  // const EmployeeFetch = () => {
+  
+  // };
 
   useEffect(() => {
     setSelectedDesignation();
     setSelectedDepartment();
-    EmployeeFetch();
-    EmployeeId
+    EmployeeFetcher(token,(err, data) => {
+      setDepartmentData(data.payload[1]);
+      setDesignationData(data.payload[2]);
+    });    EmployeeId
       ? setImage(`http://192.168.100.112:3001/uploads/${EmployeeImage}`)
       : setImage([]);
   }, []);

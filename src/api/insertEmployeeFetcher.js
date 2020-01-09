@@ -60,7 +60,6 @@ export const InsertEmployeeFetcher = (
   fetch(API.InsertEmployeeFetcher, {
     method: "POST",
     headers: {
-      "Content-Type": "application/json",
       "Accept": "*/*",
       "Authorization":`Bearer ${token}`
     },

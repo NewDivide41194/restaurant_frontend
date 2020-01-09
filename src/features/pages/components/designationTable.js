@@ -145,7 +145,7 @@ export default function EnhancedTable(props) {
       )
     )
   ];
-  const headCells = [
+  const headcells = [
     { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
     {
       id: 'designation',
@@ -265,7 +265,7 @@ export default function EnhancedTable(props) {
                   aria-label="enhanced table"
                 >
                <EnhancedTableHead
-                    headCells={headCells}
+                    headcells={headcells}
                     classes={classes}
                     numSelected={selected.length}
                     order={order}

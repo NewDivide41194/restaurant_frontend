@@ -17,7 +17,7 @@ export const EmployeeFetcher = (token,callback) => {
         }
       })
       .then(data => {
-        console.log(data);
+        // console.log(data);s
   
         callback(null, data);
       })

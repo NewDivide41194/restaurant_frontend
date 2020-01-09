@@ -6,7 +6,7 @@ export const UpdateDepartmentFetcher = ({ DepartmentId,Department,Remark,Active,
     fetch(API.UpdateDepartment, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         "Accept": "*/*",
         "Authorization":`Bearer ${token}`
       },

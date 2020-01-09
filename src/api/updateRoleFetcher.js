@@ -6,7 +6,7 @@ export const UpdateRoleFetcher = ({ RoleId,RoleName,Remark,Active,userId,token }
     fetch(API.UpdateRole, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         Accept: "*/*",
         Authorization: `Bearer ${token}`
       },

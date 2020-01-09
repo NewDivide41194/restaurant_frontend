@@ -6,7 +6,7 @@ export const UpdateDesignationFetcher = ({ DesignationId,Designation,Remark,Acti
     fetch(API.UpdateDesignation, {
       method: "PUT",
       headers: {
-        "Content-Type": "application/json",
+        // "Content-Type": "application/json",
         "Accept": "*/*",
         "Authorization":`Bearer ${token}`
       },

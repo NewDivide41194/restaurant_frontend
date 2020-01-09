@@ -41,7 +41,7 @@ const MyInput = props => {
       pattern={pattern}
       autoComplete="off"
       placeholder={placeholder}
-      maxlength={maxLength}
+      maxLength={maxLength}
     />
   );
 };

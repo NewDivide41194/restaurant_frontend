@@ -67,7 +67,7 @@ function stableSort(array, cmp) {
 }
 
 function getSorting(order, orderBy) {
-  console.log("orderBy:", orderBy)
+  // console.log("orderBy:", orderBy)
   return order === "desc"
     ? (a, b) => desc(a, b, orderBy)
     : (a, b) => -desc(a, b, orderBy);
@@ -108,10 +108,10 @@ export default function EnhancedTable(props) {
   const [index, setIndex] = useState(-1);
   const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
 
-  console.log({ rowsPerPage })
+  // console.log({ rowsPerPage })
   const _handleEdit = (employee) => {
 
-    console.log("employee", employee)
+    // console.log("employee", employee)
     const index = employeeData.findIndex( e => e.employeeId===employee.employeeId )  
     
     setIndex(index);
@@ -199,7 +199,7 @@ export default function EnhancedTable(props) {
     )
   ];
 
-  const headCells = [
+  const headcells = [
     { id: 'sino', numeric: false, disablePadding: true, label: 'Si No' },
     {
       id: 'employeeImage',
@@ -306,7 +306,7 @@ export default function EnhancedTable(props) {
     setCreatedDate("");
     setUserId(employeeData[0].userId);
   };
-  console.log("Employee Data=>", employeeData);
+  // console.log("Employee Data=>", employeeData);
 
   const handleRequestSort = (event, property) => {
     const isDesc = orderBy === property && order === "desc";
@@ -318,7 +318,7 @@ export default function EnhancedTable(props) {
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
-  console.log(rowsPerPage)
+  // console.log(rowsPerPage)
   const handleChangeRowsPerPage = event => {
     setRowsPerPage(parseInt(event.target.value, 10));
     setPage(0);
@@ -385,7 +385,7 @@ export default function EnhancedTable(props) {
                   aria-label="enhanced table"
                 >
                  <EnhancedTableHead
-                    headCells={headCells}
+                    headcells={headcells}
                     classes={classes}
                     numSelected={selected.length}
                     order={order}

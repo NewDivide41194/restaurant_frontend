@@ -63,7 +63,6 @@ export const UpdateEmployeeFetcher = (
   fetch(API.UpdateEmployeeFetcher, {
     method: "PUT",
     headers: {
-      "Content-Type": "application/json",
       Accept: "*/*",
       Authorization: `Bearer ${token}`
     },

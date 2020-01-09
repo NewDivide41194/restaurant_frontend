@@ -26,7 +26,7 @@ const AppRoute = (props) => {
   const [cookies, setCookie] = useCookies(['token']);
   const Token=cookies.token
 
-  console.log(cookies.token==='undefined'?"Undefined":"Defined");
+  // console.log(cookies.token==='undefined'?"Undefined":"Defined");
   return (
     <div>
         <Router>

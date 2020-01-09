@@ -103,13 +103,11 @@ export default function MiniDrawer() {
     <div className={classes.root}>
       <CssBaseline />
       <AppBar
-        position=""
         className={clsx(classes.appBar, {
           [classes.appBarShift]: open,
         })}
         style={{width:"70px",background:'none',color:'black',boxShadow:'none'}}
-      >
-          <IconButton
+      ><IconButton
             color="inherit"
             aria-label="open drawer"
             onClick={handleDrawerOpen}
@@ -119,7 +117,7 @@ export default function MiniDrawer() {
             })}
             style={{top:'0px',marginTop:13,marginLeft:10}}
           >
-            <MenuIcon />
+          <MenuIcon />
           </IconButton>
 
           
@@ -146,7 +144,7 @@ export default function MiniDrawer() {
         <List>
             <Link to={`/${RoutePath.Dashboard}`} style={{textDecoration: 'none'}}>
                 <ListItem button key="dashboard">
-                <ListItemIcon><i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }}></i> </ListItemIcon>
+                <ListItemIcon><i className="fa fa-fw fa-home" style={{ fontSize: '1.75em' }}></i></ListItemIcon>
                 <ListItemText primary="Dashboard" style={{color:'#000000'}}/>
                 </ListItem>
             </Link>
@@ -155,7 +153,7 @@ export default function MiniDrawer() {
         <List>
             <Link to={`/${RoutePath.Transactions}`} style={{textDecoration: 'none'}}>
                 <ListItem button key="transactions">
-                <ListItemIcon><i className="fa fa-money" style={{ fontSize: '1.75em' }}></i> </ListItemIcon>
+                <ListItemIcon><i className="fa fa-money" style={{ fontSize: '1.75em' }}></i></ListItemIcon>
                 <ListItemText primary="Transactions" style={{color:'#000000'}}/>
                 </ListItem>
             </Link>
