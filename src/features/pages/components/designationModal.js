@@ -31,6 +31,17 @@ const DesignationModal = props => {
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
 
+  const handleDesignation = e => {
+    const strDesignation = e.target.value;
+    const DesignationChange = strDesignation.replace('"', "\''");
+    setDesignation(DesignationChange);
+  }
+  const handleRemark = e => {
+    const strRemark = e.target.value;
+    const RemarkChange = strRemark.replace('"', "\''");
+    setRemark(RemarkChange);
+  }
+
   const _handleAdd = (e) => {
     e.preventDefault()
     //const isValid = regex.test(document.getElementById("designation").value);
@@ -121,7 +132,7 @@ const DesignationModal = props => {
             type={"text"}
             value={Designation}
             style={{ border: "1px solid gray" }}
-            onChange={e => setDesignation(e.target.value)}
+            onChange={handleDesignation}
             maxLength={50}
           />
            <div style={{color:'red'}}>
@@ -138,7 +149,7 @@ const DesignationModal = props => {
             type={"text"}
             value={Remark}
             style={{ border: "1px solid gray" }}
-            onChange={e => setRemark(e.target.value)} 
+            onChange={handleRemark} 
             maxLength={200}
            
           />

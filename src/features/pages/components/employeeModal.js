@@ -78,12 +78,12 @@ const EmployeeModal = props => {
   const [maritalErr, setMaritalErr] = useState("");
   const [birthDateErr, setBirthDateErr] = useState("");
   const [image, setImage] = useState([]);
-  console.log("EMP===>>>",employeeData);
-
+ // console.log("EMP===>>>",employeeData);
   //const regex = /^(?=.{1,50}$)(?![_.0-9+=*;:,<>\?/|$&%^`~()])(?!.*[_.]{2})[a-zA-Z0-9._\'\"()-@& ]+(?<![_.+=*;:\?/|,$<>~`^$])$/;
   //const regex = /[^!#$%*:;,/?+_<>={}"]+$/;
   const alert = useAlert();
 
+  console.log('employee id -> '+employeeId);
   const MaritalOptions = [
     { value: "Single", label: "Single" },
     { value: "Married", label: "Married" }
@@ -125,10 +125,6 @@ const EmployeeModal = props => {
     }
   );
 
-  // const EmployeeFetch = () => {
-  
-  // };
-
   useEffect(() => {
     setSelectedDesignation();
     setSelectedDepartment();
@@ -158,27 +154,39 @@ const EmployeeModal = props => {
     setBirthDateErr("");
   };
   const _handleEmpName = e => {
-    setEmployeeName(e.target.value);
+    const strEmp = e.target.value;
+    const EmpChange = strEmp.replace('"', "\''");
+    console.log(EmpChange);
+    
+    setEmployeeName(EmpChange);
     document.getElementById("employeeName").style.border = "";
     setEmpErr("");
   };
   const _handleFatherName = e => {
-    setFatherName(e.target.value);
+    const strFatherName = e.target.value;
+    const FatherNameChg = strFatherName.replace('"', "\''");
+    setFatherName(FatherNameChg);
     document.getElementById("fatherName").style.border = "";
     setFatherErr("");
   };
   const _handleNRC = e => {
-    setNrcNo(e.target.value);
+    const strNRC = e.target.value;
+    const NRCChange = strNRC.replace('"', "\''");
+    setNrcNo(NRCChange);
     document.getElementById("nrcNo").style.border = "";
     setNrcErr("");
   };
   const _handleEducation = e => {
-    setEducation(e.target.value);
+    const strEducation = e.target.value;
+    const EducationChange = strEducation.replace('"', "\''");
+    setEducation(EducationChange);
     document.getElementById("education").style.border = "";
     setEducationErr("");
   };
   const _handleAddress = e => {
-    setAddress(e.target.value);
+    const strAddress = e.target.value;
+    const AddressChange = strAddress.replace('"', "\''");
+    setAddress(AddressChange);
     document.getElementById("address").style.border = "";
     setAddressErr("");
   };
@@ -310,10 +318,11 @@ const EmployeeModal = props => {
           token
         },
         (err, data) => {
-          if (data.success === false && data.error === "E2601") {
+          //data.success === false && data.error === "E2601" data.success === false && data.error === "N2601"
+          if (data.success === false&& data.error === "E2601") {
             alert.error("Employee Name Already Exist!");
             return;
-          } else if (data.success === false && data.error === "N2601") {
+          } else if (data.success === false&& data.error === "N2601") {
             alert.error("NRC Already Exist!");
             return;
           } else {
@@ -332,33 +341,17 @@ const EmployeeModal = props => {
     e.preventDefault();
     setDateOfBirth(moment(dateOfBirth).format("YYYY-MM-DD"));
     setJoinDate(moment(joinDate).format("YYYY-MM-DD"));
-    // const isValidName = regex.test(
-    //   document.getElementById("employeeName").value
-    // );
-    // const isValidFather = regex.test(
-    //   document.getElementById("fatherName").value
-    // );
-
+   
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
       document.getElementById("employeeName").style.border = "1px solid red";
       return;
     } 
-    // else if (!isValidName) {
-    //   setEmpErr("Employee Name Contains Special Characters or Numbers!");
-    //   document.getElementById("employeeName").style.border = "1px solid red";
-    //   return;
-    // }
     if (FatherName.trim() === "") {
       setFatherErr("Please Fill Father Name");
       document.getElementById("fatherName").style.border = "1px solid red";
       return;
     } 
-    // else if (!isValidFather) {
-    //   setFatherErr("Father Name Contains Special Characters or Numbers!");
-    //   document.getElementById("fatherName").style.border = "1px solid red";
-    //   return;
-    // }
     if (Address.trim() === "") {
       setAddressErr("Please Fill Address");
       document.getElementById("address").style.border = "1px solid red";

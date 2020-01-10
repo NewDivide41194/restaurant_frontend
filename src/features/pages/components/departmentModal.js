@@ -32,6 +32,16 @@ const DepartmentModal = props => {
   const [Loading, setLoading] = useState(false);
   const alert = useAlert();
 
+  const handleDepartment = e => {
+    const strDepartment = e.target.value;
+    const DepartmentChange = strDepartment.replace('"', "\''");
+    setDepartment(DepartmentChange);
+  }
+  const handleRemark = e => {
+    const strRemark = e.target.value;
+    const RemarkChange = strRemark.replace('"', "\''");
+    setRemark(RemarkChange);
+  }
   const _handleAdd = e => {
     e.preventDefault();    
     //const isValid = regex.test(document.getElementById("department").value);
@@ -125,7 +135,7 @@ const DepartmentModal = props => {
             value={Department}
             pattern={"[A-Za-z]{3}"}
             style={{ border: "1px solid gray" }}
-            onChange={e => setDepartment(e.target.value)}
+            onChange={handleDepartment}
             maxLength={50}
           />
           <div style={{color:'red'}}>
@@ -142,7 +152,7 @@ const DepartmentModal = props => {
             type="text"
             value={Remark}
             style={{ border: "1px solid gray" }}
-            onChange={e => setRemark(e.target.value)}
+            onChange={handleRemark}
             maxLength={200}
           />
         </div>

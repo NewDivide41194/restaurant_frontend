@@ -22,17 +22,29 @@ const AdminRoleModal = props => {
 
   useEffect(() => {
   });
+
+  const handleChangeRole = e => {
+    const strRole = e.target.value;
+    const roleChange = strRole.replace('"', "\''");
+    setRoleName(roleChange);
+  }
+  const handleChangeRemark = e => {
+    const strRemark = e.target.value;
+    const remarkChange = strRemark.replace('"', "\''");
+    setRemark(remarkChange);
+  }
+ 
   const _handleAdd = e => {
     e.preventDefault();
+    //setRoleName(RoleName.replace('"', "\''"));
     
     if (RoleName.trim() === "") {
       setRoleErr("Please Fill Role Name");
       document.getElementById("roleName").style.border = "1px solid red";
       return;
     }
-  
      else {
-      //RoleName.replace("ee", "dd");
+      console.log('RoleName replace -> ' + RoleName);
       InsertRoleFetcher(
         { RoleId, RoleName, Remark, Active, CreatedDate,userId,token },
         (err, data) => {
@@ -112,7 +124,7 @@ const AdminRoleModal = props => {
             value={RoleName}
             pattern={"[a-zA-Z0-9 ]+"}
             style={{ border: "1px solid gray" }}
-            onChange={e => setRoleName(e.target.value)}
+            onChange={handleChangeRole}
             maxLength={50}
           />
           <div style={{ color: "red" }}>{roleErr}</div>
@@ -126,7 +138,7 @@ const AdminRoleModal = props => {
             type="text"
             value={Remark}
             style={{ border: "1px solid gray" }}
-            onChange={e => setRemark(e.target.value)}
+            onChange={handleChangeRemark}
             maxLength={200}
           />
         </div>

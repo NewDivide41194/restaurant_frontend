@@ -58,7 +58,7 @@ export const UpdateEmployeeFetcher = (
   form.append("active", Active);
   form.append("maritalStatus", MaritalStatus);
 
-  console.log(form);
+  console.log("TOKEN====>",token);
 
   fetch(API.UpdateEmployeeFetcher, {
     method: "PUT",

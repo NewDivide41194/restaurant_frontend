@@ -108,10 +108,10 @@ export default function EnhancedTable(props) {
   const [index, setIndex] = useState(-1);
   const DefaultProfile = require("../../../assets/icon/profile/defaultProfile3.jpg");
 
-  // console.log({ rowsPerPage })
+ 
   const _handleEdit = (employee) => {
 
-    // console.log("employee", employee)
+    console.log("employee", employee)
     const index = employeeData.findIndex( e => e.employeeId===employee.employeeId )  
     
     setIndex(index);
@@ -140,6 +140,7 @@ export default function EnhancedTable(props) {
       //16 Columns
     }
   };
+
   const createData = (
     sino,
     employeeImage,
