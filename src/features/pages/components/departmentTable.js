@@ -109,8 +109,8 @@ export default function EnhancedTable(props) {
     } else {
       const department_data = departmentData[index];
       console.log("DepartmentDATA=>>>",department_data);
-      setDepartment(department_data.department);
-      setRemark(department_data.remark);
+      setDepartment(department_data.department.trim());
+      setRemark(department_data.remark.trim());
       setActive(department_data.active);
       setDepartmentId(department_data.departmentId);
       setUserId(department_data.userId)

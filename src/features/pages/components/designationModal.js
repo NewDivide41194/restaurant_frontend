@@ -66,13 +66,14 @@ const DesignationModal = props => {
         } else {
           alert.success("Designation Added!", {
             onClose: () => {
-              window.location.reload();
+              //window.location.reload();
             }
           });
         }
       }
     );
-  };}
+  } console.log('Active -> '+ Active);
+  ;}
 
   const _handleUpdate = (e) => {
     e.preventDefault()
@@ -156,11 +157,11 @@ const DesignationModal = props => {
         </div>
         <div className="pb-3">
           <input
-            type="checkbox"
-            id="activecheck"
-            value={Active}
-            checked={Active === true ? true : false}
-            onChange={e => setActive(!Active)}
+           type="checkbox"
+           id="activecheck"
+           value={Active}
+           checked={Active === true ? true : false}
+           onChange={e => setActive(!Active)}
           />
           <label>Active</label>
         </div>

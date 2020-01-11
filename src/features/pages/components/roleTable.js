@@ -108,8 +108,8 @@ export default function EnhancedTable(props) {
     } else {
       const role_data = roleData[index];
       console.log("RoleDATA=>>>",role_data);
-      setRoleName(role.roleName);
-      setRemark(role.remark);
+      setRoleName(role.roleName.trim());
+      setRemark(role.remark.trim());
       setActive(role.active);
       setRoleId(role.roleId);
       setUserId(role.userId)

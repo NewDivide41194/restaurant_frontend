@@ -118,19 +118,19 @@ export default function EnhancedTable(props) {
     if (index===-1) {
       setOpen(false);
     } else {
-      setEmployeeName(employee.employeeName);
+      setEmployeeName(employee.employeeName.trim());
       setEmployeeImage(employee.employeeImage);
       setActive(employee.active);
-      setFatherName(employee.fatherName);
+      setFatherName(employee.fatherName.trim());
       setDateOfBirth(employee.dateOfBirth);
-      setNrcNo(employee.nrcNo);
+      setNrcNo(employee.nrcNo.trim());
       setJoinDate(employee.joinDate);
       setDepartmentId(employee.departmentId);
       setDesignationId(employee.designationId);
-      setEducation(employee.education);
+      setEducation(employee.education.trim());
       setGender(employee.gender);
       setMaritalStatus(employee.maritalStatus);
-      setAddress(employee.address);
+      setAddress(employee.address.trim());
       setCreatedBy(employee.createdBy);
       setCreatedDate(employee.createdDate);
       setEmployeeId(employee.employeeId);

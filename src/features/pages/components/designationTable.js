@@ -106,8 +106,8 @@ export default function EnhancedTable(props) {
     } else {
       const designation_data = designationData[index];
       console.log("DesignationDATA=>>>",designation_data);
-      setDesignation(designation_data.designation);
-      setRemark(designation_data.remark);
+      setDesignation(designation_data.designation.trim());
+      setRemark(designation_data.remark.trim());
       setActive(designation_data.active);
       setUserId(designation_data.userId)
       setDesignationId(designation_data.designationId);

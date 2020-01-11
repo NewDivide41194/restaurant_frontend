@@ -130,6 +130,7 @@ const EmployeeModal = props => {
     setSelectedDepartment();
     EmployeeFetcher(token,(err, data) => {
       setDepartmentData(data.payload[1]);
+      console.log('department data ->'+data.payload[1]);
       setDesignationData(data.payload[2]);
     });    EmployeeId
       ? setImage(`http://192.168.100.112:3001/uploads/${EmployeeImage}`)
@@ -231,9 +232,6 @@ const EmployeeModal = props => {
     // const isValidName = regex.test(
     //   document.getElementById("employeeName").value
     // );
-    // const isValidFather = regex.test(
-    //   document.getElementById("fatherName").value
-    // );
 
     if (EmployeeName.trim() === "") {
       setEmpErr("Please Fill Employee Name");
@@ -245,17 +243,11 @@ const EmployeeModal = props => {
     //   document.getElementById("employeeName").style.border = "1px solid red";
     //   return;
     // }
-
     if (FatherName.trim() === "") {
       setFatherErr("Please Fill Father Name");
       document.getElementById("fatherName").style.border = "1px solid red";
       return;
     } 
-    // else if (!isValidFather) {
-    //   setFatherErr("Father Name Contains Special Characters or Numbers!");
-    //   document.getElementById("fatherName").style.border = "1px solid red";
-    //   return;
-    // }
     if (moment(new Date()).year() - moment(DateOfBirth).year() <= 17) {
       setBirthDateErr("Age must be at least 18!");
       document.getElementById("date-picker-dialog").style.border =
